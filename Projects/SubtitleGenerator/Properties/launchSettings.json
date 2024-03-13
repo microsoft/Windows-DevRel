@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SubtitleGenerator (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "SubtitleGenerator (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
