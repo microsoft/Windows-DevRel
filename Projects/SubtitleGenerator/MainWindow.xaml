@@ -8,7 +8,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ComboBox x:Name="Combo2" ItemsSource="{x:Bind Languages}" Loaded="Combo2_Loaded"/>
+        <Button x:Name="PickAFileButton" Content="Extract Audio from Video"
+            Click="GetAudioFromVideoButtonClick" Margin="0,0,0,10"/>
+        <TextBlock x:Name="PickAFileOutputTextBlock" TextWrapping="Wrap" Padding="20,5,0,0"/>
+
     </StackPanel>
 </Window>
