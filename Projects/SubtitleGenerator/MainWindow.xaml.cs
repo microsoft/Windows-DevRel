@@ -16,6 +16,14 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage.Pickers;
 
+using NReco.VideoConverter;
+using Microsoft.ML.OnnxRuntime;
+using Microsoft.ML.OnnxRuntime.Tensors;
+using Windows.Storage.Streams;
+using Windows.AI.MachineLearning;
+using Path = System.IO.Path;
+using System.Reflection;
+
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -27,19 +35,16 @@ namespace SubtitleGenerator
     public sealed partial class MainWindow : Window
     {
 
-        public List<string> Languages = new List<string>()
+        public List<string> Languages = new List<string>(Utils.languageCodes.Keys);
+        public enum TaskType
         {
-            "English",
-            "Mandarin",
-            "Yoruba",
-            "German"
-        };
-
-        private const string FFMPEG_PATH = "ffmpeg.exe";
+            Translate = 50358,
+            Transcribe = 50359
+        }
 
         public MainWindow()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void Combo2_Loaded(object sender, RoutedEventArgs e)
@@ -79,35 +84,121 @@ namespace SubtitleGenerator
                 PickAFileOutputTextBlock.Text = "Operation cancelled.";
             }
 
-            ExtractAudioFromVideo(file.Path, file.Path + "Audio" + ".mp3");
+            var audioData = ExtractAudioFromVideo(file.Path);
+
+            Transcribe(audioData, Combo2.SelectedValue.ToString(), TaskType.Transcribe, file.Path);
         }
 
-        private async void ExtractAudioFromVideo(string inPath, string outPath)
+        private float[] ExtractAudioFromVideo(string inPath)
         {
-            ProcessStartInfo ffmpegProcessInfo = new ProcessStartInfo
+            try
             {
-                FileName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", FFMPEG_PATH),
-                Arguments = $"-i \"{inPath}\" -vn -acodec libmp3lame \"{outPath}\"",
-                UseShellExecute = false,
-                RedirectStandardError = true
-            };
+                var extension = System.IO.Path.GetExtension(inPath).Substring(1);
+                var output = new MemoryStream();
 
-            using (Process ffmpegProcess = Process.Start(ffmpegProcessInfo))
-            {
-                string ffmpegOutput = ffmpegProcess.StandardError.ReadToEnd();
-                Console.WriteLine(ffmpegOutput);
+                var convertSettings = new ConvertSettings
+                {
+                    AudioCodec = "pcm_s16le",
+                    AudioSampleRate = 16000,
+                    CustomOutputArgs = "-vn -ac 1"
+                };
 
-                ffmpegProcess.WaitForExit();
-                PickAFileOutputTextBlock.Text = "Generated Audio File at: " + outPath;
+                var ffMpegConverter = new FFMpegConverter();
+                ffMpegConverter.ConvertMedia(
+                    inputFile: inPath,
+                    inputFormat: extension,
+                    outputStream: output,
+                    outputFormat: "s16le",
 
+                    convertSettings);
+
+                var buffer = output.ToArray();
+                var result = new float[buffer.Length / 2];
+                for (int i = 0; i < buffer.Length; i += 2)
+                {
+                    short sample = (short)(buffer[i + 1] << 8 | buffer[i]);
+
+
+                    //The division by 32768 is used to normalize the audio data
+                    //to have values between -1.0 and 1.0.
+                    //The raw PCM format used by ffmpeg encodes audio samples
+                    //as signed 16-bit integers with a range from -32768
+                    //to 32767. Dividing by 32768 scales the samples to have
+                    //a range from -1.0 to 1.0 in floating-point format.
+                    result[i / 2] = sample / 32768.0f;
+                }
+
+                return result;
             }
-
-            Console.WriteLine("Audio extraction completed.");
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error during the audio extraction: " + ex.Message);
+                return new float[0];
+            }
         }
 
         private async void GenerateSubtitles(string audioFilePath, string outputSubtitlePath, string language)
         {
             // @Amrutha @Gleb Blank function for adding subtitle model
+        }
+
+ 
+        private void Transcribe(float[] pcmAudioData, string inputLanguage, TaskType taskType, string videoFileName)
+        {
+            var assemblyLocation = Assembly.GetExecutingAssembly().Location;
+            var assemblyPath = Path.GetDirectoryName(assemblyLocation);
+            string modelPath = Path.GetFullPath(Path.Combine(assemblyPath, "..\\..\\..\\..\\Assets\\model.onnx"));
+
+            var audioTensor = new DenseTensor<float>(pcmAudioData, [1, pcmAudioData.Length]);
+            var timestampsEnableTensor = new DenseTensor<int>(new[] { 1 }, [1]);
+
+            int task = (int)taskType;
+            int langCode = Utils.GetLangId(inputLanguage);
+            var decoderInputIds = new int[] { 50258, langCode, task };
+            var langAndModeTensor = new DenseTensor<int>(decoderInputIds, [1, 3]);
+
+            SessionOptions options = new SessionOptions();
+            options.RegisterOrtExtensions();
+            //options.GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_ALL;
+            //options.EnableMemoryPattern = false;
+            //options.AppendExecutionProvider_DML(1);
+            //options.LogSeverityLevel = 0;
+            options.AppendExecutionProvider_CPU();
+
+            using var session = new InferenceSession(modelPath, options);
+
+            var inputs = new List<NamedOnnxValue> {
+                NamedOnnxValue.CreateFromTensor("audio_pcm", audioTensor),
+                NamedOnnxValue.CreateFromTensor("min_length", new DenseTensor<int>(new int[] { 0 }, [1])),
+                NamedOnnxValue.CreateFromTensor("max_length", new DenseTensor<int>(new int[] { 448 }, [1])),
+                NamedOnnxValue.CreateFromTensor("num_beams", new DenseTensor<int>(new int[] {1}, [1])),
+                NamedOnnxValue.CreateFromTensor("num_return_sequences", new DenseTensor<int>(new int[] { 1 }, [1])),
+                NamedOnnxValue.CreateFromTensor("length_penalty", new DenseTensor<float>(new float[] { 1.0f }, [1])),
+                NamedOnnxValue.CreateFromTensor("repetition_penalty", new DenseTensor<float>(new float[] { 1.0f }, [1])),
+                //NamedOnnxValue.CreateFromTensor("attention_mask", config.attention_mask)
+                NamedOnnxValue.CreateFromTensor("logits_processor", timestampsEnableTensor),
+                NamedOnnxValue.CreateFromTensor("decoder_input_ids", langAndModeTensor)
+            };
+
+            using var results = session.Run(inputs);
+            var output = ProcessResults(results);
+            var srtPath = Utils.ConvertToSrt(output, Path.GetFileNameWithoutExtension(videoFileName));
+
+            PickAFileOutputTextBlock.Text = "Generated Audio File at: " + srtPath;
+        }
+
+        private static string ProcessResults(IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results)
+        {
+            foreach (var result in results)
+            {
+                if (result.Name == "str") // Replace "output_name" with the actual output name of your model
+                {
+                    var tensor = result.AsTensor<string>();
+                    return tensor.GetValue(0); // Simplified; actual extraction may differ
+                }
+            }
+
+            return "Unable to extract transcription.";
         }
 
     }
