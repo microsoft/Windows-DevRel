@@ -24,6 +24,7 @@ using Windows.AI.MachineLearning;
 using Path = System.IO.Path;
 using System.Reflection;
 
+
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -46,6 +47,8 @@ namespace SubtitleGenerator
         public MainWindow()
         {
             InitializeComponent();
+            Title = "Subtitles Generator";
+            AppWindow.MoveAndResize(new Windows.Graphics.RectInt32(100, 100, 1600, 1100));
         }
 
         private void Combo2_Loaded(object sender, RoutedEventArgs e)
@@ -56,7 +59,7 @@ namespace SubtitleGenerator
         private async void GenerateSubtitles_ButtonClick(object sender, RoutedEventArgs e)
         {
             var audioData = ExtractAudioFromVideo(VideoFilePath);
-            OpenVideo(addSubtitles(VideoFilePath, Transcribe(audioData, Combo2.SelectedValue.ToString(), TaskType.Transcribe, VideoFilePath)));
+            OpenVideo(addSubtitles(VideoFilePath, Transcribe(audioData, Combo2.SelectedValue.ToString(), Switch1.IsOn ? TaskType.Translate: TaskType.Transcribe, VideoFilePath)));
         }
 
         private async void GetAudioFromVideoButtonClick(object sender, RoutedEventArgs e)
@@ -189,7 +192,7 @@ namespace SubtitleGenerator
             var output = ProcessResults(results);
             var srtPath = Utils.ConvertToSrt(output, Path.GetFileNameWithoutExtension(videoFileName));
 
-            PickAFileOutputTextBlock.Text = "Generated Audio File at: " + srtPath;
+            PickAFileOutputTextBlock.Text = "Generated SRT File at: " + srtPath;
 
             return srtPath;
         }
@@ -216,9 +219,14 @@ namespace SubtitleGenerator
         {
             string documentsFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string outputFilePath = Path.Combine(documentsFolderPath, Path.GetFileNameWithoutExtension(videoPath) + "Subtitled" + Path.GetExtension(videoPath));
+
+            if (File.Exists(outputFilePath))
+            {
+                File.Delete(outputFilePath);
+            }
+
             var ffMpegConverter = new FFMpegConverter();
             string newSrtPath = FixPath(srtPath);
-            System.Diagnostics.Debug.WriteLine(newSrtPath);
             ffMpegConverter.Invoke($"-i \"{videoPath}\" -vf subtitles=\"{newSrtPath}\"  \"{outputFilePath}\"");
 
             return outputFilePath;
