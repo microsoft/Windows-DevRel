@@ -108,7 +108,9 @@ namespace SubtitleGenerator
                 {
                     AudioCodec = "pcm_s16le",
                     AudioSampleRate = 16000,
-                    CustomOutputArgs = "-vn -ac 1"
+                    CustomOutputArgs = "-vn -ac 1",
+                    // TODO: add batching
+                    MaxDuration = 30
                 };
 
                 var ffMpegConverter = new FFMpegConverter();
