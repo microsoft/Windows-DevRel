@@ -36,6 +36,7 @@ namespace SubtitleGenerator
     {
 
         public List<string> Languages = new List<string>(Utils.languageCodes.Keys);
+        private string VideoFilePath { get; set; }
         public enum TaskType
         {
             Translate = 50358,
@@ -52,10 +53,15 @@ namespace SubtitleGenerator
             Combo2.SelectedIndex = 2;
         }
 
+        private async void GenerateSubtitles_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            var audioData = ExtractAudioFromVideo(VideoFilePath);
+            OpenVideo(addSubtitles(VideoFilePath, Transcribe(audioData, Combo2.SelectedValue.ToString(), TaskType.Transcribe, VideoFilePath)));
+        }
+
         private async void GetAudioFromVideoButtonClick(object sender, RoutedEventArgs e)
         {
             // Clear previous returned file name, if it exists, between iterations of this scenario
-            PickAFileOutputTextBlock.Text = "";
 
             // Create a file picker
             var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
@@ -77,16 +83,15 @@ namespace SubtitleGenerator
             var file = await openPicker.PickSingleFileAsync();
             if (file != null)
             {
-                PickAFileOutputTextBlock.Text = "Picked file: " + file.Name;
+                PickAFileOutputTextBlock.Text = "File selected: " + file.Name;
             }
             else
             {
                 PickAFileOutputTextBlock.Text = "Operation cancelled.";
             }
 
-            var audioData = ExtractAudioFromVideo(file.Path);
-
-            Transcribe(audioData, Combo2.SelectedValue.ToString(), TaskType.Transcribe, file.Path);
+            this.VideoFilePath = file.Path;
+            
         }
 
         private float[] ExtractAudioFromVideo(string inPath)
@@ -143,11 +148,11 @@ namespace SubtitleGenerator
         }
 
  
-        private void Transcribe(float[] pcmAudioData, string inputLanguage, TaskType taskType, string videoFileName)
+        private string Transcribe(float[] pcmAudioData, string inputLanguage, TaskType taskType, string videoFileName)
         {
             var assemblyLocation = Assembly.GetExecutingAssembly().Location;
             var assemblyPath = Path.GetDirectoryName(assemblyLocation);
-            string modelPath = Path.GetFullPath(Path.Combine(assemblyPath, "..\\..\\..\\..\\Assets\\model.onnx"));
+            string modelPath = Path.GetFullPath(Path.Combine(assemblyPath, "..\\..\\..\\..\\..\\Assets\\model.onnx"));
 
             var audioTensor = new DenseTensor<float>(pcmAudioData, [1, pcmAudioData.Length]);
             var timestampsEnableTensor = new DenseTensor<int>(new[] { 1 }, [1]);
@@ -185,6 +190,8 @@ namespace SubtitleGenerator
             var srtPath = Utils.ConvertToSrt(output, Path.GetFileNameWithoutExtension(videoFileName));
 
             PickAFileOutputTextBlock.Text = "Generated Audio File at: " + srtPath;
+
+            return srtPath;
         }
 
         private static string ProcessResults(IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results)
@@ -199,6 +206,33 @@ namespace SubtitleGenerator
             }
 
             return "Unable to extract transcription.";
+        }
+        private string FixPath(string path)
+        {
+            return path.Replace("\\", "\\\\\\\\").Insert(1, "\\\\");
+        }
+
+        private string addSubtitles(string videoPath, string srtPath)
+        {
+            string documentsFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string outputFilePath = Path.Combine(documentsFolderPath, Path.GetFileNameWithoutExtension(videoPath) + "Subtitled" + Path.GetExtension(videoPath));
+            var ffMpegConverter = new FFMpegConverter();
+            string newSrtPath = FixPath(srtPath);
+            System.Diagnostics.Debug.WriteLine(newSrtPath);
+            ffMpegConverter.Invoke($"-i \"{videoPath}\" -vf subtitles=\"{newSrtPath}\"  \"{outputFilePath}\"");
+
+            return outputFilePath;
+        }
+
+        private void OpenVideo(string videoFilePath)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = videoFilePath,
+                UseShellExecute = true
+            };
+
+            Process.Start(startInfo);
         }
 
     }
