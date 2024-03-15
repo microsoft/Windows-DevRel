@@ -12,24 +12,24 @@ namespace SubtitleGenerator
     {
         public static Dictionary<string, string> languageCodes = new()
             {
-                {"english", "en"},
-                {"serbian", "sr"},
-                {"hindi", "hi"},
-                {"spanish", "es"},
-                {"russian", "ru"},
-                {"korean", "ko"},
-                {"french", "fr"},
-                {"japanese", "ja"},
-                {"portuguese", "pt"},
-                {"turkish", "tr"},
-                {"polish", "pl"},
-                {"catalan", "ca"},
-                {"dutch", "nl"},
-                {"arabic", "ar"},
-                {"swedish", "sv"},
-                {"italian", "it"},
-                {"indonesian", "id"},
-                {"mandarin", "zh" }
+                {"English", "en"},
+                {"Serbian", "sr"},
+                {"Hindi", "hi"},
+                {"Spanish", "es"},
+                {"Russian", "ru"},
+                {"Korean", "ko"},
+                {"French", "fr"},
+                {"Japanese", "ja"},
+                {"Portuguese", "pt"},
+                {"Turkish", "tr"},
+                {"Polish", "pl"},
+                {"Catalan", "ca"},
+                {"Dutch", "nl"},
+                {"Arabic", "ar"},
+                {"Swedish", "sv"},
+                {"Italian", "it"},
+                {"Indonesian", "id"},
+                {"Mandarin", "zh" }
         };
         public static int GetLangId(string languageString)
         {
