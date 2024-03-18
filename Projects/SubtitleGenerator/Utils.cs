@@ -148,40 +148,59 @@ namespace SubtitleGenerator
             return langId;
         }
 
-        public static string ConvertToSrt(string subtitleString, string fileName)
+        public static string ConvertToSrt(string subtitleString, string fileName, int batch)
         {
             Regex pattern = new Regex(@"<\|([\d.]+)\|>([^<]+)<\|([\d.]+)\|>");
             MatchCollection matches = pattern.Matches(subtitleString);
             // Placeholder for srt content
             string srtContent = "";
 
+            // Calculate the time offset based on the batch number. Each batch represents an additional 30 seconds.
+            double batchOffset = batch * 30.0; // 30 seconds per batch
+
             for (int i = 0; i < matches.Count; i++)
             {
+                // Parse the original start and end times
                 double start = double.Parse(matches[i].Groups[1].Value);
                 double end = double.Parse(matches[i].Groups[3].Value);
+
+                // Apply the batch offset to the start and end times
+                start += batchOffset;
+                end += batchOffset;
+
+                // Convert the adjusted start and end times into the SRT format
                 string startSrt = $"{(int)(start / 3600):D2}:{(int)((start % 3600) / 60):D2}:{(int)(start % 60):D2},{(int)((start * 1000) % 1000):D3}";
                 string endSrt = $"{(int)(end / 3600):D2}:{(int)((end % 3600) / 60):D2}:{(int)(end % 60):D2},{(int)((end * 1000) % 1000):D3}";
+
+                // Build the SRT content string, incrementing the subtitle index by 1 for readability
                 srtContent += $"{i + 1}\n{startSrt} --> {endSrt}\n{matches[i].Groups[2].Value.Trim()}\n\n";
             }
-            return SaveSrtContentToTempFile(srtContent, fileName);
+
+            // The SaveSrtContentToTempFile method needs to exist and handle the saving of the SRT content to a file
+            // Make sure to implement it or adjust this part as per your application's requirements
+            return srtContent;
+            //return SaveSrtContentToTempFile(srtContent, fileName);
         }
 
-        private static string SaveSrtContentToTempFile(string srtContent, string fileName)
+        public static string SaveSrtContentToTempFile(List<string> srtContent, string fileName)
         {
             string srtFilePath = "";
             try
             {
-
-                //string tempDirectory = Path.GetTempPath();
+                // Use MyDocuments as the directory to save the SRT file
                 string documentsFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
+                // Create a unique filename for the SRT file
                 string uniqueFileName = $"{fileName}.srt";
 
-
+                // Combine the documents folder path with the unique file name to get the full path
                 srtFilePath = Path.Combine(documentsFolderPath, uniqueFileName);
 
+                // Join the list of strings into a single string with newline characters
+                string combinedContent = string.Join("\n", srtContent);
 
-                File.WriteAllText(srtFilePath, srtContent);
+                // Write the combined string content to the file
+                File.WriteAllText(srtFilePath, combinedContent);
 
                 Console.WriteLine($"SRT file saved to: {srtFilePath}");
             }
@@ -190,7 +209,6 @@ namespace SubtitleGenerator
                 Console.WriteLine($"Error saving SRT file: {ex.Message}");
             }
             return srtFilePath;
-
         }
     }
 }

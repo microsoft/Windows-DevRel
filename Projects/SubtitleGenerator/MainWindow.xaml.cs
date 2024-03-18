@@ -23,6 +23,8 @@ using Windows.Storage.Streams;
 using Windows.AI.MachineLearning;
 using Path = System.IO.Path;
 using System.Reflection;
+using Windows.Storage;
+using System.Threading.Tasks;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -59,7 +61,14 @@ namespace SubtitleGenerator
         private async void GenerateSubtitles_ButtonClick(object sender, RoutedEventArgs e)
         {
             var audioData = ExtractAudioFromVideo(VideoFilePath);
-            OpenVideo(addSubtitles(VideoFilePath, Transcribe(audioData, Combo2.SelectedValue.ToString(), Switch1.IsOn ? TaskType.Translate: TaskType.Transcribe, VideoFilePath)));
+            var srtBatches = new List<string>();
+            //foreach (var batch in audioData)
+            foreach (var batch in audioData.Select((value, i) => (value, i)))
+            {
+                srtBatches.Add(await TranscribeAsync(batch.value, Combo2.SelectedValue.ToString(), Switch1.IsOn ? TaskType.Translate : TaskType.Transcribe, VideoFilePath, batch.i));
+            }
+            var srtFilePath = Utils.SaveSrtContentToTempFile(srtBatches, Path.GetFileNameWithoutExtension(VideoFilePath));
+            OpenVideo(addSubtitles(VideoFilePath, srtFilePath));
         }
 
         private async void GetAudioFromVideoButtonClick(object sender, RoutedEventArgs e)
@@ -94,10 +103,10 @@ namespace SubtitleGenerator
             }
 
             this.VideoFilePath = file.Path;
-            
+
         }
 
-        private float[] ExtractAudioFromVideo(string inPath)
+        private List<float[]> ExtractAudioFromVideo(string inPath)
         {
             try
             {
@@ -110,7 +119,7 @@ namespace SubtitleGenerator
                     AudioSampleRate = 16000,
                     CustomOutputArgs = "-vn -ac 1",
                     // TODO: add batching
-                    MaxDuration = 30
+                    //MaxDuration = 30
                 };
 
                 var ffMpegConverter = new FFMpegConverter();
@@ -123,37 +132,60 @@ namespace SubtitleGenerator
                     convertSettings);
 
                 var buffer = output.ToArray();
-                var result = new float[buffer.Length / 2];
-                for (int i = 0; i < buffer.Length; i += 2)
+                // Calculate number of samples in 30 seconds; Sample rate * 30 (assuming 16K sample rate)
+                int samplesPer30Seconds = 16000 * 10;
+                // Calculate bytes per sample, assuming 16-bit depth (2 bytes per sample)
+                int bytesPerSample = 2;
+
+                // Calculate total samples in the buffer
+                int totalSamples = buffer.Length / bytesPerSample;
+
+                List<float[]> batches = new List<float[]>();
+                for (int startSample = 0; startSample < totalSamples; startSample += samplesPer30Seconds)
                 {
-                    short sample = (short)(buffer[i + 1] << 8 | buffer[i]);
+                    int endSample = Math.Min(startSample + samplesPer30Seconds, totalSamples);
+                    int numSamples = endSample - startSample;
+                    float[] batch = new float[numSamples];
 
+                    for (int i = 0; i < numSamples; i++)
+                    {
+                        int bufferIndex = (startSample + i) * bytesPerSample;
+                        short sample = (short)(buffer[bufferIndex + 1] << 8 | buffer[bufferIndex]);
+                        batch[i] = sample / 32768.0f;
+                    }
 
-                    //The division by 32768 is used to normalize the audio data
-                    //to have values between -1.0 and 1.0.
-                    //The raw PCM format used by ffmpeg encodes audio samples
-                    //as signed 16-bit integers with a range from -32768
-                    //to 32767. Dividing by 32768 scales the samples to have
-                    //a range from -1.0 to 1.0 in floating-point format.
-                    result[i / 2] = sample / 32768.0f;
+                    batches.Add(batch);
                 }
 
-                return result;
+                return batches;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error during the audio extraction: " + ex.Message);
-                return new float[0];
+                return new List<float[]>(0);
             }
         }
 
-        private async void GenerateSubtitles(string audioFilePath, string outputSubtitlePath, string language)
+        public async Task<byte[]> ConvertStorageFileToByteArray(StorageFile storageFile)
         {
-            // @Amrutha @Gleb Blank function for adding subtitle model
+            if (storageFile == null)
+                throw new ArgumentNullException(nameof(storageFile));
+
+            // Open the file for reading
+            using (IRandomAccessStreamWithContentType stream = await storageFile.OpenReadAsync())
+            {
+                // Create a buffer large enough to hold the file's contents
+                var buffer = new Windows.Storage.Streams.Buffer((uint)stream.Size);
+
+                // Read the file into the buffer
+                await stream.ReadAsync(buffer, buffer.Capacity, InputStreamOptions.None);
+
+                // Convert the buffer to a byte array and return it
+                return buffer.ToArray();
+            }
         }
 
- 
-        private string Transcribe(float[] pcmAudioData, string inputLanguage, TaskType taskType, string videoFileName)
+        private async Task<string> TranscribeAsync(float[] pcmAudioData, string inputLanguage, TaskType taskType, string videoFileName, int batch)
         {
             var assemblyLocation = Assembly.GetExecutingAssembly().Location;
             var assemblyPath = Path.GetDirectoryName(assemblyLocation);
@@ -192,11 +224,12 @@ namespace SubtitleGenerator
 
             using var results = session.Run(inputs);
             var output = ProcessResults(results);
-            var srtPath = Utils.ConvertToSrt(output, Path.GetFileNameWithoutExtension(videoFileName));
+            //var srtPath = Utils.ConvertToSrt(output, Path.GetFileNameWithoutExtension(videoFileName), batch);
+            var srtText = Utils.ConvertToSrt(output, Path.GetFileNameWithoutExtension(videoFileName), batch);
 
-            PickAFileOutputTextBlock.Text = "Generated SRT File at: " + srtPath;
+            //PickAFileOutputTextBlock.Text = "Generated SRT File at: " + srtPath;
 
-            return srtPath;
+            return srtText;
         }
 
         private static string ProcessResults(IDisposableReadOnlyCollection<DisposableNamedOnnxValue> results)
