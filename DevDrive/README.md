@@ -1,6 +1,6 @@
 # Microsoft Dev Drive Performance Challenge
 
-[Dev Drive](), a special type of hard drive partition that is optimized for developer workloads, was recently launched on Windows 11 and we want to see if it works for you as well as it works for us.
+[Dev Drive](https://aka.ms/windex/devdrive/docs), a special type of hard drive partition that is optimized for developer workloads, was recently launched on Windows 11 and we want to see if it works for you as well as it works for us.
 
 ![Graphic showing Dev Drive performance improvements for different platforms](DevDrivePerf.png)
 
@@ -30,7 +30,7 @@ Follow the below steps to enter the challenge:
 
 Before you can test performance improvements with Dev Drive, you will need to set one up on your machine. Dev Drive ships with the latest versions of Windows 11 (minimum build 23H2) and should only take a few minutes and minimal configuration to get one set up on your machine,
 
-See the [Dev Drive documentation]() to get started.
+See the [Dev Drive documentation](https://aka.ms/windex/devdrive/docs) to get started.
 
 ### 2. Build Your Project on Both Drives
 To properly test compare build times, you will need to place your project in two separate locations on your machine. One location will be on your Dev Drive, and the other will be on your normal drive. You can choose any platform or language that you would like, but you might see different performance improvements depending on your choice.
@@ -48,7 +48,7 @@ Once you've tested Dev Drive, there are two ways to submit your results.
 The first option for submitting your results is to create a post on a social media platform of your choice that includes:
 •	The language/type of project you built, and a link to the project if it is open source
 •	Screenshots or a recorded video clip including the build times for both rounds
-•	The hashtags #WinDev and #DevDrive
+•	The hashtags #WinDev and #DevDriveSweepstakes
 
 #### *Form Submission*
 
@@ -59,7 +59,8 @@ You will need to provide the following information:
 •	Associated screenshots or a recorded video clip for the builds
 •	The type of project you are building/a link to the repository
 •	(Optional) Info about the configuration of your Dev Drive
-The form can be found [here](TODO).
+
+The form can be found [here.]()
 
 Once you've submitted your results, you will be entered into the competition. We will be accepting submissions until April 30th, 2024.  
 
@@ -67,6 +68,6 @@ Once you've submitted your results, you will be entered into the competition. We
 
 If a competition isn't up your alley, feel free to check out Dev Drive on your own. The team behind Dev Drive put in lots of work to help you improve your developer experience, and even if you don't want a badge, you might still enjoy the benefits it brings to developing on Windows.
 
-If you want to learn m ore about how Dev Drive works, check out the [Dev Drive documentation.]()
+If you want to learn m ore about how Dev Drive works, check out the [Dev Drive documentation.](https://aka.ms/windex/devdrive/docs)
 
-Additionally, if you have any feedback related to upcoming Dev Drive features, head over to [this thread.]()
+Additionally, if you have any feedback related to upcoming Dev Drive features, head over to [this thread.](https://aka.ms/windex/devdrive/feedback)
