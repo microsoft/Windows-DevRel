@@ -1,6 +1,6 @@
 # Microsoft Dev Drive Performance Challenge
 
-[Dev Drive](https://aka.ms/windex/devdrive/docs), a special type of hard drive partition that is optimized for developer workloads, was recently launched on Windows 11 and we want to see if it works for you as well as it works for us.
+[Dev Drive](https://aka.ms/windex/devdrive/docs), a special type of virtual hard drive partition that is optimized for developer workloads, was recently launched on Windows 11 and we want to see if it works for you as well as it works for us.
 
 ![Graphic showing Dev Drive performance improvements for different platforms](DevDrivePerf.png)
 
