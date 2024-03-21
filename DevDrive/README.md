@@ -28,7 +28,7 @@ Follow the below steps to enter the challenge:
 
 ### 1. Set Up Dev Drive on Your Machine 
 
-Before you can test performance improvements with Dev Drive, you will need to set one up on your machine. Dev Drive ships with the latest versions of Windows 11 (minimum build 23H2) and should only take a few minutes and minimal configuration to get one set up on your machine,
+Before you can test performance improvements with Dev Drive, you will need to set one up on your machine. Dev Drive should only take a few minutes and minimal configuration to get set up on your machine,
 
 See the [Dev Drive documentation](https://aka.ms/windex/devdrive/docs) to get started.
 
