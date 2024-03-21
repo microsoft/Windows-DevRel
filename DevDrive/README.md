@@ -33,7 +33,7 @@ Before you can test performance improvements with Dev Drive, you will need to se
 See the [Dev Drive documentation](https://aka.ms/windex/devdrive/docs) to get started.
 
 ### 2. Build Your Project on Both Drives
-To properly test compare build times, you will need to place your project in two separate locations on your machine. One location will be on your Dev Drive, and the other will be on your normal drive. You can choose any platform or language that you would like, but you might see different performance improvements depending on your choice.
+To properly compare build times, you will need to place your project in two separate locations on your machine. One location will be on your Dev Drive, and the other will be on your normal drive. You can choose any platform or language that you would like, but you might see different performance improvements depending on your choice.
 
 Once you have two separate copies of the project, use your normal process to build the project and record the build times.  Take a screenshot of your execution times for later submission. Interested in submitting a clip of your screen recording? Even better!  
 
