@@ -73,6 +73,6 @@ Once you've submitted your results, you will be entered into the competition. We
 
 If a competition isn't up your alley, feel free to check out Dev Drive on your own. The team behind Dev Drive put in lots of work to help you improve your developer experience, and even if you don't want a badge, you might still enjoy the benefits it brings to developing on Windows.
 
-If you want to learn m ore about how Dev Drive works, check out the [Dev Drive documentation.](https://aka.ms/windex/devdrive/docs)
+If you want to learn more about how Dev Drive works, check out the [Dev Drive documentation.](https://aka.ms/windex/devdrive/docs)
 
 Additionally, if you have any feedback related to upcoming Dev Drive features, head over to [this thread.](https://aka.ms/windex/devdrive/feedback)
