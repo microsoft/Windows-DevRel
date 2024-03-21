@@ -18,7 +18,7 @@ There are a few things you'll need to have in place before you can participate i
 * One or more personal projects that can be built on Windows. Open-source is a bonus, but is not required.
 * The minimum space and memory requirements for a Dev Drive partition
     * 50 GB of available drive space
-    * 8 GB of RAM
+    * Minimum 8 GB of RAM (16GB+ is reccomended)
 
 If you check all these boxes, continue below for guidance on how to enter the challenge.
 
