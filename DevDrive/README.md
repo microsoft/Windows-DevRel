@@ -4,7 +4,7 @@
 
 ![Graphic showing Dev Drive performance improvements for different platforms](DevDrivePerf.png)
 
-We're asking developers to submit how much Dev Drive improved their machine performance for a chance to win a Microsoft Developer Badge. All you must do is build one of your own projects both on, and off, Dev Drive and submit your results. The project can be any type of your choosing, from .NET to Python to Node, as long as it can be built on Windows using Dev Drive. Not all project types will see the same performance improvements, so if you have projects on different platforms, we recommend trying several to see which results in the greatest improvement.
+We're asking developers to submit how much Dev Drive improved their build times for a chance to win a Microsoft Developer Badge. All you must do is build one of your own projects both on, and off, Dev Drive and submit your results. The project can be any type of your choosing, from .NET to Python to Node, as long as it can be built on Windows using Dev Drive. Not all project types will see the same performance improvements, so if you have projects on different platforms, we recommend trying several to see which results in the greatest improvement.
 
 Anyone that submits a time improvement will receive a LinkedIn “Dev Drive” badge to display on their profile and be entered for a chance to get their submitted result spotlighted by the Windows Developer social media accounts. 
 
