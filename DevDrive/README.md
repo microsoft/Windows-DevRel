@@ -51,19 +51,19 @@ Once you've tested Dev Drive, there are two ways to submit your results.
 #### *Through Social Media*
 
 The first option for submitting your results is to create a post on a social media platform of your choice that includes:
-•	The language/type of project you built, and a link to the project if it is open source
-•	Screenshots or a recorded video clip including the build times for both rounds
-•	The hashtags #WinDev and #DevDriveChallenge
+- The language/type of project you built, and a link to the project if it is open source
+- Screenshots or a recorded video clip including the build times for both rounds
+- The hashtags #WinDev and #DevDriveChallenge
 
 #### *Form Submission*
 
 If you don’t want to post on social media , you can also make a submission via form.
 
 You will need to provide the following information:
-•	Time for both builds
-•	Associated screenshots or a recorded video clip for the builds
-•	The type of project you are building/a link to the repository
-•	(Optional) Info about the configuration of your Dev Drive
+- Time for both builds
+- Associated screenshots or a recorded video clip for the builds
+- The type of project you are building/a link to the repository
+- (Optional) Info about the configuration of your Dev Drive
 
 The form can be found [here.]()
 
