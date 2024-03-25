@@ -38,11 +38,11 @@ To properly compare build times, you will need to place your project in two sepa
 Once you have two separate copies of the project, use your normal process to build the project and record the build times.  Take a screenshot of your execution times for later submission. Interested in submitting a clip of your screen recording? Even better!  
 
 If you need guidance on how to record process times, see the below documentation:
-Command Prompt: powershell -Command "Measure-Command { [your build command] }"
-PowerShell: (measure-command { [your build command] } ).TotalMilliseconds
-Git Bash: time [your build command]
+- Command Prompt: `powershell -Command "Measure-Command { [your build command] }"`
+- PowerShell: `(measure-command { [your build command] } ).TotalMilliseconds`
+- Git Bash: `time [your build command]`
 
-Be sure to replace [your build command] with your actual build command. For example, on PowerShell: (measure-command { npm run build } ).TotalMilliseconds
+Be sure to replace [your build command] with your actual build command. For example, on PowerShell: `(measure-command { npm run build } ).TotalMilliseconds`
 
 ### 3. Submit Your Results
 
