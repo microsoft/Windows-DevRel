@@ -29,6 +29,7 @@ namespace SubtitleGenerator
                 {"Swedish", "sv"},
                 {"Italian", "it"},
                 {"Indonesian", "id"},
+                {"Macedonian", "mk" },
                 {"Mandarin", "zh" }
         };
         public static int GetLangId(string languageString)
@@ -148,7 +149,7 @@ namespace SubtitleGenerator
             return langId;
         }
 
-        public static string ConvertToSrt(string subtitleString, string fileName, int batch)
+        public static string ConvertToSrt(string subtitleString, int batchIndex, int batchSizeInSeconds)
         {
             Regex pattern = new Regex(@"<\|([\d.]+)\|>([^<]+)<\|([\d.]+)\|>");
             MatchCollection matches = pattern.Matches(subtitleString);
@@ -156,7 +157,7 @@ namespace SubtitleGenerator
             string srtContent = "";
 
             // Calculate the time offset based on the batch number. Each batch represents an additional 30 seconds.
-            double batchOffset = batch * 30.0; // 30 seconds per batch
+            double batchOffset = batchIndex * batchSizeInSeconds; // 30 seconds per batch
 
             for (int i = 0; i < matches.Count; i++)
             {

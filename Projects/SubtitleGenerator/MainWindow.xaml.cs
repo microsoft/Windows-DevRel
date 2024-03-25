@@ -50,22 +50,26 @@ namespace SubtitleGenerator
         {
             InitializeComponent();
             Title = "Subtitles Generator";
-            AppWindow.MoveAndResize(new Windows.Graphics.RectInt32(100, 100, 1600, 1100));
+            AppWindow.MoveAndResize(new Windows.Graphics.RectInt32(100, 100, 1100, 1100));
         }
 
         private void Combo2_Loaded(object sender, RoutedEventArgs e)
         {
             Combo2.SelectedIndex = 2;
         }
+        private void BatchSeconds_Loaded(object sender, RoutedEventArgs e)
+        {
+            BatchSeconds.Value = 30;
+        }
 
         private async void GenerateSubtitles_ButtonClick(object sender, RoutedEventArgs e)
         {
-            var audioData = ExtractAudioFromVideo(VideoFilePath);
+            var audioData = ExtractAudioFromVideo(VideoFilePath, (int)BatchSeconds.Value);
             var srtBatches = new List<string>();
             //foreach (var batch in audioData)
             foreach (var batch in audioData.Select((value, i) => (value, i)))
             {
-                srtBatches.Add(await TranscribeAsync(batch.value, Combo2.SelectedValue.ToString(), Switch1.IsOn ? TaskType.Translate : TaskType.Transcribe, VideoFilePath, batch.i));
+                srtBatches.Add(await TranscribeAsync(batch.value, Combo2.SelectedValue.ToString(), Switch1.IsOn ? TaskType.Translate : TaskType.Transcribe, batch.i, (int)BatchSeconds.Value));
             }
             var srtFilePath = Utils.SaveSrtContentToTempFile(srtBatches, Path.GetFileNameWithoutExtension(VideoFilePath));
             OpenVideo(addSubtitles(VideoFilePath, srtFilePath));
@@ -106,7 +110,7 @@ namespace SubtitleGenerator
 
         }
 
-        private List<float[]> ExtractAudioFromVideo(string inPath)
+        private List<float[]> ExtractAudioFromVideo(string inPath, int batchSizeInSeconds)
         {
             try
             {
@@ -133,7 +137,7 @@ namespace SubtitleGenerator
 
                 var buffer = output.ToArray();
                 // Calculate number of samples in 30 seconds; Sample rate * 30 (assuming 16K sample rate)
-                int samplesPer30Seconds = 16000 * 10;
+                int samplesPerSeconds = 16000 * batchSizeInSeconds;
                 // Calculate bytes per sample, assuming 16-bit depth (2 bytes per sample)
                 int bytesPerSample = 2;
 
@@ -141,9 +145,9 @@ namespace SubtitleGenerator
                 int totalSamples = buffer.Length / bytesPerSample;
 
                 List<float[]> batches = new List<float[]>();
-                for (int startSample = 0; startSample < totalSamples; startSample += samplesPer30Seconds)
+                for (int startSample = 0; startSample < totalSamples; startSample += samplesPerSeconds)
                 {
-                    int endSample = Math.Min(startSample + samplesPer30Seconds, totalSamples);
+                    int endSample = Math.Min(startSample + samplesPerSeconds, totalSamples);
                     int numSamples = endSample - startSample;
                     float[] batch = new float[numSamples];
 
@@ -185,7 +189,7 @@ namespace SubtitleGenerator
             }
         }
 
-        private async Task<string> TranscribeAsync(float[] pcmAudioData, string inputLanguage, TaskType taskType, string videoFileName, int batch)
+        private async Task<string> TranscribeAsync(float[] pcmAudioData, string inputLanguage, TaskType taskType, int batch, int batchSeconds)
         {
             var assemblyLocation = Assembly.GetExecutingAssembly().Location;
             var assemblyPath = Path.GetDirectoryName(assemblyLocation);
@@ -213,7 +217,7 @@ namespace SubtitleGenerator
                 NamedOnnxValue.CreateFromTensor("audio_pcm", audioTensor),
                 NamedOnnxValue.CreateFromTensor("min_length", new DenseTensor<int>(new int[] { 0 }, [1])),
                 NamedOnnxValue.CreateFromTensor("max_length", new DenseTensor<int>(new int[] { 448 }, [1])),
-                NamedOnnxValue.CreateFromTensor("num_beams", new DenseTensor<int>(new int[] {1}, [1])),
+                NamedOnnxValue.CreateFromTensor("num_beams", new DenseTensor<int>(new int[] {2}, [1])),
                 NamedOnnxValue.CreateFromTensor("num_return_sequences", new DenseTensor<int>(new int[] { 1 }, [1])),
                 NamedOnnxValue.CreateFromTensor("length_penalty", new DenseTensor<float>(new float[] { 1.0f }, [1])),
                 NamedOnnxValue.CreateFromTensor("repetition_penalty", new DenseTensor<float>(new float[] { 1.0f }, [1])),
@@ -225,7 +229,7 @@ namespace SubtitleGenerator
             using var results = session.Run(inputs);
             var output = ProcessResults(results);
             //var srtPath = Utils.ConvertToSrt(output, Path.GetFileNameWithoutExtension(videoFileName), batch);
-            var srtText = Utils.ConvertToSrt(output, Path.GetFileNameWithoutExtension(videoFileName), batch);
+            var srtText = Utils.ConvertToSrt(output, batch, batchSeconds);
 
             //PickAFileOutputTextBlock.Text = "Generated SRT File at: " + srtPath;
 
