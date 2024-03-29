@@ -78,4 +78,4 @@ If you want to learn more about how Dev Drive works, check out the [Dev Drive do
 Additionally, if you have any feedback related to upcoming Dev Drive features, head over to [this thread.](https://aka.ms/windex/devdrive/feedback)
 
 
-** The official rules and terms for this challenge can be found [here.](https://aka.ms/windex/devdrive/official_rules) **
+**The official rules and terms for this challenge can be found [here.](https://aka.ms/windex/devdrive/official_rules)**
