@@ -2,7 +2,7 @@
 
 [Dev Drive](https://aka.ms/windex/devdrive/docs), a special type of virtual hard drive partition that is optimized for developer workloads, was recently launched on Windows 11 and we want to see if it works for you as well as it works for us.
 
-![Graphic showing Dev Drive performance improvements for different platforms](DevDrivePerf.png)
+![Graphic showing Dev Drive performance improvements for different platforms](DevDrive.jpeg)
 
 We're asking developers to submit how much Dev Drive improved their build times for a chance to win a Microsoft Developer Badge. All you must do is build one of your own projects both on, and off, Dev Drive and submit your results. The project can be any type of your choosing, from .NET to Python to Node, as long as it can be built on Windows using Dev Drive. Not all project types will see the same performance improvements, so if you have projects on different platforms, we recommend trying several to see which results in the greatest improvement.
 
@@ -65,7 +65,7 @@ You will need to provide the following information:
 - The type of project you are building/a link to the repository
 - (Optional) Info about the configuration of your Dev Drive
 
-The form can be found [here.]()
+The form can be found [here.](https://aka.ms/windex/devdrive/submission)
 
 Once you've submitted your results, you will be entered into the competition. We will be accepting submissions until April 30th, 2024.  
 
