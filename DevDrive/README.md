@@ -76,3 +76,6 @@ If a competition isn't up your alley, feel free to check out Dev Drive on your o
 If you want to learn more about how Dev Drive works, check out the [Dev Drive documentation.](https://aka.ms/windex/devdrive/docs)
 
 Additionally, if you have any feedback related to upcoming Dev Drive features, head over to [this thread.](https://aka.ms/windex/devdrive/feedback)
+
+
+** The official rules and terms for this challenge can be found [here.](https://aka.ms/windex/devdrive/official_rules) **
