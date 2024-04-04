@@ -16,14 +16,15 @@ namespace AudioEditor
         {
             this.InitializeComponent();
 
-            // Add audio files to the list
+
+            // Add audio files to the list - have to replace with files from your computer 
             AudioFiles.Add(new AudioFile("Tame Impala - The Less I Know the Better", "C:/Users/jaylynbarbee/Desktop/test_audio/impala.mp3"));
             AudioFiles.Add(new AudioFile("Carolesdaughter - Violent", "C:/Users/jaylynbarbee/Desktop/test_audio/violent.mp3"));
             AudioFiles.Add(new AudioFile("Michael Jackson - PYT", "C:/Users/jaylynbarbee/Desktop/test_audio/pyt.mp3"));
             AudioFiles.Add(new AudioFile("Bobby Caldwell - What You Won't Do for Love", "C:/Users/jaylynbarbee/Desktop/test_audio/love.mp3"));
 
             AudioListBox.ItemsSource = AudioFiles;
-            AudioListBox.DisplayMemberPath = "FileName"; // Display the customer names
+            AudioListBox.DisplayMemberPath = "FileName";
         }
 
         private void AudioListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -21,7 +21,6 @@
         <ListBox x:Name="AudioListBox" Grid.Column="0"
              SelectionChanged="AudioListBox_SelectionChanged"
              Background="LightGray"/>
-        <!-- Set the background color of the sidebar -->
 
         <!-- Content -->
         <MediaPlayerElement
@@ -30,7 +29,6 @@
                     AutoPlay="False"
                     AreTransportControlsEnabled="True"
                     Grid.Column="1"/>
-        <!-- Set the background color of the content area -->
     </Grid>
 
 </Window>
