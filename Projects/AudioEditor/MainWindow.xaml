@@ -1,14 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Window
-    x:Class="AudioEditor.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:AudioEditor"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+        x:Class="AudioEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:AudioEditor"
+        xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
-    </StackPanel>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <!-- Sidebar -->
+            <ColumnDefinition Width="500"/>
+            <!-- Content -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <ListBox x:Name="AudioListBox" Grid.Column="0"
+             SelectionChanged="AudioListBox_SelectionChanged"
+             Background="LightGray"/>
+        <!-- Set the background color of the sidebar -->
+
+        <!-- Content -->
+        <MediaPlayerElement
+                    x:Name="myMediaPlayer"
+                    MaxWidth="400"
+                    AutoPlay="False"
+                    AreTransportControlsEnabled="True"
+                    Grid.Column="1"/>
+        <!-- Set the background color of the content area -->
+    </Grid>
+
 </Window>

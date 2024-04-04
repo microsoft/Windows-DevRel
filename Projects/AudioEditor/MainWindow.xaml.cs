@@ -1,36 +1,41 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using System.Collections.ObjectModel;
+using Windows.Media.Core;
+using Windows.Media.Playback;
 
 namespace AudioEditor
 {
-    /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainWindow : Window
     {
+        public ObservableCollection<AudioFile> AudioFiles { get; set; } = new ObservableCollection<AudioFile>();
+
         public MainWindow()
         {
             this.InitializeComponent();
+
+            // Add audio files to the list
+            AudioFiles.Add(new AudioFile("Tame Impala - The Less I Know the Better", "C:/Users/jaylynbarbee/Desktop/test_audio/impala.mp3"));
+            AudioFiles.Add(new AudioFile("Carolesdaughter - Violent", "C:/Users/jaylynbarbee/Desktop/test_audio/violent.mp3"));
+            AudioFiles.Add(new AudioFile("Michael Jackson - PYT", "C:/Users/jaylynbarbee/Desktop/test_audio/pyt.mp3"));
+            AudioFiles.Add(new AudioFile("Bobby Caldwell - What You Won't Do for Love", "C:/Users/jaylynbarbee/Desktop/test_audio/love.mp3"));
+
+            AudioListBox.ItemsSource = AudioFiles;
+            AudioListBox.DisplayMemberPath = "FileName"; // Display the customer names
         }
 
-        private void myButton_Click(object sender, RoutedEventArgs e)
+        private void AudioListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            myButton.Content = "Clicked";
+            if (AudioListBox.SelectedItem != null)
+            {
+                var selectedAudio = (AudioFile)AudioListBox.SelectedItem;
+
+                // Set the audio file as the source of MediaPlayerElement
+                myMediaPlayer.Source = MediaSource.CreateFromUri(new Uri(selectedAudio.FilePath));
+            }
         }
     }
 }
+
