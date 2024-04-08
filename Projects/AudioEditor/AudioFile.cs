@@ -1,17 +1,20 @@
 ﻿using System.Runtime.Serialization;
 
-[DataContract]
-public class AudioFile
+namespace AudioEditor
 {
-    [DataMember]
-    public string FileName { get; set; }
-
-    [DataMember]
-    public string FilePath { get; set; }
-
-    public AudioFile(string fileName, string filePath)
+    [DataContract]
+    public class AudioFile
     {
-        FileName = fileName;
-        FilePath = filePath;
+        [DataMember]
+        public string FileName { get; set; }
+
+        [DataMember]
+        public string FilePath { get; set; }
+
+        public AudioFile(string fileName, string filePath)
+        {
+            FileName = fileName;
+            FilePath = filePath;
+        }
     }
 }

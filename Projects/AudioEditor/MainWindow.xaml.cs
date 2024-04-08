@@ -15,11 +15,12 @@ namespace AudioEditor
 {
     public sealed partial class MainWindow : Window
     {
-        public ObservableCollection<AudioFile> AudioFiles { get; set; } = new ObservableCollection<AudioFile>();
+        public ObservableCollection<AudioFile> AudioFiles { get; set; }
 
         public MainWindow()
         {
             this.InitializeComponent();
+            AudioFiles = new ObservableCollection<AudioFile>();
 
             InitializeAsync();
         }
@@ -29,9 +30,6 @@ namespace AudioEditor
             //await ClearLocalStorageFile("audioFiles.json"); // I was using this to reset the list
 
             await LoadAudioFilesAsync();
-
-            AudioListBox.ItemsSource = AudioFiles;
-            AudioListBox.DisplayMemberPath = "FileName";
         }
 
         private async void UploadButton_Click(object sender, RoutedEventArgs e)
@@ -113,5 +111,13 @@ namespace AudioEditor
             await file.DeleteAsync();
         }
 
+        private void RemoveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn)
+            {
+                AudioFile selectedAudioFile = btn.DataContext as AudioFile;
+                // TO DO: do something with the audio file
+            }
+        }
     }
 }
