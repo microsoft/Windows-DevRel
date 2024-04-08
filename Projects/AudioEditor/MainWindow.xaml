@@ -19,16 +19,20 @@
 
         <!-- Sidebar -->
         <ListBox x:Name="AudioListBox" Grid.Column="0"
-             SelectionChanged="AudioListBox_SelectionChanged"
-             Background="LightGray"/>
+            SelectionChanged="AudioListBox_SelectionChanged"
+            Background="LightGray"/>
 
         <!-- Content -->
         <MediaPlayerElement
-                    x:Name="myMediaPlayer"
-                    MaxWidth="400"
-                    AutoPlay="False"
-                    AreTransportControlsEnabled="True"
-                    Grid.Column="1"/>
+            x:Name="myMediaPlayer"
+            MaxWidth="400"
+            AutoPlay="False"
+            AreTransportControlsEnabled="True"
+            Grid.Column="1"/>
+
+        <!-- Button for file upload -->
+        <Button Content="Upload Audio File" Click="UploadButton_Click" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20"/>
     </Grid>
+
 
 </Window>

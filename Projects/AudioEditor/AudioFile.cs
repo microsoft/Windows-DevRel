@@ -1,14 +1,17 @@
-﻿namespace AudioEditor
-{
-    public class AudioFile
-    {
-        public string FileName { get; set; }
-        public string FilePath { get; set; }
+﻿using System.Runtime.Serialization;
 
-        public AudioFile(string fileName, string absoluteFilePath)
-        {
-            FileName = fileName;
-            FilePath = absoluteFilePath;
-        }
+[DataContract]
+public class AudioFile
+{
+    [DataMember]
+    public string FileName { get; set; }
+
+    [DataMember]
+    public string FilePath { get; set; }
+
+    public AudioFile(string fileName, string filePath)
+    {
+        FileName = fileName;
+        FilePath = filePath;
     }
 }
