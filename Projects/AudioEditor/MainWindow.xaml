@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Window
+    x:Class="AudioEditor.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:AudioEditor"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    mc:Ignorable="d">
+    <Window.SystemBackdrop>
+        <MicaBackdrop />
+    </Window.SystemBackdrop>
+    <Grid>
+        <Grid.Resources>
+            <Style x:Key="DropdownTrigger" TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Height" Value="40"/>
+                <Setter Property="Width" Value="60"/>
+                <Setter Property="BorderThickness" Value="0" />
+            </Style>
+            <Style x:Key="TopIconButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Margin" Value="10,5,10,5"/>
+                <Setter Property="Height" Value="40"/>
+                <Setter Property="Width" Value="40"/>
+                <Setter Property="Margin" Value="4,0,4,0"/>
+            </Style>
+            <Style x:Key="SettingsIconButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Margin" Value="10,5,10,5"/>
+                <Setter Property="Height" Value="40"/>
+                <Setter Property="Width" Value="40"/>
+            </Style>
+            <Style x:Key="IconButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Margin" Value="10"/>
+            </Style>
+
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <!--  Sidebar  -->
+            <ColumnDefinition Width="*" />
+            <!--  Content  -->
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+
+        <Grid 
+            Grid.ColumnSpan="2" 
+            Grid.Row="0" 
+            HorizontalAlignment="Stretch"
+            Background="{ThemeResource ControlFillColorTransparentBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="0,1,0,1"
+        >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <!-- Dropdowns -->
+            <StackPanel Orientation="Horizontal" Grid.Column="0" HorizontalAlignment="Left" >
+                <MenuBar>
+                    <MenuBarItem Title="File">
+                        <MenuFlyoutItem Text="Open..." Click="UploadButton_Click"/>
+                    </MenuBarItem>
+
+                    <MenuBarItem Title="Edit"></MenuBarItem>
+
+                    <MenuBarItem Title="View"></MenuBarItem>
+                    </MenuBar>
+            </StackPanel>
+            <!-- Editor controls -->
+            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center" >
+                <Button Style="{StaticResource TopIconButtonStyle}">
+                    <FontIcon Glyph="&#xE8B0;" FontSize="14"/>
+                    <!-- Cursor -->
+                </Button>
+                <Button Style="{StaticResource TopIconButtonStyle}">
+                    <Viewbox Width="16" Height="16">
+                        <Path Data="M896 1984V64q0-26 19-45t45-19q26 0 45 19t19 45v1920q0 26-19 45t-45 
+                              19q-26 0-45-19t-19-45zm-520-192q-75 0-143-30t-120-82-82-120-31-144V632q0-75 
+                              30-143t82-120 120-82 144-31h328q26 0 45 19t19 45q0 26-19 45t-45 19H379q-50 0-95 
+                              20t-80 55-55 80-21 96v778q0 52 21 97t56 80 81 54 98 20h320q26 0 45 19t19 45q0 
+                              26-19 45t-45 19H376zm776-64q0-26 19-45t45-19h453q50 0 95-20t80-55 55-80 
+                              21-96V635q0-52-21-97t-56-80-81-54-98-20h-448q-26 0-45-19t-19-45q0-26 19-45t45-19h456q75 
+                              0 143 30t120 82 82 120 31 144v784q0 75-30 143t-82 120-120 82-144 31h-456q-26 0-45-19t-19-45z" 
+                              Fill="{ThemeResource TextFillColorPrimaryBrush}"/>
+                    </Viewbox>
+                    <!-- split -->
+                </Button>
+                <Button Style="{StaticResource TopIconButtonStyle}">
+                    <Viewbox Width="16" Height="16">
+                        <Path Data="M5.99991 16.0688C6.48421 16.301 7.0309 16.3034 7.50062 16.0807L7.5 19.75C7.5 20.1297 7.78215 20.4435 8.14823 20.4932L8.25 20.5H15.75C16.1297 20.5 16.4435 20.2178 16.4932 19.8518L16.5 19.75L16.4995 16.0697C16.9937 16.3004 17.5386 16.2981 18.0006 16.0815L18 19.75C18 20.9409 17.0748 21.9156 15.904 21.9948L15.75 22H8.25C7.05914 22 6.08436 21.0748 6.00519 19.904L5.99991 19.75V16.0688ZM17.7812 8.96885C18.0474 9.23512 18.0716 9.65178 17.8538 9.94539L17.7812 10.0295L16.56 11.2492H20.3437C20.7061 11.2491 21 11.5849 21 11.9991C21 12.3788 20.7532 12.6926 20.4329 12.7423L20.3438 12.7492H16.56L17.7812 13.9705C18.0474 14.2368 18.0716 14.6534 17.8538 14.947L17.7812 15.0312C17.5149 15.2974 17.0982 15.3216 16.8046 15.1038L16.7205 15.0312L14.3507 12.6639C14.1422 12.5383 14 12.2882 14 12.0001C14 11.7121 14.142 11.462 14.3504 11.3363L16.7205 8.96885C17.0134 8.67596 17.4883 8.67596 17.7812 8.96885ZM7.19539 8.89541L7.27951 8.96803L9.64961 11.3355C9.85799 11.4611 10 11.7113 10 11.9993C10 12.2514 9.89114 12.4744 9.72422 12.6104L9.64928 12.6631L7.27951 15.0303L7.19539 15.1029C6.9344 15.2966 6.57619 15.299 6.3128 15.1101L6.21885 15.0303L6.14623 14.9462C5.95258 14.6852 5.95019 14.327 6.13906 14.0636L6.21885 13.9697L7.44 12.7484H3.65617L3.56712 12.7415C3.24681 12.6918 3 12.378 3 11.9983C3 11.6186 3.24695 11.3048 3.56728 11.2552L3.65633 11.2484H7.44L6.21885 10.0287L6.14623 9.94457C5.92838 9.65096 5.95258 9.23429 6.21885 8.96803C6.48512 8.70176 6.90178 8.67756 7.19539 8.89541ZM15.75 2C16.9409 2 17.9156 2.92516 17.9948 4.09595L18 4.25L18.001 7.9176C17.5272 7.69288 16.9733 7.69304 16.4996 7.91808L16.5 4.25C16.5 3.8703 16.2178 3.55651 15.8518 3.50685L15.75 3.5H8.25C7.8703 3.5 7.55651 3.78215 7.50685 4.14823L7.5 4.25L7.50118 7.91754C7.02763 7.69227 6.47361 7.69189 5.99962 7.91647L6 4.25C6 3.05914 6.92516 2.08436 8.09595 2.00519L8.25 2H15.75Z" Fill="{ThemeResource TextFillColorPrimaryBrush}"/>
+                    </Viewbox>
+                </Button>
+                <Button Style="{StaticResource TopIconButtonStyle}">
+                    <Viewbox Width="16" Height="16" RenderTransformOrigin=".5,.5">
+                        <Viewbox.RenderTransform>
+                            <RotateTransform Angle="90"/>
+                        </Viewbox.RenderTransform>
+                        <Path Data="M6 3C5.44772 3 5 3.44772 5 4V6C5 6.55228 5.44772 7 6 7H14C14.5523 7 15 6.55228 15 6V4C15 3.44772 14.5523 3 14 3H6ZM4 4C4 2.89543 4.89543 2 6 2H14C15.1046 2 16 2.89543 16 4V6C16 7.10457 15.1046 8 14 8H6C4.89543 8 4 7.10457 4 6V4ZM6 17C5.44772 17 5 16.5523 5 16V14C5 13.4477 5.44772 13 6 13H14C14.5523 13 15 13.4477 15 14V16C15 16.5523 14.5523 17 14 17H6ZM4 16C4 17.1046 4.89543 18 6 18H14C15.1046 18 16 17.1046 16 16V14C16 12.8954 15.1046 12 14 12H6C4.89543 12 4 12.8954 4 14V16ZM2 10C2 9.72386 2.22386 9.5 2.5 9.5H17.5C17.7761 9.5 18 9.72386 18 10C18 10.2761 17.7761 10.5 17.5 10.5H2.5C2.22386 10.5 2 10.2761 2 10Z" Fill="{ThemeResource TextFillColorPrimaryBrush}">
+                            
+                        </Path>
+                    </Viewbox>
+                </Button>
+                <Button Style="{StaticResource TopIconButtonStyle}">
+                    <FontIcon Glyph="&#xE74D;" FontSize="14"/>
+                    <!-- trash -->
+                </Button>
+                <Button Style="{StaticResource TopIconButtonStyle}">
+                    <FontIcon Glyph="&#xE7A7;" FontSize="14"/>
+                    <!-- undo -->
+                </Button>
+                <Button Style="{StaticResource TopIconButtonStyle}">
+                    <FontIcon Glyph="&#xE7A6;" FontSize="14"/>
+                    <!-- redo -->
+                </Button>
+            </StackPanel>
+            <!-- Settings controls -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
+                <Button Style="{StaticResource SettingsIconButtonStyle}" Margin="0,0,4,0">
+                    <FontIcon Glyph="&#xE72D;" FontSize="14"/>
+                    <!-- share -->
+                </Button>
+                <Button Style="{StaticResource SettingsIconButtonStyle}" Margin="0,0,8,0">
+                    <FontIcon Glyph="&#xE713;" FontSize="14"/>
+                    <!-- settings -->
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- Sidebar and Media Player -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="0" >
+            <StackPanel 
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="0,0,1,0"
+                Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"  
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Padding="6">
+                <!--  Sidebar  -->
+                <ListView
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    x:Name="AudioListBox"
+                    Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"  
+                    BorderThickness="1,1,1,0"
+                    ItemsSource="{x:Bind AudioFiles, Mode=OneWay}"
+                    SelectionChanged="AudioListBox_SelectionChanged"
+                    Padding="0"
+                    >
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0"/>
+                            
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:AudioFile">
+                            <Border 
+                                CornerRadius="4" 
+                                Padding="10" 
+                                Margin="5" 
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                                BorderThickness="1"
+                                HorizontalAlignment="Stretch"
+                            >
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Row with Rectangle, Text and AI button -->
+                                    <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" Spacing="10" Orientation="Horizontal" Margin="0,0,0,10">
+                                        <Border CornerRadius="4" Width="36" Height="36" Grid.Column="0" HorizontalAlignment="Left">
+                                            <Rectangle Width="36" Height="36" Fill="#D9D9D9"></Rectangle>
+                                        </Border>
+
+                                        <StackPanel Grid.Column="1" Width="160">
+                                            <TextBlock Text="{x:Bind FileName, Mode=OneWay}" HorizontalAlignment="Left" Grid.Column="0" FontSize="16" FontWeight="Bold"/>
+                                            <TextBlock Text="{x:Bind TotalDurationString, Mode=OneTime}" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                        </StackPanel>
+
+                                        <Button Background="Transparent" BorderThickness="0" HorizontalAlignment="Right" Grid.Column="2">
+                                            <Button.Flyout>
+
+                                                <Flyout Placement="RightEdgeAlignedTop">
+                                                    <Flyout.FlyoutPresenterStyle>
+                                                        <Style TargetType="FlyoutPresenter">
+                                                            <Setter Property="Margin" Value="-6,-10,0,0" />
+                                                            <Setter Property="CornerRadius" Value="10" />
+                                                        </Style>
+                                                    </Flyout.FlyoutPresenterStyle>
+
+                                                    <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MinWidth="350">
+                                                        <TextBlock FontWeight="Bold" FontSize="16" Margin="0,0,0,10" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}">AI Trim Plugin</TextBlock>
+                                                        <TextBox Header="What's the title of your clip?" Margin="0,0,0,10" PlaceholderText="Title" Text="{x:Bind TrimmedClipName}" x:DefaultBindMode="TwoWay"  HorizontalAlignment="Stretch"/>
+                                                        <TextBox Header="What should the clip be about? Enter your keywords" Margin="0,0,0,10" PlaceholderText="Keyword" Text="{x:Bind Keyword}" x:DefaultBindMode="TwoWay" HorizontalAlignment="Stretch"/>
+                                                        <Slider StepFrequency="5" Minimum="5" Maximum="120" Margin="0,0,0,10" Value="{x:Bind TrimmedDuration}" x:DefaultBindMode="TwoWay" Header="Select the duration of your new clip" HorizontalAlignment="Stretch"/>
+                                                        <StackPanel Orientation="Horizontal" Spacing="10">
+                                                            <Button Click="GenerateButton_Click" Background="{ThemeResource AccentFillColorDefaultBrush}" Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" HorizontalAlignment="Left" VerticalAlignment="Bottom">Generate new clip</Button>
+                                                            <Button Content="Cancel" />
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Flyout>
+                                            </Button.Flyout>
+                                            <Viewbox Width="32" Height="32">
+                                                <Canvas Width="32" Height="32">
+                                                    <Path Data="M11.8955 15.8256C12.0567 15.9397 12.2492 16.001 12.4466 16.0011C12.642 15.9993 12.832 15.9372 12.9907 15.8233C13.156 15.7065 13.2805 15.5406 13.3462 15.3491L13.6402 14.4459C13.7032 14.258 13.8087 14.0873 13.9483 13.9468C14.0875 13.8063 14.2581 13.7011 14.4461 13.6398L15.3611 13.3411C15.5481 13.2765 15.7101 13.155 15.8246 12.9938C15.9115 12.8717 15.9683 12.7307 15.9902 12.5824C16.0122 12.4341 15.9986 12.2827 15.9508 12.1407C15.9029 11.9986 15.822 11.87 15.7148 11.7652C15.6075 11.6605 15.477 11.5827 15.3339 11.5381L14.4284 11.243C14.2409 11.1807 14.0705 11.0756 13.9307 10.9361C13.7908 10.7967 13.6853 10.6266 13.6224 10.4393L13.3237 9.52181C13.2593 9.33541 13.1378 9.17405 12.9764 9.0607C12.8555 8.97423 12.716 8.9174 12.569 8.8948C12.4221 8.87221 12.2719 8.88448 12.1306 8.93063C11.9893 8.97678 11.8608 9.05551 11.7555 9.16047C11.6502 9.26543 11.5711 9.39367 11.5245 9.53485L11.2318 10.4381C11.1698 10.625 11.066 10.7952 10.9283 10.936C10.7926 11.0737 10.6272 11.1787 10.4447 11.243L9.525 11.5429C9.38577 11.5913 9.25975 11.6715 9.15694 11.7771C9.05413 11.8828 8.97735 12.0109 8.93271 12.1514C8.88807 12.2919 8.8768 12.4408 8.89978 12.5865C8.92277 12.7321 8.97938 12.8703 9.06512 12.9902C9.18152 13.156 9.34753 13.2805 9.53922 13.3458L10.4436 13.6386C10.6319 13.7019 10.803 13.8078 10.9437 13.948C11.0839 14.0882 11.1887 14.2596 11.2495 14.4482L11.5494 15.3657C11.6143 15.5512 11.7353 15.7119 11.8955 15.8256Z" Fill="#7AD6F2"/>
+                                                    <Path Data="M4.62077 10.4371C4.82892 10.5848 5.07791 10.664 5.33313 10.6636C5.58922 10.6647 5.8392 10.5854 6.04787 10.4369C6.25691 10.2826 6.41522 10.0695 6.50258 9.82477L6.96529 8.40181C7.07762 8.06632 7.26612 7.7614 7.51601 7.51096C7.76482 7.26161 8.06849 7.07391 8.40276 6.96285L9.8509 6.49209C10.0899 6.40688 10.2966 6.24991 10.443 6.04266C10.5896 5.83541 10.6684 5.58776 10.6684 5.33385C10.6684 5.07994 10.5896 4.83228 10.443 4.62504C10.2849 4.40452 10.06 4.24084 9.80156 4.15827L8.37609 3.69684C8.04063 3.58602 7.73572 3.39832 7.48568 3.14871C7.23563 2.8991 7.04739 2.5945 6.93595 2.25922L6.46524 0.813585C6.38087 0.574539 6.2243 0.367623 6.0172 0.221463C5.80799 0.0772338 5.55989 0 5.30579 0C5.0517 0 4.8036 0.0772338 4.59439 0.221463C4.38139 0.371469 4.22166 0.585396 4.13835 0.832256L3.66497 2.28589C3.55335 2.61138 3.36954 2.90739 3.12729 3.15174C2.88505 3.39609 2.59065 3.58244 2.26617 3.69684L0.820692 4.16494C0.579212 4.25029 0.370369 4.40885 0.223265 4.61853C0.0761617 4.82821 -0.0018738 5.07856 3.41709e-05 5.33469C0.00194214 5.59083 0.0836984 5.83999 0.233909 6.04745C0.38412 6.25492 0.595303 6.41035 0.838028 6.49209L2.26083 6.95485C2.59714 7.06752 2.90258 7.25701 3.15292 7.50829C3.22057 7.57527 3.28381 7.64654 3.34227 7.72167C3.50009 7.92527 3.62187 8.15441 3.70231 8.39915L4.17168 9.83944C4.25565 10.0805 4.41262 10.2894 4.62077 10.4371Z" Fill="#7AD6F2"/>
+                                                </Canvas>
+                                            </Viewbox>
+                                        </Button>
+
+
+                                    </StackPanel>
+
+                                    <!-- Row with trash can and slider -->
+                                    <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center" Spacing="12" HorizontalAlignment="Left">
+                                        <Button Click="RemoveBtn_Click" Background="Transparent" BorderThickness="0" Padding="0" Margin="2,0,20,0">
+                                            <FontIcon Glyph="&#xE74D;" FontSize="16"/>
+                                        </Button>
+
+                                        <!-- Sound Icon and Slider -->
+                                        <StackPanel Spacing="4" VerticalAlignment="Center">
+
+                                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                <FontIcon Glyph="&#xE995;" FontSize="16" Margin="0,0,8,0"/>
+                                                <Slider Width="175" Minimum="0" Value="50" Maximum="100" StepFrequency="5" HorizontalAlignment="Left"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <ListView 
+                    ItemsSource="{x:Bind LoadingCards, Mode=OneWay}" 
+                    HorizontalAlignment="Stretch" 
+                    Padding="0"
+                    Background="{ThemeResource ControlFillColorDisabledBrush}"  
+
+                >
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:AudioFile">
+                            <Border 
+                                CornerRadius="4" 
+                                Padding="10" 
+                                Margin="5" 
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                                BorderThickness="1"
+                                HorizontalAlignment="Stretch"
+                            >
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Row with loader and Text -->
+                                    <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Spacing="5" Orientation="Horizontal" Margin="0,0,0,10">
+                                        <!-- Insert loader -->
+                                        <Border CornerRadius="4" Width="36" Height="36" Margin="0,0,4,0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <ProgressRing Width="24" Height="24" IsActive="True" Background="LightGray"/>
+                                        </Border>
+
+                                        <StackPanel Grid.Column="1" Width="170">
+                                            <TextBlock Text="{Binding}" HorizontalAlignment="Left" Grid.Column="0" FontSize="16" FontWeight="SemiBold" Foreground="{ThemeResource TextFillColorDisabledBrush}" TextWrapping="Wrap" />
+                                        </StackPanel>
+
+                                        <Button Background="Transparent" BorderThickness="0" HorizontalAlignment="Right" Grid.Column="2" IsEnabled="False">
+                                            <Viewbox Width="32" Height="32">
+                                                <Canvas Width="32" Height="32">
+                                                    <Path Data="M11.8955 15.8256C12.0567 15.9397 12.2492 16.001 12.4466 16.0011C12.642 15.9993 12.832 15.9372 12.9907 15.8233C13.156 15.7065 13.2805 15.5406 13.3462 15.3491L13.6402 14.4459C13.7032 14.258 13.8087 14.0873 13.9483 13.9468C14.0875 13.8063 14.2581 13.7011 14.4461 13.6398L15.3611 13.3411C15.5481 13.2765 15.7101 13.155 15.8246 12.9938C15.9115 12.8717 15.9683 12.7307 15.9902 12.5824C16.0122 12.4341 15.9986 12.2827 15.9508 12.1407C15.9029 11.9986 15.822 11.87 15.7148 11.7652C15.6075 11.6605 15.477 11.5827 15.3339 11.5381L14.4284 11.243C14.2409 11.1807 14.0705 11.0756 13.9307 10.9361C13.7908 10.7967 13.6853 10.6266 13.6224 10.4393L13.3237 9.52181C13.2593 9.33541 13.1378 9.17405 12.9764 9.0607C12.8555 8.97423 12.716 8.9174 12.569 8.8948C12.4221 8.87221 12.2719 8.88448 12.1306 8.93063C11.9893 8.97678 11.8608 9.05551 11.7555 9.16047C11.6502 9.26543 11.5711 9.39367 11.5245 9.53485L11.2318 10.4381C11.1698 10.625 11.066 10.7952 10.9283 10.936C10.7926 11.0737 10.6272 11.1787 10.4447 11.243L9.525 11.5429C9.38577 11.5913 9.25975 11.6715 9.15694 11.7771C9.05413 11.8828 8.97735 12.0109 8.93271 12.1514C8.88807 12.2919 8.8768 12.4408 8.89978 12.5865C8.92277 12.7321 8.97938 12.8703 9.06512 12.9902C9.18152 13.156 9.34753 13.2805 9.53922 13.3458L10.4436 13.6386C10.6319 13.7019 10.803 13.8078 10.9437 13.948C11.0839 14.0882 11.1887 14.2596 11.2495 14.4482L11.5494 15.3657C11.6143 15.5512 11.7353 15.7119 11.8955 15.8256Z" Fill="#7AD6F2"/>
+                                                    <Path Data="M4.62077 10.4371C4.82892 10.5848 5.07791 10.664 5.33313 10.6636C5.58922 10.6647 5.8392 10.5854 6.04787 10.4369C6.25691 10.2826 6.41522 10.0695 6.50258 9.82477L6.96529 8.40181C7.07762 8.06632 7.26612 7.7614 7.51601 7.51096C7.76482 7.26161 8.06849 7.07391 8.40276 6.96285L9.8509 6.49209C10.0899 6.40688 10.2966 6.24991 10.443 6.04266C10.5896 5.83541 10.6684 5.58776 10.6684 5.33385C10.6684 5.07994 10.5896 4.83228 10.443 4.62504C10.2849 4.40452 10.06 4.24084 9.80156 4.15827L8.37609 3.69684C8.04063 3.58602 7.73572 3.39832 7.48568 3.14871C7.23563 2.8991 7.04739 2.5945 6.93595 2.25922L6.46524 0.813585C6.38087 0.574539 6.2243 0.367623 6.0172 0.221463C5.80799 0.0772338 5.55989 0 5.30579 0C5.0517 0 4.8036 0.0772338 4.59439 0.221463C4.38139 0.371469 4.22166 0.585396 4.13835 0.832256L3.66497 2.28589C3.55335 2.61138 3.36954 2.90739 3.12729 3.15174C2.88505 3.39609 2.59065 3.58244 2.26617 3.69684L0.820692 4.16494C0.579212 4.25029 0.370369 4.40885 0.223265 4.61853C0.0761617 4.82821 -0.0018738 5.07856 3.41709e-05 5.33469C0.00194214 5.59083 0.0836984 5.83999 0.233909 6.04745C0.38412 6.25492 0.595303 6.41035 0.838028 6.49209L2.26083 6.95485C2.59714 7.06752 2.90258 7.25701 3.15292 7.50829C3.22057 7.57527 3.28381 7.64654 3.34227 7.72167C3.50009 7.92527 3.62187 8.15441 3.70231 8.39915L4.17168 9.83944C4.25565 10.0805 4.41262 10.2894 4.62077 10.4371Z" Fill="#7AD6F2"/>
+                                                </Canvas>
+                                            </Viewbox>
+                                        </Button>
+                                    </StackPanel>
+
+                                    <!-- Row with trash can and slider -->
+                                    <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center" Spacing="12" HorizontalAlignment="Left">
+                                        <Button IsEnabled="False" Background="Transparent" BorderThickness="0" Padding="0" Margin="2,0,20,0">
+                                            <FontIcon Glyph="&#xE74D;" FontSize="16"/>
+                                        </Button>
+
+                                        <!-- Sound Icon and Slider -->
+                                        <StackPanel Spacing="4" VerticalAlignment="Center">
+
+                                            <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                <FontIcon Glyph="&#xE995;" FontSize="16" Margin="0,0,8,0" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
+                                                <Slider IsEnabled="False"  Width="175" Minimum="0" Maximum="100" StepFrequency="5" HorizontalAlignment="Left"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
+        
+        <!-- Waveform Visualizer -->
+        <Canvas Background="{x:Bind CanvasImageBrush, Mode=TwoWay}"
+                x:Name="WaveformCanvas"
+                Grid.Column="1"
+                Grid.Row="1">
+            
+        </Canvas>
+
+        <ProgressRing IsActive="False"
+                      Grid.Column="1"
+                      Grid.Row="1"
+                      x:Name="WaveformProgressRing"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Height="50"
+                      Width="50"/>
+        
+
+        <!--- Media Controls -->
+        <StackPanel 
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="0,1,0,0" 
+            Grid.Column="0" 
+            Grid.ColumnSpan="2" 
+            Grid.Row="2" 
+            Background="{ThemeResource ControlFillColorTransparentBrush}" 
+            Height="80" 
+            HorizontalAlignment="Stretch">
+
+
+            <Grid HorizontalAlignment="Stretch">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Grid.Column="0" Margin="200,0,0,0">
+                    <TextBlock x:Name="TimeDisplayTextBlock" Text="{x:Bind TimeDisplayString, Mode=OneWay}" VerticalAlignment="Center" FontSize="20" Margin="10" Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}" />
+
+                    <!-- Previous -->
+                    <Button Style="{StaticResource IconButtonStyle}" Click="Restart_ButtonClick">
+                        <FontIcon Glyph="&#xE622;" />
+                    </Button>
+                    <!-- Rewind -->
+                    <Button Style="{StaticResource IconButtonStyle}" Click="Rewind_ButtonClick">
+                        <FontIcon Glyph="&#xE627;" />
+                    </Button>
+                    <!-- Pause/Play -->
+                    <Button x:Name="playPauseButton" Style="{StaticResource IconButtonStyle}" Click="PlayPause_ButtonClick">
+                        <FontIcon Glyph="&#xF5B0;" />
+                    </Button>
+                    <!-- Fast foward -->
+                    <Button Style="{StaticResource IconButtonStyle}" Click="FastForward_ButtonClick">
+                        <FontIcon Glyph="&#xE628;" />
+                    </Button>
+                    <!-- Skip -->
+                    <Button Style="{StaticResource IconButtonStyle}" Click="Restart_ButtonClick">
+                        <FontIcon Glyph="&#xE623;" />
+                    </Button>
+                    <!-- Record -->
+                    <Button Style="{StaticResource IconButtonStyle}">
+                        <FontIcon Glyph="&#xECCB;" Foreground="Red" />
+                    </Button>
+
+                </StackPanel>
+                <Button Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,30,0" Style="{StaticResource IconButtonStyle}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon Glyph="&#xECAF;" />
+                        <TextBlock Text="Mark" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>

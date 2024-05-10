@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioEditor", "AudioEditor.csproj", "{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Debug|ARM64.Build.0 = Debug|ARM64
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Debug|x64.ActiveCfg = Debug|x64
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Debug|x64.Build.0 = Debug|x64
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Debug|x64.Deploy.0 = Debug|x64
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Debug|x86.ActiveCfg = Debug|x86
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Debug|x86.Build.0 = Debug|x86
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Debug|x86.Deploy.0 = Debug|x86
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Release|ARM64.ActiveCfg = Release|ARM64
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Release|ARM64.Build.0 = Release|ARM64
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Release|ARM64.Deploy.0 = Release|ARM64
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Release|x64.ActiveCfg = Release|x64
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Release|x64.Build.0 = Release|x64
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Release|x64.Deploy.0 = Release|x64
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Release|x86.ActiveCfg = Release|x86
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Release|x86.Build.0 = Release|x86
+		{AE71E2D7-F12C-4D11-9D58-B046FEF8A553}.Release|x86.Deploy.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67E3E1AD-16D3-4C15-B1D4-8F574C2C0556}
+	EndGlobalSection
+EndGlobal
