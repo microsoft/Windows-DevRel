@@ -27,6 +27,7 @@ using System.Drawing;
 using Microsoft.UI.Xaml.Media;
 using System.Drawing.Imaging;
 using Microsoft.UI;
+using System.Threading;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -42,6 +43,7 @@ namespace AudioEditor
         private DispatcherQueue dispatcher;
         private WaveformRenderer renderer;
         private ImageBrush canvasImageBrush;
+        private TimeSpan currentPlayTime = TimeSpan.Zero;
 
         public ObservableCollection<AudioFile> AudioFiles { get; set; }
         public ObservableCollection<string> LoadingCards { get; } = [];
@@ -92,7 +94,7 @@ namespace AudioEditor
 
         private async void InitializeAsync()
         {
-            await LoadAudioFilesAsync();
+            //await LoadAudioFilesAsync();
         }
 
 
@@ -100,6 +102,7 @@ namespace AudioEditor
         {  
             dispatcher.TryEnqueue(() =>
             {
+                currentPlayTime = args.Time;
                 UpdateTimeDisplayString(args.Time);
                 UpdatePlayline(args.Time);
             });   
@@ -107,7 +110,7 @@ namespace AudioEditor
 
         private void UpdateTimeDisplayString(TimeSpan span)
         {
-            TimeDisplayString = Utils.FormatTimeSpan(span) + " / " + Utils.FormatTimeSpan(this.Player.CurrentAudioFile.TotalDuration);
+            TimeDisplayString = this.Player.CurrentAudioFile != null ? Utils.FormatTimeSpan(span) + " / " + Utils.FormatTimeSpan(this.Player.CurrentAudioFile.TotalDuration) : "00:00:00 / 00:00:00";
         }
 
 
@@ -124,7 +127,7 @@ namespace AudioEditor
             if (selectedFile != null)
             {
                 AudioFiles.Add(new AudioFile(selectedFile.DisplayName, selectedFile.Path));
-                Task.Run(async () =>
+                _ = Task.Run(async () =>
                 {
                     if (!Utils.DoesTranscriptionExist(selectedFile.Name))
                     {
@@ -181,11 +184,9 @@ namespace AudioEditor
             if (AudioListBox.SelectedItem != null)
             {
                 var selectedAudio = (AudioFile)AudioListBox.SelectedItem;
-                ResetPlayer();
+                ResetPlayback();
                 Player.CurrentAudioFile = selectedAudio;
                 UpdateTimeDisplayString(TimeSpan.FromSeconds(0));
-                ClearLines();
-                DisposeRenderer();
                 UpdateWaveform(selectedAudio);
             }
         }
@@ -203,7 +204,18 @@ namespace AudioEditor
             {
                 AudioFile selectedAudioFile = btn.DataContext as AudioFile;
                 AudioFiles.Remove(selectedAudioFile);
+                ResetPlayback();
+                SaveAudioFilesAsync();
             }
+        }
+
+        private void ResetPlayback()
+        {
+            currentPlayTime = TimeSpan.Zero;
+            ResetPlayer();
+            ClearLines();
+            DisposeRenderer();
+            waveformDisplayCanvas.Background = null;
         }
 
         private async void GenerateButton_Click(object sender, RoutedEventArgs e)
@@ -336,7 +348,9 @@ namespace AudioEditor
         {
             Player.Paused = true;
             playPauseButton.Content = new FontIcon { Glyph = "\uF5B0" };
+            Player.Seek(0);
             Player.Stop();
+            Player.CurrentAudioFile = null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -406,23 +420,6 @@ namespace AudioEditor
             }
         }
 
-
-        private BitmapImage ConvertImageToBitmapImage(System.Drawing.Image image)
-        {
-            BitmapImage bitmapImage = new BitmapImage();
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                // Save the Bitmap to the MemoryStream as PNG (you can change the format as needed)
-                image.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
-
-                bitmapImage.SetSource(memoryStream.AsRandomAccessStream());
-            }
-
-            return bitmapImage;
-
-        }
-
         private void AddLine(double X)
         {
             Color color = Color.Red;
@@ -444,9 +441,21 @@ namespace AudioEditor
 
         private void UpdatePlayline(TimeSpan currentTime)
         {
-            double timeFraction = currentTime.TotalSeconds / Player.CurrentAudioFile.TotalDuration.TotalSeconds;
             ClearLines();
-            AddLine(timeFraction * waveformDisplayCanvas.ActualWidth);
+            if (Player.CurrentAudioFile != null) 
+            {
+                double timeFraction = currentTime.TotalSeconds / Player.CurrentAudioFile.TotalDuration.TotalSeconds;
+                AddLine(timeFraction * waveformDisplayCanvas.ActualWidth);
+            }
+            
+        }
+
+        private void WaveformCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if(currentPlayTime != TimeSpan.Zero)
+            {
+                UpdatePlayline(currentPlayTime);
+            }
         }
     }
 }

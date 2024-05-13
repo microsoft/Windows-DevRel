@@ -339,6 +339,7 @@
         <!-- Waveform Visualizer -->
         <Canvas Background="{x:Bind CanvasImageBrush, Mode=TwoWay}"
                 x:Name="WaveformCanvas"
+                SizeChanged="WaveformCanvas_SizeChanged"
                 Grid.Column="1"
                 Grid.Row="1">
             
