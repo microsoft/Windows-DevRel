@@ -396,3 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+Projects/SubtitleGenerator/Assets/model.onnx
