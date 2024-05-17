@@ -2,7 +2,7 @@
 
 This sample is intended as a showcase of transcription and language models running locally on Windows in the context of a WinAppSDK/WinUI 3 application.    
 
-![AI Audio Editor](/images/baseApp.png)
+![AI Audio Editor](./images/baseApp.png)
 
 The AI functionality of the app is as follows:
 * Load in an audio file
