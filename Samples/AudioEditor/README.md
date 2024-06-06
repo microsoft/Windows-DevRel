@@ -21,7 +21,7 @@ Clone the repository and open the solution in Visual Studio. Before you can get 
 ### MiniLM 
 You can pull this model from Hugging Face at [all-MiniLM-L6-v2.onnx](https://huggingface.co/optimum/all-MiniLM-L6-v2) .
 
-This is model we use for semantic search. The two files you will need are `models.onnx` placed in `/Resources/Models/` and renamed to `all-MiniLM-L6-v2.onnx` and `vocab.txt` that should be added under `/Resources/`.
+This is model we use for semantic search. The two files you will need are `model.onnx` placed in `/Resources/Models/` and renamed to `all-MiniLM-L6-v2.onnx` and `vocab.txt` that should be added under `/Resources/`.
 
 ### Sliero VAD
 The Sliero Voice Activity Detection model can be found in [this GitHub Repo](https://github.com/snakers4/silero-vad/tree/master). 
