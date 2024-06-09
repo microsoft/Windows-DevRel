@@ -1,31 +1,18 @@
+using Microsoft.ML.OnnxRuntime.Tensors;
+using Microsoft.ML.OnnxRuntime;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Shapes;
+using NReco.VideoConverter;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage.Pickers;
-
-using NReco.VideoConverter;
-using Microsoft.ML.OnnxRuntime;
-using Microsoft.ML.OnnxRuntime.Tensors;
-using Windows.Storage.Streams;
-using Windows.AI.MachineLearning;
-using Path = System.IO.Path;
-using System.Reflection;
-using Windows.Storage;
 using System.Threading.Tasks;
-
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
+using Windows.Storage;
+using SubtitleGenerator.Libs.VoiceActivity;
+using WinUIEx;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -35,52 +22,93 @@ namespace SubtitleGenerator
     /// <summary>
     /// An empty window that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainWindow : Window
+    public sealed partial class MainWindow : WindowEx
     {
-
         public List<string> Languages = new List<string>(Utils.languageCodes.Keys);
+        public List<string> ModelSize = new List<string> { "tiny", "small", "medium"};
+
+        public MainViewModel ViewModel { get; } = new MainViewModel();
+
         private string VideoFilePath { get; set; }
         public enum TaskType
         {
             Translate = 50358,
             Transcribe = 50359
         }
-
         public MainWindow()
         {
+            ExtendsContentIntoTitleBar = true;
+            ViewModel.ControlsEnabled = true;
             InitializeComponent();
-            Title = "Subtitles Generator";
-            AppWindow.MoveAndResize(new Windows.Graphics.RectInt32(100, 100, 1100, 1100));
+        }
+        private void RootContainer_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.SetWindowSize(RootContainer.DesiredSize.Width + 16, RootContainer.DesiredSize.Height + 10);
+            this.IsResizable = false;
+            this.CenterOnScreen();
+            BringToFront();
         }
 
-        private void Combo2_Loaded(object sender, RoutedEventArgs e)
+        private void LangComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            Combo2.SelectedIndex = 2;
+            LangComboBox.SelectedIndex = 2;
         }
-        private void BatchSeconds_Loaded(object sender, RoutedEventArgs e)
+        private void ModelComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            BatchSeconds.Value = 30;
+            ModelComboBox.SelectedIndex = 1;
         }
 
         private async void GenerateSubtitles_ButtonClick(object sender, RoutedEventArgs e)
         {
-            var audioData = ExtractAudioFromVideo(VideoFilePath, (int)BatchSeconds.Value);
+            ViewModel.ControlsEnabled = false;
+            LoadingBar.Visibility = Visibility.Visible;
+            GenerateSubtitlesButton.Visibility = Visibility.Collapsed;
+            LoadingBar.Value = 0;
+
+            var audioBytes = Utils.LoadAudioBytes(VideoFilePath);
             var srtBatches = new List<string>();
-            //foreach (var batch in audioData)
-            foreach (var batch in audioData.Select((value, i) => (value, i)))
+            var Language = LangComboBox.SelectedValue.ToString();
+            var TranscribeType = TranslateSwitch.IsOn ? TaskType.Translate : TaskType.Transcribe;
+            var modelType = ModelComboBox.SelectedValue.ToString();
+
+            var dynamicChunks = await Task.Run(() => AudioChunking.SmartChunking(audioBytes));
+
+            
+            int totalChunks = dynamicChunks.Count;
+            int processedChunks = 1;
+
+            foreach (var chunk in dynamicChunks.Select((value, i) => (value, i)))
             {
-                srtBatches.Add(await TranscribeAsync(batch.value, Combo2.SelectedValue.ToString(), Switch1.IsOn ? TaskType.Translate : TaskType.Transcribe, batch.i, (int)BatchSeconds.Value));
+                var audioSegment = Utils.ExtractAudioSegment(VideoFilePath, chunk.value.start, chunk.value.end - chunk.value.start);
+
+                var transcription = await Task.Run(() => TranscribeAsync(audioSegment, Language, TranscribeType, modelType, (int)chunk.value.start));
+
+                srtBatches.Add(transcription);
+
+
+                LoadingBar.Value = (double)processedChunks++ / totalChunks * 100;
+                LoadingBar.IsIndeterminate = false;
             }
+
             var srtFilePath = Utils.SaveSrtContentToTempFile(srtBatches, Path.GetFileNameWithoutExtension(VideoFilePath));
-            OpenVideo(addSubtitles(VideoFilePath, srtFilePath));
+
+            LoadingBar.Value = 100;
+
+            OpenVideo(VideoFilePath, srtFilePath);
+
+            LoadingBar.Visibility = Visibility.Collapsed;
+            GenerateSubtitlesButton.Visibility = Visibility.Visible;
+            ViewModel.ControlsEnabled = true;
         }
 
-        private async void GetAudioFromVideoButtonClick(object sender, RoutedEventArgs e)
+
+
+        private async void PickAFileButtonClick(object sender, RoutedEventArgs e)
         {
             // Clear previous returned file name, if it exists, between iterations of this scenario
 
             // Create a file picker
-            var openPicker = new Windows.Storage.Pickers.FileOpenPicker();
+            var openPicker = new FileOpenPicker();
 
             // See the sample code below for how to make the window accessible from the App class.
             var window = this;
@@ -99,75 +127,18 @@ namespace SubtitleGenerator
             var file = await openPicker.PickSingleFileAsync();
             if (file != null)
             {
-                PickAFileOutputTextBlock.Text = "File selected: " + file.Name;
+
+                PickAFileButton.Content = "Selected: " + (file.Name.Length > 28 ? file.Name.Substring(0, 28) + "..." : file.Name);
+                GenerateSubtitlesButton.IsEnabled = true;
             }
             else
             {
-                PickAFileOutputTextBlock.Text = "Operation cancelled.";
+                PickAFileButton.Content = "Select File";
+                GenerateSubtitlesButton.IsEnabled = false;
+                return;
             }
 
-            this.VideoFilePath = file.Path;
-
-        }
-
-        private List<float[]> ExtractAudioFromVideo(string inPath, int batchSizeInSeconds)
-        {
-            try
-            {
-                var extension = System.IO.Path.GetExtension(inPath).Substring(1);
-                var output = new MemoryStream();
-
-                var convertSettings = new ConvertSettings
-                {
-                    AudioCodec = "pcm_s16le",
-                    AudioSampleRate = 16000,
-                    CustomOutputArgs = "-vn -ac 1",
-                    // TODO: add batching
-                    //MaxDuration = 30
-                };
-
-                var ffMpegConverter = new FFMpegConverter();
-                ffMpegConverter.ConvertMedia(
-                    inputFile: inPath,
-                    inputFormat: extension,
-                    outputStream: output,
-                    outputFormat: "s16le",
-
-                    convertSettings);
-
-                var buffer = output.ToArray();
-                // Calculate number of samples in 30 seconds; Sample rate * 30 (assuming 16K sample rate)
-                int samplesPerSeconds = 16000 * batchSizeInSeconds;
-                // Calculate bytes per sample, assuming 16-bit depth (2 bytes per sample)
-                int bytesPerSample = 2;
-
-                // Calculate total samples in the buffer
-                int totalSamples = buffer.Length / bytesPerSample;
-
-                List<float[]> batches = new List<float[]>();
-                for (int startSample = 0; startSample < totalSamples; startSample += samplesPerSeconds)
-                {
-                    int endSample = Math.Min(startSample + samplesPerSeconds, totalSamples);
-                    int numSamples = endSample - startSample;
-                    float[] batch = new float[numSamples];
-
-                    for (int i = 0; i < numSamples; i++)
-                    {
-                        int bufferIndex = (startSample + i) * bytesPerSample;
-                        short sample = (short)(buffer[bufferIndex + 1] << 8 | buffer[bufferIndex]);
-                        batch[i] = sample / 32768.0f;
-                    }
-
-                    batches.Add(batch);
-                }
-
-                return batches;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error during the audio extraction: " + ex.Message);
-                return new List<float[]>(0);
-            }
+            VideoFilePath = file.Path;
         }
 
         public async Task<byte[]> ConvertStorageFileToByteArray(StorageFile storageFile)
@@ -189,11 +160,11 @@ namespace SubtitleGenerator
             }
         }
 
-        private async Task<string> TranscribeAsync(float[] pcmAudioData, string inputLanguage, TaskType taskType, int batch, int batchSeconds)
+
+        private string TranscribeAsync(float[] pcmAudioData, string inputLanguage, TaskType taskType, string modelType, int batchSeconds)
         {
-            var assemblyLocation = Assembly.GetExecutingAssembly().Location;
-            var assemblyPath = Path.GetDirectoryName(assemblyLocation);
-            string modelPath = Path.GetFullPath(Path.Combine(assemblyPath, "..\\..\\..\\..\\..\\Assets\\model.onnx"));
+            string exePath = AppDomain.CurrentDomain.BaseDirectory;
+            string modelPath = Path.GetFullPath(Path.Combine(exePath, $"Assets\\Models\\Whisper\\whisper_{modelType}_int8_cpu_ort_1.18.0.onnx"));
 
             var audioTensor = new DenseTensor<float>(pcmAudioData, [1, pcmAudioData.Length]);
             var timestampsEnableTensor = new DenseTensor<int>(new[] { 1 }, [1]);
@@ -205,11 +176,15 @@ namespace SubtitleGenerator
 
             SessionOptions options = new SessionOptions();
             options.RegisterOrtExtensions();
-            //options.GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_ALL;
-            //options.EnableMemoryPattern = false;
+            options.GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_ALL;
+            options.EnableMemoryPattern = false;
+
+            // Need to wait for DML 1.15 @sheil.kumar and integrating the changes back to ORT, with 
+            // updating the beam search logic to correctly hand non-cpu/non-cuda eps
             //options.AppendExecutionProvider_DML(1);
-            //options.LogSeverityLevel = 0;
+            
             options.AppendExecutionProvider_CPU();
+            //options.LogSeverityLevel = 0;
 
             using var session = new InferenceSession(modelPath, options);
 
@@ -226,10 +201,11 @@ namespace SubtitleGenerator
                 NamedOnnxValue.CreateFromTensor("decoder_input_ids", langAndModeTensor)
             };
 
+            // for multithread need to try AsyncRun
             using var results = session.Run(inputs);
             var output = ProcessResults(results);
             //var srtPath = Utils.ConvertToSrt(output, Path.GetFileNameWithoutExtension(videoFileName), batch);
-            var srtText = Utils.ConvertToSrt(output, batch, batchSeconds);
+            var srtText = Utils.ConvertToSrt(output, batchSeconds);
 
             //PickAFileOutputTextBlock.Text = "Generated SRT File at: " + srtPath;
 
@@ -271,15 +247,27 @@ namespace SubtitleGenerator
             return outputFilePath;
         }
 
-        private void OpenVideo(string videoFilePath)
+        private void OpenVideo(string videoFilePath, string srtFilePath)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                FileName = videoFilePath,
-                UseShellExecute = true
-            };
+            //ProcessStartInfo startInfo = new ProcessStartInfo
+            //{
+            //    FileName = videoFilePath,
+            //    UseShellExecute = true,
+            //    Arguments = srtFilePath
+            //};
 
-            Process.Start(startInfo);
+            var videoPlayerWindow = new VideoPlayer(videoFilePath, srtFilePath);
+            videoPlayerWindow.Activate();
+
+            //string vlcPath = @"C:\Program Files\VideoLAN\VLC\vlc.exe";
+            //ProcessStartInfo startInfo = new ProcessStartInfo
+            //{
+            //    FileName = vlcPath,
+            //    UseShellExecute = false,
+            //    Arguments = $"\"{videoFilePath}\" --sub-file=\"{srtFilePath}\" --no-osd"
+            //};
+
+            //Process.Start(startInfo);
         }
 
     }

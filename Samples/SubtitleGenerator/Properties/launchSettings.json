@@ -1,7 +1,8 @@
 {
   "profiles": {
     "SubtitleGenerator (Package)": {
-      "commandName": "MsixPackage"
+      "commandName": "MsixPackage",
+      "nativeDebugging": false
     },
     "SubtitleGenerator (Unpackaged)": {
       "commandName": "Project"
