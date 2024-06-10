@@ -5,7 +5,6 @@ namespace SubtitleGenerator
     public class MainViewModel : ObservableObject
     {
         private bool _controlsEnabled;
-
         public bool ControlsEnabled
         {
             get => _controlsEnabled;
