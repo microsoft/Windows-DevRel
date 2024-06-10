@@ -45,14 +45,9 @@ namespace SubtitleGenerator
             this.CenterOnScreen();
             BringToFront();
             IsResizable = false;
-        }
 
-        private void LangComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
+            GenerateSubtitlesButton.IsEnabled = false;
             LangComboBox.SelectedIndex = 2;
-        }
-        private void ModelComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
             ModelComboBox.SelectedIndex = 1;
         }
 
