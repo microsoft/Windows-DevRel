@@ -2,6 +2,9 @@
 
 This sample is a simple video subtitles generator app that uses local APIs and models to provide AI powered features. The app is built using WinUI3.
 
+<img alt="App Main Window" src="https://github.com/microsoft/Windows-DevRel/assets/6115884/8c23e07b-645b-48b4-86db-658d698da8e1" width="500">
+
+
 ## Set Up
 
 You will need to have Visual Studio installed with the latest workloads for WinAppSDK and WinUI 3 development. You can find instructions on how to set up your environment [here.](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/set-up-your-development-environment?tabs=cs-vs-community%2Ccpp-vs-community%2Cvs-2022-17-1-a%2Cvs-2022-17-1-b#install-visual-studio)
