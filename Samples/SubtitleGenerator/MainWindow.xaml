@@ -53,17 +53,16 @@
             </Grid>
 
             <!-- Language ComboBox -->
-            <StackPanel Orientation="Vertical" Margin="0,0,0,16">
-                <controls:HeaderedContentControl Header="Choose the language that your original video is in:"
-                                                 IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}">
-                    <ComboBox
-                        x:Name="LangComboBox"
-                        ItemsSource="{x:Bind Languages}"
-                        Margin="0,8,0,0" 
-                        IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}" />
-                </controls:HeaderedContentControl>
+            <controls:HeaderedContentControl Header="Choose the language that your original video is in:"
+                                             Margin="0,0,0,16"
+                                             IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}">
+                <ComboBox
+                    x:Name="LangComboBox"
+                    ItemsSource="{x:Bind Languages}"
+                    Margin="0,8,0,0" 
+                    IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}" />
+            </controls:HeaderedContentControl>
 
-            </StackPanel>
 
             <!-- Translation Toggle and Model Size ComboBox -->
             <Grid Margin="0,0,0,16" ColumnDefinitions="Auto, Auto">
