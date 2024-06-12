@@ -1,14 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SubtitleGenerator
+namespace SubtitleGenerator;
+
+public partial class MainViewModel : ObservableObject
 {
-    public class MainViewModel : ObservableObject
-    {
-        private bool _controlsEnabled;
-        public bool ControlsEnabled
-        {
-            get => _controlsEnabled;
-            set => SetProperty(ref _controlsEnabled, value);
-        }
-    }
+    [ObservableProperty]
+    private bool _controlsEnabled;
 }
