@@ -59,6 +59,7 @@
                 <ComboBox
                     x:Name="LangComboBox"
                     ItemsSource="{x:Bind Languages}"
+                    SelectedIndex="0"
                     Margin="0,8,0,0" 
                     IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}" />
             </controls:HeaderedContentControl>
@@ -82,6 +83,7 @@
                         x:Name="ModelComboBox"
                         MinWidth="101"
                         ItemsSource="{x:Bind ModelSize}"
+                        SelectedIndex="1"
                         Margin="0,8,0,8"
                         IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}" />
                 </controls:HeaderedContentControl>

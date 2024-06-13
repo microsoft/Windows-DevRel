@@ -47,8 +47,6 @@ namespace SubtitleGenerator
             IsResizable = false;
 
             GenerateSubtitlesButton.IsEnabled = false;
-            LangComboBox.SelectedIndex = 2;
-            ModelComboBox.SelectedIndex = 1;
         }
 
         private async void GenerateSubtitles_ButtonClick(object sender, RoutedEventArgs e)
