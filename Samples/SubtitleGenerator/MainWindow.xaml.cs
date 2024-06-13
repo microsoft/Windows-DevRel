@@ -60,7 +60,20 @@ namespace SubtitleGenerator
             var desiredWidthInt = (int)Math.Round(desiredWidth);
             var desiredHeightInt = (int)Math.Round(desiredHeight);
 
-            AppWindow.Resize(new SizeInt32(desiredWidthInt, desiredHeightInt));
+            // Get the current window position and size
+            var currentBounds = AppWindow.Position;
+            var currentSize = AppWindow.Size;
+
+            // Calculate the center position of the current window
+            var centerX = currentBounds.X + (currentSize.Width / 2);
+            var centerY = currentBounds.Y + (currentSize.Height / 2);
+
+            // Calculate the new position to keep the window centered
+            var newPositionX = centerX - (desiredWidthInt / 2);
+            var newPositionY = centerY - (desiredHeightInt / 2);
+
+            AppWindow.MoveAndResize(new RectInt32(newPositionX, newPositionY, desiredWidthInt, desiredHeightInt));
+
             (AppWindow.Presenter as OverlappedPresenter).IsResizable = false;
         }
 
