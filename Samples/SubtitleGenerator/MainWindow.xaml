@@ -38,10 +38,11 @@
             Background="{StaticResource CardBackgroundFillColorDefault}">
 
             <!-- File Picker -->
-            <Grid HorizontalAlignment="Stretch" Margin="0,0,0,16">
-                <controls:HeaderedContentControl Header="Pick a video file to create subtitles for:"
-                                                 IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}">
-                    <Button
+            <controls:HeaderedContentControl Header="Pick a video file to create subtitles for:"
+                                             HorizontalAlignment="Stretch"
+                                             Margin="0,0,0,16"
+                                             IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}">
+                <Button
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Left"
                         x:Name="PickAFileButton"
@@ -49,8 +50,7 @@
                         MaxWidth="311"
                         Click="PickAFileButtonClick"
                         Margin="0,8,0,0" />
-                </controls:HeaderedContentControl>
-            </Grid>
+            </controls:HeaderedContentControl>
 
             <!-- Language ComboBox -->
             <controls:HeaderedContentControl Header="Choose the language that your original video is in:"
@@ -71,7 +71,7 @@
                                                  IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}">
                     <ToggleSwitch
                         x:Name="TranslateSwitch"
-                        Margin="0,0,0,8"
+                        Margin="0,4,0,6"
                         IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}" />
                 </controls:HeaderedContentControl>
 
