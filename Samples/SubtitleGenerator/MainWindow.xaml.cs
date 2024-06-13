@@ -8,8 +8,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 using SubtitleGenerator.Libs.VoiceActivity;
-using WinUIEx;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+using Microsoft.UI.Windowing;
+using Windows.Graphics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -19,7 +21,7 @@ namespace SubtitleGenerator
     /// <summary>
     /// An empty window that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainWindow : WindowEx
+    public sealed partial class MainWindow : Window
     {
         public readonly List<string> Languages = new List<string>(Utils.languageCodes.Keys);
         public readonly List<string> ModelSize = new List<string> { "tiny", "small", "medium"};
@@ -38,16 +40,32 @@ namespace SubtitleGenerator
             ViewModel.ControlsEnabled = true;
             InitializeComponent();
         }
+
         private void RootContainer_Loaded(object sender, RoutedEventArgs e)
         {
-            this.SetWindowSize(RootContainer.DesiredSize.Width + 16, RootContainer.DesiredSize.Height + 10);
-           
-            this.CenterOnScreen();
-            BringToFront();
-            IsResizable = false;
+            SetWindowSizeAndPosition();
 
             GenerateSubtitlesButton.IsEnabled = false;
         }
+
+        private void SetWindowSizeAndPosition()
+        {
+            var windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            var dpi = GetDpiForWindow(windowHandle);
+            var scalingFactor = dpi / 96.0;
+
+            var desiredWidth = (RootContainer.DesiredSize.Width + 16) * scalingFactor;
+            var desiredHeight = (RootContainer.DesiredSize.Height + 10) * scalingFactor;
+
+            var desiredWidthInt = (int)Math.Round(desiredWidth);
+            var desiredHeightInt = (int)Math.Round(desiredHeight);
+
+            AppWindow.Resize(new SizeInt32(desiredWidthInt, desiredHeightInt));
+            (AppWindow.Presenter as OverlappedPresenter).IsResizable = false;
+        }
+
+        [DllImport("user32.dll")]
+        private static extern uint GetDpiForWindow(IntPtr hWnd);
 
         private async void GenerateSubtitles_ButtonClick(object sender, RoutedEventArgs e)
         {
