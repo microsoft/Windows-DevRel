@@ -396,7 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-Samples/SubtitleGenerator/Assets/model.onnx
-
-# AudioEditor resources
-Samples/AudioEditor/Resources/
+Samples/**/*.onnx

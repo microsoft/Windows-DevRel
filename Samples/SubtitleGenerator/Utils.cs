@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using NReco.VideoConverter;
 
 namespace SubtitleGenerator
 {
@@ -149,15 +150,15 @@ namespace SubtitleGenerator
             return langId;
         }
 
-        public static string ConvertToSrt(string subtitleString, int batchIndex, int batchSizeInSeconds)
+        public static string ConvertToSrt(string subtitleString, int offsetInSeconds)
         {
             Regex pattern = new Regex(@"<\|([\d.]+)\|>([^<]+)<\|([\d.]+)\|>");
             MatchCollection matches = pattern.Matches(subtitleString);
-            // Placeholder for srt content
+
             string srtContent = "";
 
-            // Calculate the time offset based on the batch number. Each batch represents an additional 30 seconds.
-            double batchOffset = batchIndex * batchSizeInSeconds; // 30 seconds per batch
+            // Calculate the time offset based on the batch number. Each batch represents an additional N seconds.
+            double batchOffset = offsetInSeconds;
 
             for (int i = 0; i < matches.Count; i++)
             {
@@ -177,30 +178,37 @@ namespace SubtitleGenerator
                 srtContent += $"{i + 1}\n{startSrt} --> {endSrt}\n{matches[i].Groups[2].Value.Trim()}\n\n";
             }
 
-            // The SaveSrtContentToTempFile method needs to exist and handle the saving of the SRT content to a file
-            // Make sure to implement it or adjust this part as per your application's requirements
             return srtContent;
-            //return SaveSrtContentToTempFile(srtContent, fileName);
         }
 
-        public static string SaveSrtContentToTempFile(List<string> srtContent, string fileName)
+        public static string SaveSrtContentToTempFile(List<string> srtContent, string videoFilePath)
         {
             string srtFilePath = "";
             try
             {
-                // Use MyDocuments as the directory to save the SRT file
-                string documentsFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                string uniqueFileName = $"{Path.GetFileNameWithoutExtension(videoFilePath)}.srt";
+                srtFilePath = Path.Combine(Path.GetDirectoryName(videoFilePath), uniqueFileName);
+                
+                string combinedContent = string.Join("\n", srtContent).Replace("\n\n\n", "\n\n"); ;
 
-                // Create a unique filename for the SRT file
-                string uniqueFileName = $"{fileName}.srt";
+                string[] lines = combinedContent.Split("\n");
+                StringBuilder newContent = new StringBuilder();
+                int counter = 1;
 
-                // Combine the documents folder path with the unique file name to get the full path
-                srtFilePath = Path.Combine(documentsFolderPath, uniqueFileName);
+                foreach (string line in lines)
+                {
+                    if (int.TryParse(line, out int number) && number >= 0 && number <= Int32.MaxValue)
+                    {
+                        newContent.AppendLine(counter.ToString());
+                        counter++;
+                    }
+                    else
+                    {
+                        newContent.AppendLine(line);
+                    }
+                }
 
-                // Join the list of strings into a single string with newline characters
-                string combinedContent = string.Join("\n", srtContent);
-
-                // Write the combined string content to the file
+                combinedContent = newContent.ToString();
                 File.WriteAllText(srtFilePath, combinedContent);
 
                 Console.WriteLine($"SRT file saved to: {srtFilePath}");
@@ -210,6 +218,76 @@ namespace SubtitleGenerator
                 Console.WriteLine($"Error saving SRT file: {ex.Message}");
             }
             return srtFilePath;
+        }
+
+        public static byte[] LoadAudioBytes(string file)
+        {
+            var ffmpeg = new FFMpegConverter();
+            var output = new MemoryStream();
+
+            var extension = Path.GetExtension(file).Substring(1);
+
+            ffmpeg.ConvertMedia(inputFile: file,
+                                inputFormat: extension,
+                                outputStream: output,
+                                //  DE s16le PCM signed 16-bit little-endian
+                                outputFormat: "s16le",
+                                new ConvertSettings()
+                                {
+                                    AudioCodec = "pcm_s16le",
+                                    AudioSampleRate = 16000,
+                                    // Convert to mono
+                                    CustomOutputArgs = "-ac 1"
+                                });
+
+            return output.ToArray();
+        }
+
+        public static float[] ExtractAudioSegment(string inPath, double startTimeInSeconds, double segmentDurationInSeconds)
+        {
+            try
+            {
+                var extension = System.IO.Path.GetExtension(inPath).Substring(1);
+                var output = new MemoryStream();
+
+                var convertSettings = new ConvertSettings
+                {
+                    Seek = (float?)startTimeInSeconds,
+                    MaxDuration = (float?)segmentDurationInSeconds,
+                    AudioCodec = "pcm_s16le",
+                    AudioSampleRate = 16000,
+                    CustomOutputArgs = "-vn -ac 1",
+                };
+
+                var ffMpegConverter = new FFMpegConverter();
+                ffMpegConverter.ConvertMedia(
+                    inputFile: inPath,
+                    inputFormat: extension,
+                    outputStream: output,
+                    outputFormat: "s16le",
+                    convertSettings);
+
+                var buffer = output.ToArray();
+                int bytesPerSample = 2; // Assuming 16-bit depth (2 bytes per sample)
+
+                // Calculate total samples in the buffer
+                int totalSamples = buffer.Length / bytesPerSample;
+                float[] samples = new float[totalSamples];
+
+                for (int i = 0; i < totalSamples; i++)
+                {
+                    int bufferIndex = i * bytesPerSample;
+                    short sample = (short)(buffer[bufferIndex + 1] << 8 | buffer[bufferIndex]);
+                    samples[i] = sample / 32768.0f; // Normalize to range [-1,1] for floating point samples
+                }
+
+                return samples;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error during the audio extraction: " + ex.Message);
+                return []; // Return an empty array in case of exception
+            }
         }
     }
 }

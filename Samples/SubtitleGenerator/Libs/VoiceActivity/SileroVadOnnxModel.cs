@@ -2,11 +2,12 @@
 using Microsoft.ML.OnnxRuntime.Tensors;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
-namespace SubtitleGenerator
+namespace SubtitleGenerator.Libs.VoiceActivity
 {
-    public class SlieroVadOnnxModel : IDisposable
+    public class SileroVadOnnxModel : IDisposable
     {
         private readonly InferenceSession session;
         private Tensor<float> h;
@@ -15,8 +16,11 @@ namespace SubtitleGenerator
         private int lastBatchSize = 0;
         private static readonly List<int> SampleRates = new List<int> { 8000, 16000 };
 
-        public SlieroVadOnnxModel(string modelPath)
+        public SileroVadOnnxModel()
         {
+            string exePath = AppDomain.CurrentDomain.BaseDirectory;
+            string modelPath = Path.Combine(exePath, "Assets\\Models\\silero_vad.onnx");
+
             var options = new SessionOptions();
             options.InterOpNumThreads = 1;
             options.IntraOpNumThreads = 1;
@@ -27,8 +31,8 @@ namespace SubtitleGenerator
 
         public void ResetStates()
         {
-            h = new DenseTensor<float>(new[] { 2, 1, 64 });
-            c = new DenseTensor<float>(new[] { 2, 1, 64 });
+            h = new DenseTensor<float>([2, 1, 64]);
+            c = new DenseTensor<float>([2, 1, 64]);
             lastSr = 0;
             lastBatchSize = 0;
         }
@@ -54,7 +58,7 @@ namespace SubtitleGenerator
         {
             if (x.Length == 1)
             {
-                x = new float[][] { x[0] };
+                x = [x[0]];
             }
             if (x.Length > 2)
             {
@@ -98,10 +102,11 @@ namespace SubtitleGenerator
 
             // Flatten the jagged array and create the tensor with the correct shape
             var flatArray = x.SelectMany(inner => inner).ToArray();
-            var inputTensor = new DenseTensor<float>(flatArray, new[] { batchSize, sampleSize });
+            var inputTensor = new DenseTensor<float>(flatArray, [batchSize, sampleSize]);
 
             // Convert sr to a tensor, if the model expects a scalar as a single-element tensor, ensure matching the expected dimensions
-            var srTensor = new DenseTensor<Int64>(new[] { sr });
+            var srTensor = new DenseTensor<long>(new long[] { sr }, [1]);
+
 
             var inputs = new List<NamedOnnxValue>
             {
@@ -110,19 +115,27 @@ namespace SubtitleGenerator
                 NamedOnnxValue.CreateFromTensor("h", h),
                 NamedOnnxValue.CreateFromTensor("c", c)
             };
-
-            using (var results = session.Run(inputs))
+            try
             {
-                var output = results.First().AsEnumerable<float>().ToArray();
-                h = results.ElementAt(1).AsTensor<float>();
-                c = results.ElementAt(2).AsTensor<float>();
+                using (var results = session.Run(inputs))
+                {
+                    var output = results.First().AsEnumerable<float>().ToArray();
+                    h = results.ElementAt(1).AsTensor<float>();
+                    c = results.ElementAt(2).AsTensor<float>();
 
-                lastSr = sr;
-                lastBatchSize = batchSize;
+                    lastSr = sr;
+                    lastBatchSize = batchSize;
 
-                return output;
+                    return output;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("An error occurred while calling the model", ex);
             }
         }
+
+        public static int count = 0;
 
         public void Dispose()
         {

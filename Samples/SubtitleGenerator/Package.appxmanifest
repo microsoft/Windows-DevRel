@@ -8,15 +8,15 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="5a715365-1902-47dd-aee0-c864db38cb62"
-    Publisher="CN=zteutsch"
+    Name="aabdfb1e-3734-4c70-aa55-0133363738b0"
+    Publisher="CN=gkhmyznikov"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="5a715365-1902-47dd-aee0-c864db38cb62" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="aabdfb1e-3734-4c70-aa55-0133363738b0" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>SubtitleGenerator</DisplayName>
-    <PublisherDisplayName>zteutsch</PublisherDisplayName>
+    <PublisherDisplayName>gkhmyznikov</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
