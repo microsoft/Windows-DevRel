@@ -20,7 +20,10 @@ This is the model we use for smart chunking of audio and the only file you will 
 This should be placed under a folder called `Models` under the `Assets` folder.
 
 ## Downloading Whisper
-The process for getting the Whisper model is a bit more involved, as it needs to be manually generated with [Olive](https://github.com/microsoft/OLive).
+Whisper models can be downloaded from HF:
+- https://huggingface.co/khmyznikov/whisper-int8-cpu-ort.onnx/tree/main
+
+**Or** you can manually generate them with [Olive](https://github.com/microsoft/OLive).
 
 This can all be done from the command line and only requires Python as a dependency, to get your model, follow these steps:
 
