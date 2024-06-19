@@ -2,7 +2,7 @@
 
 This sample is a simple video subtitles generator app that uses local APIs and models to provide AI powered features. The app is built using WinUI3.
 
-<img alt="App Main Window" src="https://github.com/microsoft/Windows-DevRel/assets/6115884/8c23e07b-645b-48b4-86db-658d698da8e1" width="500">
+<img alt="App Main Window" src="https://github.com/microsoft/Windows-DevRel/assets/6115884/a577a7ba-7a27-45ed-b743-0efe666cec90" width="500">
 
 
 ## Set Up
