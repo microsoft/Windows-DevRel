@@ -1,115 +1,119 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Window
     x:Class="SubtitleGenerator.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:SubtitleGenerator"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:SubtitleGenerator"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <!-- System Backdrop -->
+    <!--  System Backdrop  -->
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid Margin="36,0,36,36" RowDefinitions="Auto, Auto" x:Name="RootContainer" Loaded="RootContainer_Loaded" HorizontalAlignment="Left">
+    <Grid
+        x:Name="RootContainer"
+        Margin="16,0,16,16"
+        HorizontalAlignment="Left"
+        Loaded="RootContainer_Loaded"
+        RowDefinitions="Auto, Auto">
 
-        <!-- Title Block -->
+        <!--  Title Block  -->
         <TextBlock
-            Text="Create Subtitles Now!"
-            FontSize="30"
-            FontWeight="Bold"
-            Margin="0,40,0,24"
-            Grid.Row="0" />
+            Grid.Row="0"
+            Margin="0,40,0,16"
+            Style="{StaticResource SubtitleTextBlockStyle}"
+            Text="Create Subtitles Now!" />
 
-        <!-- Main Card -->
+        <!--  Main Card  -->
         <StackPanel
             x:Name="MainCard"
             Grid.Row="1"
-            Orientation="Vertical"
+            Padding="16"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Padding="24"
-            CornerRadius="8"
+            Background="{StaticResource CardBackgroundFillColorDefault}"
             BorderBrush="{StaticResource CardStrokeColorDefaultBrush}"
-            Background="{StaticResource CardBackgroundFillColorDefault}">
+            BorderThickness="1"
+            CornerRadius="{StaticResource OverlayCornerRadius}"
+            Orientation="Vertical"
+            Spacing="20">
 
-            <!-- File Picker -->
-            <controls:HeaderedContentControl Header="Pick a video file to create subtitles for:"
-                                             HorizontalAlignment="Stretch"
-                                             Margin="0,0,0,16"
-                                             IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}">
+            <!--  File Picker  -->
+            <controls:HeaderedContentControl
+                HorizontalAlignment="Stretch"
+                Header="Pick a video file to create subtitles for:"
+                IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}">
                 <Button
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Left"
-                        x:Name="PickAFileButton"
-                        Content="Select File"
-                        MaxWidth="311"
-                        Click="PickAFileButtonClick"
-                        Margin="0,8,0,0" />
+                    x:Name="PickAFileButton"
+                    MaxWidth="311"
+                    Margin="0,8,0,0"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
+                    Click="PickAFileButtonClick"
+                    Content="Select File" />
             </controls:HeaderedContentControl>
 
-            <!-- Language ComboBox -->
-            <controls:HeaderedContentControl Header="Choose the language that your original video is in:"
-                                             Margin="0,0,0,16"
-                                             IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}">
+            <!--  Language ComboBox  -->
+            <controls:HeaderedContentControl Header="Choose the language that your original video is in:" IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}">
                 <ComboBox
                     x:Name="LangComboBox"
+                    Margin="0,8,0,0"
+                    IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}"
                     ItemsSource="{x:Bind Languages}"
-                    SelectedIndex="0"
-                    Margin="0,8,0,0" 
-                    IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}" />
+                    SelectedIndex="0" />
             </controls:HeaderedContentControl>
 
 
-            <!-- Translation Toggle and Model Size ComboBox -->
-            <Grid Margin="0,0,0,16" ColumnDefinitions="Auto, Auto">
-                <controls:HeaderedContentControl Header="Translate to English:"
-                                                 Grid.Column="0"
-                                                 IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}">
+            <!--  Translation Toggle and Model Size ComboBox  -->
+            <Grid ColumnDefinitions="Auto, Auto">
+                <controls:HeaderedContentControl
+                    Grid.Column="0"
+                    Header="Translate to English:"
+                    IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}">
                     <ToggleSwitch
                         x:Name="TranslateSwitch"
                         Margin="0,4,0,6"
                         IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}" />
                 </controls:HeaderedContentControl>
 
-                <controls:HeaderedContentControl Header="Model size:"
-                                                 Grid.Column="1"
-                                                 IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}">
+                <controls:HeaderedContentControl
+                    Grid.Column="1"
+                    Header="Model size:"
+                    IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}">
                     <ComboBox
                         x:Name="ModelComboBox"
                         MinWidth="101"
-                        ItemsSource="{x:Bind ModelSize}"
-                        SelectedIndex="1"
                         Margin="0,8,0,8"
-                        IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}" />
+                        IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}"
+                        ItemsSource="{x:Bind ModelSize}"
+                        SelectedIndex="1" />
                 </controls:HeaderedContentControl>
             </Grid>
 
-            <!-- Generate Button and Progress Bar -->
+            <!--  Generate Button and Progress Bar  -->
             <Grid HorizontalAlignment="Stretch">
                 <Button
-                    Grid.Row="0"
-                    Background="CornflowerBlue"
-                    Foreground="Black"
                     x:Name="GenerateSubtitlesButton"
-                    Click="GenerateSubtitles_ButtonClick"
+                    Grid.Row="0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
+                    Click="GenerateSubtitles_ButtonClick"
+                    Content="Generate subtitles"
                     IsEnabled="{x:Bind ViewModel.ControlsEnabled, Mode=OneWay}"
-                    Visibility="Visible">
-                    Generate Subtitles
-                </Button>
+                    Style="{StaticResource AccentButtonStyle}"
+                    Visibility="Visible" />
                 <ProgressBar
+                    x:Name="LoadingBar"
+                    Height="32"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
                     IsIndeterminate="True"
                     Visibility="Collapsed"
-                    x:Name="LoadingBar"
-                    Value="50"
-                    Height="32"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Stretch"/>
+                    Value="50" />
             </Grid>
         </StackPanel>
     </Grid>
