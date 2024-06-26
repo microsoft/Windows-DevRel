@@ -10,7 +10,7 @@ The sample we will be taking a look at is an AI-empowered Audio Editor, built wi
 
 **Note:** If you want to skip the text and go straight to getting your hands on sample itself, head over to the [project repository](https://github.com/microsoft/Windows-DevRel/tree/main/Samples/AudioEditor) for instructions on running the project.
 
-## What does the sample do with AI?
+## Audio Smart Trimming
 
 The Audio Editor app uses several models to enable "smart trimming" of audio, which has a flow like this:
 
@@ -28,7 +28,7 @@ Once `Generate new clip` is clicked, the new audio clip is uploaded to the app a
 
 Now lets take a look at the models that were used to make this work.
 
-## One Task, Three Models
+## Enabling Smart Trimming with Silero, Whisper, and MiniLML6v2
 
 For the "smart-trimming" task, it takes three different models, all of them [ONNX](https://onnx.ai/onnx/), to process the input audio data into the output we are expecting. We'll break down what each model does, what it accomplishes for our use case, and where you can find more info on the models.
 
@@ -64,7 +64,7 @@ You can learn more about MiniLM on [HuggingFace](https://huggingface.co/optimum/
 
 ## Running the Sample and Checking out the Code
 
-If you want to run the sample for yourself, or dive into the implementation for some more details on how this all works, head over to this [repository](https://github.com/microsoft/Windows-DevRel/tree/main/Samples/AudioEditor) where the sample lives.
+If you want to run the sample for yourself, or dive into the implementation for some more details on how this all works, head over to this [repository](https://github.com/microsoft/Windows-DevRel/tree/main/Samples/AudioEditor) where the sample lives. We also have a [Code Walkthrough document](https://github.com/microsoft/Windows-DevRel/blob/main/Samples/AudioEditor/CodeWalkthrough.md) if you want an entrypoint into how this sample was written.
 
 There's quite a bit of set-up that goes into getting all the models set up in the project (since they can't be checked into source control), but all the prerequisite steps are defined in the README. Go check it out!
 
