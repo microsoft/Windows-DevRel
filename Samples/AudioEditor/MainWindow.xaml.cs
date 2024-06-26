@@ -245,10 +245,11 @@ namespace AudioEditor
         {
             await Task.Run(async () =>
             {
-                List<TranscribedChunk> chunkList = SmartTrimming.ApplySemanticSearch(await SmartTrimming.ChunkAndTranscribe(audioFile.FilePath), audioFile.Keyword, audioFile.TrimmedDuration);
-                if (chunkList.Count > 0)
+                List<TranscribedChunk> transcribedChunks = await SmartTrimming.ChunkAndTranscribe(audioFile.FilePath);
+                List<TranscribedChunk> similaritySortedChunks = SmartTrimming.ApplySemanticSearch(transcribedChunks, audioFile.Keyword, audioFile.TrimmedDuration);
+                if (similaritySortedChunks.Count > 0)
                 {
-                    TranscribedChunk chunk = chunkList[0];
+                    TranscribedChunk chunk = similaritySortedChunks[0];
                     Utils.TrimMp3(audioFile.FilePath, outputPath, TimeSpan.FromSeconds(chunk.Start), TimeSpan.FromSeconds(chunk.End));
                 }
             });
