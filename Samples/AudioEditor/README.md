@@ -12,6 +12,8 @@ The AI functionality of the app is as follows:
 
 For example, if you loaded in a podcast, `FlowerTalk.mp3`, about different flower species and wanted a 45 second snippet about sunflowers, you would set the duration to 45 seconds and the keyword to "sunflower". The app would then cut out whichever 45 second snippet of the podcast is most relevant to sunflowers and load it into the audio player for you to listen to.
 
+***This document is a high-level overview of how this sample works and how to get set up to run it. Head over to [CodeWalkthrough.md](./CodeWalkthrough.md) for a breakdown of the entry point functions for this sample.***
+
 ## Set Up
 
 You will need to have Visual Studio installed with the latest workloads for WinAppSDK and WinUI 3 development. You can find instructions on how to set up your environment [here.](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/set-up-your-development-environment?tabs=cs-vs-community%2Ccpp-vs-community%2Cvs-2022-17-1-a%2Cvs-2022-17-1-b#install-visual-studio)
@@ -23,10 +25,10 @@ You can pull this model from Hugging Face at [all-MiniLM-L6-v2.onnx](https://hug
 
 This is model we use for semantic search. The two files you will need are `model.onnx` placed in `/Resources/Models/` and renamed to `all-MiniLM-L6-v2.onnx` and `vocab.txt` that should be added under `/Resources/`.
 
-### Sliero VAD
-The Sliero Voice Activity Detection model can be found in [this GitHub Repo](https://github.com/snakers4/silero-vad/tree/master). 
+### Silero VAD
+The Silero Voice Activity Detection model can be found in [this GitHub Repo](https://github.com/snakers4/silero-vad/tree/master). 
 
-This is the model we use for smart chunking of audio and the only file you will need is the `/files/sliero_vad.onnx` file. This should also be placed under `/Resources/Models`.
+This is the model we use for smart chunking of audio and the only file you will need is the `/files/silero_vad.onnx` file. This should also be placed under `/Resources/Models`.
 
 ### Whisper
 The process for getting the Whisper model is a bit more involved, as it needs to be manually generated with [Olive](https://github.com/microsoft/OLive).
