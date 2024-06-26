@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.ML.OnnxRuntime; // Ensure you have the Microsoft.ML.OnnxRuntime package or equivalent installed
 
-namespace SubtitleGenerator
+namespace SubtitleGenerator.Libs.VoiceActivity
 {
-    public class SlieroVadDetector
+    public class SileroVadDetector
     {
-        private readonly SlieroVadOnnxModel model;
+        private readonly SileroVadOnnxModel model;
         private readonly float startThreshold;
         private readonly float endThreshold;
         private readonly int samplingRate;
@@ -16,8 +15,7 @@ namespace SubtitleGenerator
         private int tempEnd;
         private int currentSample;
 
-        public SlieroVadDetector(string modelPath,
-                                 float startThreshold,
+        public SileroVadDetector(float startThreshold,
                                  float endThreshold,
                                  int samplingRate,
                                  int minSilenceDurationMs,
@@ -28,7 +26,7 @@ namespace SubtitleGenerator
                 throw new ArgumentException("does not support sampling rates other than [8000, 16000]");
             }
 
-            this.model = new SlieroVadOnnxModel(modelPath);
+            this.model = new SileroVadOnnxModel();
             this.startThreshold = startThreshold;
             this.endThreshold = endThreshold;
             this.samplingRate = samplingRate;

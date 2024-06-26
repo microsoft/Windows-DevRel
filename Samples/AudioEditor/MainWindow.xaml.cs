@@ -15,8 +15,7 @@ using Windows.Storage.Pickers;
 
 using System.Runtime.InteropServices.WindowsRuntime;
 using Libs.VoiceActivity;
-using Libs.VoiceRecognition;
-using static Libs.VoiceRecognition.Whisper;
+
 using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -94,7 +93,7 @@ namespace AudioEditor
 
         private async void InitializeAsync()
         {
-            //await LoadAudioFilesAsync();
+            await LoadAudioFilesAsync();
         }
 
 
@@ -131,7 +130,7 @@ namespace AudioEditor
                 {
                     if (!Utils.DoesTranscriptionExist(selectedFile.Name))
                     {
-                        await ChunkAndTranscribe(selectedFile.Path);
+                        await SmartTrimming.ChunkAndTranscribe(selectedFile.Path);
                     }
                 });
                 await SaveAudioFilesAsync(); // Save the updated list
@@ -231,7 +230,7 @@ namespace AudioEditor
                     string outputFilename = selectedAudioFile.TrimmedClipName == "" ? Path.GetFileName(selectedAudioFile.FilePath) : selectedAudioFile.TrimmedClipName + ".mp3";
                     string outputPath = Utils.CreateOutputPath(selectedAudioFile.FilePath, outputFilename);
                     Debug.WriteLine(outputPath);
-                    await RunTranscribeSearchaAndTrimTask(selectedAudioFile, outputPath);
+                    await RunTranscribeSearchAndTrimTask(selectedAudioFile, outputPath);
                     if (File.Exists(outputPath))
                     {
                         AudioFiles.Add(new AudioFile(Path.GetFileNameWithoutExtension(outputPath), outputPath));
@@ -242,82 +241,18 @@ namespace AudioEditor
             }
         }
 
-        private async Task RunTranscribeSearchaAndTrimTask(AudioFile audioFile, string outputPath)
+        private async Task RunTranscribeSearchAndTrimTask(AudioFile audioFile, string outputPath)
         {
             await Task.Run(async () =>
             {
-                List<TranscribedChunk> chunkList = ApplySemanticSearch(await ChunkAndTranscribe(audioFile.FilePath), audioFile.Keyword, audioFile.TrimmedDuration);
-                if (chunkList.Count > 0)
+                List<TranscribedChunk> transcribedChunks = await SmartTrimming.ChunkAndTranscribe(audioFile.FilePath);
+                List<TranscribedChunk> similaritySortedChunks = SmartTrimming.ApplySemanticSearch(transcribedChunks, audioFile.Keyword, audioFile.TrimmedDuration);
+                if (similaritySortedChunks.Count > 0)
                 {
-                    TranscribedChunk chunk = chunkList[0];
+                    TranscribedChunk chunk = similaritySortedChunks[0];
                     Utils.TrimMp3(audioFile.FilePath, outputPath, TimeSpan.FromSeconds(chunk.Start), TimeSpan.FromSeconds(chunk.End));
                 }
             });
-        }
-
-        private async Task<List<TranscribedChunk>> ChunkAndTranscribe(string audioPath)
-        {
-            var assemblyLocation = Assembly.GetExecutingAssembly().Location;
-            var assemblyPath = Path.GetDirectoryName(assemblyLocation);
-            string inputAudioPath = audioPath;
-            string fileName = Path.GetFileNameWithoutExtension(audioPath);
-
-
-            var transcribedChunks = Utils.RetrieveTranscriptionFromFile(fileName) ?? new List<TranscribedChunk>();
-
-            if (transcribedChunks.Count != 0)
-            {
-                return transcribedChunks;
-            }
-            var audioBytes = Utils.LoadAudioBytes(inputAudioPath);
-            var dynamicChunks = AudioChunking.SmartChunking(audioBytes);
-
-            foreach (var chunk in dynamicChunks.Select((value, i) => (value, i)))
-            {
-                var audioSegment = Utils.ExtractAudioSegment(inputAudioPath, chunk.value.start, chunk.value.end - chunk.value.start);
-                var whisperModel = new Whisper();
-                var transcription = await whisperModel.TranscribeAsync(audioSegment, "en", TaskType.Transcribe, chunk.value.start);
-                transcribedChunks.AddRange(transcription);
-            }
-
-            transcribedChunks = Utils.MergeTranscribedChunks(transcribedChunks);
-            Utils.SaveTranscriptionToFile(transcribedChunks, fileName);
-            return transcribedChunks;
-        }
-
-        private List<TranscribedChunk> ApplySemanticSearch(List<TranscribedChunk> listOfChunks, string searchQuery, int durationSeconds = 30)
-        {
-            var miniLM = new MiniLML6v2(new MiniLML6v2Config());
-
-            listOfChunks = Utils.CreateDurationSizedChunkWindows(listOfChunks, durationSeconds);
-
-            string[] corpusArray = listOfChunks.Select(x => x.Transcript).ToArray();
-
-            string[] searchQueryArray = { searchQuery };
-
-            // Generate embeddings for the corpus
-            var corpusEmbeddings = corpusArray
-                .Select(text => miniLM.GenerateEmbeddings(new string[] { text }))
-                .ToArray();
-
-            // Generate embeddings for the search query
-            var searchQueryEmbeddings = miniLM.GenerateEmbeddings(searchQueryArray); // Assuming one query
-
-            // Calculate similarities
-            var similarityScores = corpusEmbeddings
-                .Select(embedding => Similarity.CosineSimilarity(searchQueryEmbeddings, embedding))
-                .ToArray();
-
-            // Order by similarity in desc order and select indexes
-            var sortedIndexBySimilarity = similarityScores
-                .Select((score, index) => new { Index = index, Score = score, Text = corpusArray[index] })
-                .OrderByDescending(x => x.Score)
-                .Select(x => listOfChunks[x.Index]).ToList();
-
-            var relevantSnips = Utils.GenerateRelevantSnipsWithDuration(sortedIndexBySimilarity, durationSeconds);
-
-
-            return relevantSnips;
         }
 
         private void PlayPause_ButtonClick(object sender, RoutedEventArgs e)
