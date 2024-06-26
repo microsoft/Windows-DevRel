@@ -39,15 +39,8 @@ namespace Libs.VoiceActivity
         private static double MIN_CHUNK_S = 5;
 
         public static List<AudioChunk> SmartChunking(byte[] audioBytes)
-        {
-            var assemblyLocation = Assembly.GetExecutingAssembly().Location;
-            var assemblyPath = Path.GetDirectoryName(assemblyLocation);
-            string vadModelPath = Path.GetFullPath(Path.Combine(assemblyPath, "Resources\\Models\\silero_vad.onnx"));
-
-
-
-            SlieroVadDetector vadDetector;
-            vadDetector = new SlieroVadDetector(START_THRESHOLD, END_THRESHOLD, SAMPLE_RATE, MIN_SILENCE_DURATION_MS, SPEECH_PAD_MS);
+        { 
+            SlieroVadDetector vadDetector = new SlieroVadDetector(START_THRESHOLD, END_THRESHOLD, SAMPLE_RATE, MIN_SILENCE_DURATION_MS, SPEECH_PAD_MS);
 
             int bytesPerSample = 1; 
             int bytesPerWindow = WINDOW_SIZE_SAMPLES * bytesPerSample;
