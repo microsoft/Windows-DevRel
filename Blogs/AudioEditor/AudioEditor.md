@@ -1,4 +1,4 @@
-# Under the Hood: Local AI on Windows
+# Local AI on Windows: Explaining the Audio Editor App Sample
 
 Building Windows apps that leverage on-device AI models can seem like a daunting task - there's a lot of work that goes into defining your use case, choosing and tuning the right models, and refining the logic surrounding the models.
 
