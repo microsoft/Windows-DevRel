@@ -1,0 +1,14 @@
+﻿﻿AddPackageDependency
+TryCreatePackageDependency
+DeletePackageDependency
+RemovePackageDependency
+GetTokenInformation
+GetIdForPackageDependencyContext
+GetResolvedPackageFullNameForPackageDependency
+GetPackageGraphRevisionId
+HEAP_FLAGS
+TOKEN_USER
+PACKAGE_VERSION
+PWSTR
+HeapFree
+GetProcessHeap
