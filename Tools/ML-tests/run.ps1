@@ -6,12 +6,12 @@ function Initialize-VirtualEnv {
     param (
         [string]$envName
     )
-    Write-Output "Creating virtual environment: $envName"
+    Write-Host "Creating virtual environment: $envName"
     & $pythonPath -m venv $envName
 
     # Activate the virtual environment
     $envActivate = ".\$envName\Scripts\Activate.ps1"
-    Write-Output "Activating virtual environment: $envName"
+    Write-Host "Activating virtual environment: $envName"
     & $envActivate
 }
 
@@ -21,20 +21,20 @@ function Install-And-Test-Library {
         [string]$testScript
     )
     
-    Write-Output "Installing $library"
+    Write-Host "Installing $library"
     pip install $library
     
-    Write-Output "Running test script: $testScript"
+    Write-Host "Running test script: $testScript"
     python $testScript
 
 	return $LASTEXITCODE
 }
 
-function Cleanup-VirtualEnv {
+function Remove-VirtualEnv {
     param (
         [string]$envName
     )
-    Write-Output "Removing virtual environment: $envName"
+    Write-Host "Removing virtual environment: $envName"
     Remove-Item -Recurse -Force .\$envName
 }
 
@@ -61,14 +61,14 @@ function Test-Library {
         }
     }
 	catch {
-        Write-Output "Error occurred: $_"
+        Write-Host "Error occurred: $_"
     }
     finally {
         # Deactivate and Cleanup virtual environment
-        Write-Output "Deactivating virtual environment: $envName"
+        Write-Host "Deactivating virtual environment: $envName"
         & deactivate
         
-        Cleanup-VirtualEnv -envName $envName
+        Remove-VirtualEnv -envName $envName
     }
 
 	return $result
@@ -85,13 +85,13 @@ $libraries = @{
     "matplotlib"    = "tests\test_matplotlib.py"
 }
 
-Write-Output "Starting tests on libraries..."
+Write-Host "Starting tests on libraries..."
 $results = @()
 foreach ($library in $libraries.Keys) {
-    $result = Test-Library -library $library -testScript $libraries[$library]
-    $results += $result
+    Test-Library -library $library -testScript $libraries[$library]
+    # $results += $result
 }
 
-Write-Output "All tests completed and environments cleaned up."
-Write-Output "Results:"
+Write-Host "All tests completed and environments cleaned up."
+Write-Host "Results:"
 $results | Format-Table -AutoSize

@@ -1,0 +1,1 @@
+.\run.ps1 -pythonPath "C:\Program Files\Python312\python.exe"
