@@ -2,6 +2,13 @@ param (
     [string]$pythonPath
 )
 
+if (-not $pythonPath) {
+    $pythonPath = "python"
+}
+
+$pythonVersion = & $pythonPath --version
+Write-Host "Using Python version: $pythonVersion"
+
 function Initialize-VirtualEnv {
     param (
         [string]$envName
