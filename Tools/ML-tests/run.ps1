@@ -22,10 +22,12 @@ function Install-And-Test-Library {
     )
     
     Write-Host "Installing $library"
-    pip install $library
+    $log = pip install $library 
+    Write-Host $log
     
     Write-Host "Running test script: $testScript"
-    python $testScript
+    $log = python $testScript
+    Write-Host $log
 
 	return $LASTEXITCODE
 }
@@ -56,6 +58,7 @@ function Test-Library {
     try {
         # Install and test library
         $exitCode = Install-And-Test-Library -library $library -testScript $testScript
+
         if ($exitCode -eq 0) {
             $result.Result = "Success"
         }
@@ -88,10 +91,13 @@ $libraries = @{
 Write-Host "Starting tests on libraries..."
 $results = @()
 foreach ($library in $libraries.Keys) {
-    Test-Library -library $library -testScript $libraries[$library]
-    # $results += $result
+    $result = Test-Library -library $library -testScript $libraries[$library]
+    $results += [PSCustomObject]@{
+        Library = $result.Library
+        Result  = $result.Result
+    }
 }
 
 Write-Host "All tests completed and environments cleaned up."
 Write-Host "Results:"
-$results | Format-Table -AutoSize
+$results | Format-Table -Property Library, Result
