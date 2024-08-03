@@ -1,5 +1,5 @@
 import olive
-from olive.common.version import __version__
+from olive import __version__
 import sys
 
 try:
