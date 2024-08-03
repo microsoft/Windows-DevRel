@@ -86,25 +86,27 @@ function Test-Library {
 
 $libraries = @{
     "numpy"         = "tests\test_numpy.py"
-    "torch"         = "tests\test_torch.py"
-    "jax"           = "tests\test_jax.py"
-    "onnxruntime"   = "tests\test_onnxruntime.py"
-    "olive-ai"      = "tests\test_olive.py"
     "scikit-learn"  = "tests\test_sklearn.py"
     "pandas"        = "tests\test_pandas.py"
     "matplotlib"    = "tests\test_matplotlib.py"
+    "onnxruntime"   = "tests\test_onnxruntime.py"
+    "olive-ai"      = "tests\test_olive.py"
+    "torch"         = "tests\test_torch.py"
+    "jax"           = "tests\test_jax.py"
 }
-
-Write-Host "Starting tests on libraries..."
-$results = @()
-foreach ($library in $libraries.Keys) {
-    $result = Test-Library -library $library -testScript $libraries[$library]
-    $results += [PSCustomObject]@{
-        Library = $result.Library
-        Result  = $result.Result
+$executionTime = Measure-Command {
+    Write-Host "Starting tests on libraries..."
+    $results = @()
+    foreach ($library in $libraries.Keys) {
+        $result = Test-Library -library $library -testScript $libraries[$library]
+        $results += [PSCustomObject]@{
+            Library = $result.Library
+            Result  = $result.Result
+        }
     }
 }
 
 Write-Host "All tests completed and environments cleaned up."
 Write-Host "Results:"
 $results | Format-Table -Property Library, Result
+Write-Host "Execution Time: $($executionTime.ToString("hh'h 'mm'm 'ss's'")) or $($executionTime.TotalSeconds) seconds"
