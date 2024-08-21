@@ -1,6 +1,7 @@
 param (
     [string]$pythonPath,
-    [string]$hfToken
+    [string]$hfToken,
+    [switch]$Debug
 )
 
 if (-not $pythonPath) {
@@ -105,11 +106,13 @@ function Test-Library {
         Write-Host "Error occurred: $_"
     }
     finally {
-        # Deactivate and Cleanup virtual environment
-        Write-Host "Deactivating virtual environment: $envName"
-        & deactivate
-        
-        Remove-VirtualEnv -envName $envName
+        if (-not $Debug) {
+            # Deactivate and Cleanup virtual environment
+            Write-Host "Deactivating virtual environment: $envName"
+            & deactivate
+            
+            Remove-VirtualEnv -envName $envName
+        }
     }
 
 	return $result
@@ -135,7 +138,9 @@ function Test-Library {
 #     }
 # }
 
-# Remove-Item -Recurse -Force .temp
+# if (-not $Debug) {
+#     Remove-Item -Recurse -Force ".temp"
+# }
 
 # Write-Host "Installation tests completed and environments cleaned up."
 # Write-Host "Results:"
@@ -179,7 +184,9 @@ $executionTime = Measure-Command {
     }
 }
 
-Remove-Item -Recurse -Force ".temp"
+if (-not $Debug) {
+    Remove-Item -Recurse -Force ".temp"
+}
 
 Write-Host "Workflow tests completed and environments cleaned up."
 Write-Host "Results:"
