@@ -1,5 +1,6 @@
 param (
-    [string]$pythonPath
+    [string]$pythonPath,
+    [string]$hfToken
 )
 
 if (-not $pythonPath) {
@@ -15,6 +16,13 @@ catch {
     exit 1
 }
 
+if ($hfToken) {
+    [System.Environment]::SetEnvironmentVariable("HF_TOKEN", $hfToken, "Process")
+}
+else {
+    Write-Host "Huggingface token not provided. Olive-ai tests will fail."
+}
+
 function Initialize-VirtualEnv {
     param (
         [string]$envName
@@ -27,7 +35,15 @@ function Initialize-VirtualEnv {
     Write-Host "Activating virtual environment: $envName"
     & $envActivate
 }
-
+function Install-RequirementsFromUrl {
+    param (
+        [string]$url
+    )
+    $reqFile = ".temp\requirements.txt"
+    Invoke-WebRequest -Uri $url -OutFile "$reqFile"
+    $log = pip install -r $reqFile
+    Write-Host $log
+}
 function Install-And-Test-Library {
     param (
         [string[]]$libraries,
@@ -60,7 +76,8 @@ function Test-Library {
     param (
         [string]$library,
         [string]$testScript,
-        [string[]]$libraries
+        [string[]]$libraries,
+        [string]$requirementsUrl
     )
 
     $envName = ".temp/env_$library"
@@ -74,6 +91,10 @@ function Test-Library {
 
     try {
         # Install and test library
+        if ($requirementsUrl) {
+            Install-RequirementsFromUrl -url $requirementsUrl
+        }
+
         $exitCode = Install-And-Test-Library -libraries $libraries -testScript $testScript
 
         if ($exitCode -eq 0) {
@@ -127,14 +148,15 @@ $workflows = [ordered]@{
     #     "testScript" = "tests\workflow\test_torch.py"
     #     "libraries"  = @("torch", "numpy==1.26.4", "onnx")
     # }
-    "onnxruntime" = @{
-        "testScript" = "tests\workflow\test_onnxruntime.py"
-        "libraries"  = @("onnxruntime", "requests", "numpy")
-    }
-    # "olive-ai" = @{
-    #     "testScript" = "tests\workflow\test_olive.py"
-    #     "libraries"  = @("olive-ai")
+    # "onnxruntime" = @{
+    #     "testScript" = "tests\workflow\test_onnxruntime.py"
+    #     "libraries"  = @("onnxruntime", "requests", "numpy")
     # }
+    "olive-ai" = @{
+        "testScript" = "tests\workflow\test_olive.py"
+        "libraries"  = @("numpy==1.26.4", "huggingface_hub[cli]", "git+https://github.com/microsoft/Olive.git@main") # "git+https://github.com/microsoft/TransformerCompression.git@quarot-main")
+        "requirementsUrl" = "https://raw.githubusercontent.com/microsoft/Olive/main/examples/phi3/requirements.txt"
+    }
     # "jax" = @{
     #     "testScript" = "tests\workflow\test_jax.py"
     #     "libraries"  = @("jax")
@@ -147,7 +169,9 @@ $executionTime = Measure-Command {
     foreach ($workflow in $workflows.Keys) {
         $testScript = $workflows[$workflow]["testScript"]
         $libraries = $workflows[$workflow]["libraries"]
-        $result = Test-Library -library $workflow -testScript $testScript -libraries $libraries
+        $requirementsUrl = $workflows[$workflow]["requirementsUrl"]
+
+        $result = Test-Library -library $workflow -testScript $testScript -libraries $libraries -requirementsUrl $requirementsUrl
         $results += [PSCustomObject]@{
             Framework = $result.Library
             Result  = $result.Result
