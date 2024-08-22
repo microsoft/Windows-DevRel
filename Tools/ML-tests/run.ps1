@@ -42,7 +42,8 @@ function Install-RequirementsFromUrl {
     )
     $reqFile = ".temp\requirements.txt"
     Invoke-WebRequest -Uri $url -OutFile "$reqFile"
-    $log = pip install -r $reqFile
+    Write-Host "Installing requirements.txt (This may take a while)"
+    $log = pip install -r $reqFile --disable-pip-version-check
     Write-Host $log
 }
 function Install-And-Test-Library {
@@ -54,11 +55,11 @@ function Install-And-Test-Library {
     # Install required libraries
     foreach ($library in $libraries) {
         Write-Host "Installing $library"
-        $log = pip install $library 
+        $log = pip install $library --disable-pip-version-check
         Write-Host $log
     }
     
-    Write-Host "Running test script: $testScript"
+    Write-Host "Running test script: $testScript (This may take a while)"
     $log = python $testScript
     Write-Host $log
 
@@ -164,7 +165,7 @@ $workflows = [ordered]@{
     }
     # "jax" = @{
     #     "testScript" = "tests\workflow\test_jax.py"
-    #     "libraries"  = @("jax")
+    #     "libraries"  = @("jax", "onnx")
     # }
 }
 
