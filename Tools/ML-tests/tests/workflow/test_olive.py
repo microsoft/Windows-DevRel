@@ -49,9 +49,14 @@ try:
     subprocess.run(["huggingface-cli", "login", "--token", os.getenv("HF_TOKEN")], check=True)
     
 
-    subprocess.run([sys.executable, "phi3.py", "--target", "mobile"], check=True, cwd=destination_folder)
+    log = subprocess.run([sys.executable, "phi3.py", "--target", "mobile",  "--inference", "--prompt", "type exactly this: Hello, World!", "--max_length", "50"], capture_output=True, check=True, text=True, cwd=destination_folder)
+    print(log.stdout)
 
-    sys.exit(0)
+    if log.stdout.find("<|assistant|>\n Hello, World!") != -1:
+        sys.exit(0)
+    else:
+        sys.exit(1)
+
 except Exception as e:
     print(f"Error: {e}")
     sys.exit(1)
