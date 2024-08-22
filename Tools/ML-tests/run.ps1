@@ -118,19 +118,19 @@ function Test-Library {
 	return $result
 }
 
-# $libraries = [ordered]@{
-#     "numpy==1.26.4" = "tests\installation\test_numpy.py"
-#     "numpy==2.0.1"  = "tests\installation\test_numpy.py"
-#     "scipy"         = "tests\installation\test_scipy.py"
-#     "scikit-learn"  = "tests\installation\test_sklearn.py"
-#     "pandas"        = "tests\installation\test_pandas.py"
-#     "matplotlib"    = "tests\installation\test_matplotlib.py"
-# }
+$libraries = [ordered]@{
+    "numpy==1.26.4" = "tests\installation\test_numpy.py"
+    "numpy==2.0.1"  = "tests\installation\test_numpy.py"
+    "scipy"         = "tests\installation\test_scipy.py"
+    "scikit-learn"  = "tests\installation\test_sklearn.py"
+    "pandas"        = "tests\installation\test_pandas.py"
+    "matplotlib"    = "tests\installation\test_matplotlib.py"
+}
 # $executionTime = Measure-Command {
 #     Write-Host "Starting libraries installation test.."
 #     $results = @()
 #     foreach ($library in $libraries.Keys) {
-#         $result = Test-Library -library $library -testScript $libraries[$library]
+#         $result = Test-Library -library $library -libraries $library -testScript $libraries[$library]
 #         $results += [PSCustomObject]@{
 #             Library = $result.Library
 #             Result  = $result.Result
