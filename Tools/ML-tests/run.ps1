@@ -10,10 +10,10 @@ if (-not $pythonPath) {
 
 try {
     $pythonVersion = & $pythonPath --version
-    Write-Host "Using Python version: $pythonVersion"
+    Write-Host "Using Python version: $pythonVersion" -BackgroundColor Green
 }
 catch {
-    Write-Host "Python executable not recognized. Please check the path: $pythonPath"
+    Write-Host "Python executable not recognized. Please check the path: $pythonPath" -BackgroundColor Red
     exit 1
 }
 
@@ -21,7 +21,16 @@ if ($hfToken) {
     [System.Environment]::SetEnvironmentVariable("HF_TOKEN", $hfToken, "Process")
 }
 else {
-    Write-Host "Huggingface token not provided. Olive-ai tests will fail."
+    Write-Host "Huggingface token not provided. Olive-ai tests will fail." -BackgroundColor Red
+}
+
+function Log-Message {
+    param (
+        [string]$message
+    )
+    foreach ($line in $log) {
+        Write-Host $line
+    }
 }
 
 function Initialize-VirtualEnv {
@@ -44,7 +53,7 @@ function Install-RequirementsFromUrl {
     Invoke-WebRequest -Uri $url -OutFile "$reqFile"
     Write-Host "Installing requirements.txt (This may take a while)"
     $log = pip install -r $reqFile --disable-pip-version-check
-    Write-Host $log
+    Log-Message $log
 }
 function Install-And-Test-Library {
     param (
@@ -56,13 +65,13 @@ function Install-And-Test-Library {
     foreach ($library in $libraries) {
         Write-Host "Installing $library"
         $log = pip install $library --disable-pip-version-check
-        Write-Host $log
+        Log-Message $log
     }
     
     Write-Host "Running test script: $testScript (This may take a while)"
     $log = python $testScript
-    Write-Host $log
-
+    Log-Message $log
+    
 	return $LASTEXITCODE
 }
 
@@ -127,26 +136,26 @@ $libraries = [ordered]@{
     "pandas"        = "tests\installation\test_pandas.py"
     "matplotlib"    = "tests\installation\test_matplotlib.py"
 }
-# $executionTime = Measure-Command {
-#     Write-Host "Starting libraries installation test.."
-#     $results = @()
-#     foreach ($library in $libraries.Keys) {
-#         $result = Test-Library -library $library -libraries $library -testScript $libraries[$library]
-#         $results += [PSCustomObject]@{
-#             Library = $result.Library
-#             Result  = $result.Result
-#         }
-#     }
-# }
+$executionTime = Measure-Command {
+    Write-Host "Starting libraries installation test.."
+    $results = @()
+    foreach ($library in $libraries.Keys) {
+        $result = Test-Library -library $library -libraries $library -testScript $libraries[$library]
+        $results += [PSCustomObject]@{
+            Library = $result.Library
+            Result  = $result.Result
+        }
+    }
+}
 
-# if (-not $Debug) {
-#     Remove-Item -Recurse -Force ".temp"
-# }
+if (-not $Debug) {
+    Remove-Item -Recurse -Force ".temp"
+}
 
-# Write-Host "Installation tests completed and environments cleaned up."
-# Write-Host "Results:"
-# $results | Format-Table -Property Library, Result
-# Write-Host "Execution Time: $($executionTime.ToString("hh'h 'mm'm 'ss's'")) or $($executionTime.TotalSeconds) seconds"
+Write-Host "Installation tests completed and environments cleaned up." -BackgroundColor Green
+Write-Host "Results:"
+$results | Format-Table -Property Library, Result
+Write-Host "Execution Time: $($executionTime.ToString("hh'h 'mm'm 'ss's'")) or $($executionTime.TotalSeconds) seconds" -BackgroundColor Green
 
 
 $workflows = [ordered]@{
@@ -160,8 +169,8 @@ $workflows = [ordered]@{
     # }
     "olive-ai" = @{
         "testScript" = "tests\workflow\test_olive.py"
-        "libraries"  = @("numpy==1.26.4", "huggingface_hub[cli]", "git+https://github.com/microsoft/Olive.git@main") # "git+https://github.com/microsoft/TransformerCompression.git@quarot-main")
-        "requirementsUrl" = "https://raw.githubusercontent.com/microsoft/Olive/main/examples/phi3/requirements.txt"
+        "libraries"  = @() #@("numpy==1.26.4", "huggingface_hub[cli]", "git+https://github.com/microsoft/Olive.git@main") # "git+https://github.com/microsoft/TransformerCompression.git@quarot-main")
+        # "requirementsUrl" = "https://raw.githubusercontent.com/microsoft/Olive/main/examples/phi3/requirements.txt"
     }
     # "jax" = @{
     #     "testScript" = "tests\workflow\test_jax.py"
@@ -189,7 +198,7 @@ if (-not $Debug) {
     Remove-Item -Recurse -Force ".temp"
 }
 
-Write-Host "Workflow tests completed and environments cleaned up."
+Write-Host "Workflow tests completed and environments cleaned up." -BackgroundColor Green
 Write-Host "Results:"
 $results | Format-Table -Property Framework, Result
-Write-Host "Execution Time: $($executionTime.ToString("hh'h 'mm'm 'ss's'")) or $($executionTime.TotalSeconds) seconds"
+Write-Host "Execution Time: $($executionTime.ToString("hh'h 'mm'm 'ss's'")) or $($executionTime.TotalSeconds) seconds" -BackgroundColor Green
