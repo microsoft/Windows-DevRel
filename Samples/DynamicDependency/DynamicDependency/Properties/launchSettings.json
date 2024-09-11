@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DynamicDependency (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "DynamicDependency (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
