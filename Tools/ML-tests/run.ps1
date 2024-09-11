@@ -4,6 +4,10 @@ param (
     [switch]$Debug
 )
 
+Start-Transcript -Path "output.log" -Append
+# Write-Host current timestamp
+Write-Host "$(Get-Date -Format "[dd-MM-yyyy HH:mm:ss]")"
+
 if (-not $pythonPath) {
     $pythonPath = "python"
 }
@@ -52,7 +56,7 @@ function Install-RequirementsFromUrl {
     $reqFile = ".temp\requirements.txt"
     Invoke-WebRequest -Uri $url -OutFile "$reqFile"
     Write-Host "Installing requirements.txt (This may take a while)"
-    $log = pip install -r $reqFile --disable-pip-version-check
+    $log = pip install -r $reqFile --disable-pip-version-check --no-cache-dir
     Log-Message $log
 }
 function Install-And-Test-Library {
@@ -64,7 +68,7 @@ function Install-And-Test-Library {
     # Install required libraries
     foreach ($library in $libraries) {
         Write-Host "Installing $library"
-        $log = pip install $library --disable-pip-version-check
+        $log = pip install $library --disable-pip-version-check --no-cache-dir
         Log-Message $log
     }
     
@@ -159,23 +163,23 @@ Write-Host "Execution Time: $($executionTime.ToString("hh'h 'mm'm 'ss's'")) or $
 
 
 $workflows = [ordered]@{
-    # "torch" = @{
-    #     "testScript" = "tests\workflow\test_torch.py"
-    #     "libraries"  = @("torch", "numpy==1.26.4", "onnx")
-    # }
-    # "onnxruntime" = @{
-    #     "testScript" = "tests\workflow\test_onnxruntime.py"
-    #     "libraries"  = @("onnxruntime", "requests", "numpy")
-    # }
+    "torch" = @{
+        "testScript" = "tests\workflow\test_torch.py"
+        "libraries"  = @("torch", "numpy==1.26.4", "onnx")
+    }
+    "onnxruntime" = @{
+        "testScript" = "tests\workflow\test_onnxruntime.py"
+        "libraries"  = @("onnxruntime", "requests", "numpy")
+    }
     "olive-ai" = @{
         "testScript" = "tests\workflow\test_olive.py"
-        "libraries"  = @() #@("numpy==1.26.4", "huggingface_hub[cli]", "git+https://github.com/microsoft/Olive.git@main") # "git+https://github.com/microsoft/TransformerCompression.git@quarot-main")
-        # "requirementsUrl" = "https://raw.githubusercontent.com/microsoft/Olive/main/examples/phi3/requirements.txt"
+        "libraries"  = @("numpy==1.26.4", "huggingface_hub[cli]", "git+https://github.com/microsoft/Olive.git@main") # "git+https://github.com/microsoft/TransformerCompression.git@quarot-main")
+        "requirementsUrl" = "https://raw.githubusercontent.com/microsoft/Olive/main/examples/phi3/requirements.txt"
     }
-    # "jax" = @{
-    #     "testScript" = "tests\workflow\test_jax.py"
-    #     "libraries"  = @("jax", "onnx")
-    # }
+    "jax" = @{
+        "testScript" = "tests\workflow\test_jax.py"
+        "libraries"  = @("jax", "onnx")
+    }
 }
 
 $executionTime = Measure-Command {
@@ -202,3 +206,5 @@ Write-Host "Workflow tests completed and environments cleaned up." -BackgroundCo
 Write-Host "Results:"
 $results | Format-Table -Property Framework, Result
 Write-Host "Execution Time: $($executionTime.ToString("hh'h 'mm'm 'ss's'")) or $($executionTime.TotalSeconds) seconds" -BackgroundColor Green
+
+Stop-Transcript
