@@ -1,12 +1,15 @@
 param (
     [string]$pythonPath,
     [string]$hfToken,
-    [switch]$Debug
+    [switch]$Debug,
+    [string]$useCacheDir
 )
 
-Start-Transcript -Path "output.log" -Append
+$date = Get-Date -Format "dd-MM-yyyy_HH-mm-ss"
+
+Start-Transcript -Path "output.$date.log" -Append
 # Write-Host current timestamp
-Write-Host "$(Get-Date -Format "[dd-MM-yyyy HH:mm:ss]")"
+Write-Host "$date"
 
 if (-not $pythonPath) {
     $pythonPath = "python"
@@ -28,7 +31,7 @@ else {
     Write-Host "Huggingface token not provided. Olive-ai tests will fail." -BackgroundColor Red
 }
 
-function Log-Message {
+function Write-LogMessage {
     param (
         [string]$message
     )
@@ -56,8 +59,14 @@ function Install-RequirementsFromUrl {
     $reqFile = ".temp\requirements.txt"
     Invoke-WebRequest -Uri $url -OutFile "$reqFile"
     Write-Host "Installing requirements.txt (This may take a while)"
-    $log = pip install -r $reqFile --disable-pip-version-check --no-cache-dir
-    Log-Message $log
+
+    $command = "pip install -r $reqFile --disable-pip-version-check"
+    if ($useCacheDir -ne $true) {
+        $command += " --no-cache-dir"
+    }
+
+    $log = Invoke-Expression "$command 2>&1"
+    Write-LogMessage $log
 }
 function Install-And-Test-Library {
     param (
@@ -68,13 +77,19 @@ function Install-And-Test-Library {
     # Install required libraries
     foreach ($library in $libraries) {
         Write-Host "Installing $library"
-        $log = pip install $library --disable-pip-version-check --no-cache-dir
-        Log-Message $log
+
+        $command = "pip install $library --disable-pip-version-check"
+        if ($useCacheDir -ne $true) {
+            $command += " --no-cache-dir"
+        }
+
+        $log = Invoke-Expression "$command 2>&1"
+        Write-LogMessage $log
     }
     
     Write-Host "Running test script: $testScript (This may take a while)"
     $log = python $testScript
-    Log-Message $log
+    Write-LogMessage $log
     
 	return $LASTEXITCODE
 }
@@ -84,6 +99,15 @@ function Remove-VirtualEnv {
         [string]$envName
     )
     Write-Host "Removing virtual environment: $envName"
+    try {
+        Get-ChildItem -Recurse .\$envName | ForEach-Object {
+            if ($_.PSIsContainer) {
+                $_ | Remove-Item -Recurse -Force
+            } else {
+                $_.Delete()
+            }
+        }
+    } catch {}
     Remove-Item -Recurse -Force .\$envName
 }
 
@@ -124,7 +148,9 @@ function Test-Library {
             # Deactivate and Cleanup virtual environment
             Write-Host "Deactivating virtual environment: $envName"
             & deactivate
-            
+
+            Start-Sleep -Seconds 3
+
             Remove-VirtualEnv -envName $envName
         }
     }
@@ -135,6 +161,7 @@ function Test-Library {
 $libraries = [ordered]@{
     "numpy==1.26.4" = "tests\installation\test_numpy.py"
     "numpy==2.0.1"  = "tests\installation\test_numpy.py"
+    "onnx"          = "tests\installation\test_onnx.py"
     "scipy"         = "tests\installation\test_scipy.py"
     "scikit-learn"  = "tests\installation\test_sklearn.py"
     "pandas"        = "tests\installation\test_pandas.py"

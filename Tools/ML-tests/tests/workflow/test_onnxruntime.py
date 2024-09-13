@@ -1,7 +1,12 @@
-import sys
-import onnxruntime
-import numpy as np
-import requests
+try:
+    import sys
+    import onnxruntime
+    import numpy as np
+    import requests
+
+except Exception as e:
+    print(f"ERROR:{e}")
+    sys.exit(1)
 
 # Function to download the ONNX model
 def download_model(url, model_path):
