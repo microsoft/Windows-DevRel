@@ -2,7 +2,9 @@ param (
     [string]$pythonPath,
     [string]$hfToken,
     [switch]$Debug,
-    [string]$useCacheDir
+    [string]$useCacheDir,
+    [string[]]$librariesToTest,
+    [string[]]$workflowsToTest 
 )
 
 $date = Get-Date -Format "dd-MM-yyyy_HH-mm-ss"
@@ -167,27 +169,42 @@ $libraries = [ordered]@{
     "pandas"        = "tests\installation\test_pandas.py"
     "matplotlib"    = "tests\installation\test_matplotlib.py"
 }
-$executionTime = Measure-Command {
-    Write-Host "Starting libraries installation test.."
-    $results = @()
-    foreach ($library in $libraries.Keys) {
-        $result = Test-Library -library $library -libraries $library -testScript $libraries[$library]
-        $results += [PSCustomObject]@{
-            Library = $result.Library
-            Result  = $result.Result
+
+if (-not $PSBoundParameters.ContainsKey('librariesToTest') -or $librariesToTest.Count -gt 0) {
+    if ($librariesToTest -and $librariesToTest.Count -ge 0) {
+        $librariesToRun = @{}
+        foreach ($library in $librariesToTest) {
+            if ($libraries.Contains($library)) {
+                $librariesToRun[$library] = $libraries[$library]
+            } else {
+                Write-Host "Library $library not found in predefined list" -BackgroundColor Yellow
+            }
+        }
+    } else {
+        $librariesToRun = $libraries
+    }
+
+    $executionTime = Measure-Command {
+        Write-Host "Starting libraries installation test.."
+        $results = @()
+        foreach ($library in $librariesToRun.Keys) {
+            $result = Test-Library -library $library -libraries $library -testScript $libraries[$library]
+            $results += [PSCustomObject]@{
+                Library = $result.Library
+                Result  = $result.Result
+            }
         }
     }
+
+    if (-not $Debug) {
+        Remove-Item -Recurse -Force ".temp"
+    }
+
+    Write-Host "Installation tests completed and environments cleaned up." -BackgroundColor Green
+    Write-Host "Results:"
+    $results | Format-Table -Property Library, Result
+    Write-Host "Execution Time: $($executionTime.ToString("hh'h 'mm'm 'ss's'")) or $($executionTime.TotalSeconds) seconds" -BackgroundColor Green
 }
-
-if (-not $Debug) {
-    Remove-Item -Recurse -Force ".temp"
-}
-
-Write-Host "Installation tests completed and environments cleaned up." -BackgroundColor Green
-Write-Host "Results:"
-$results | Format-Table -Property Library, Result
-Write-Host "Execution Time: $($executionTime.ToString("hh'h 'mm'm 'ss's'")) or $($executionTime.TotalSeconds) seconds" -BackgroundColor Green
-
 
 $workflows = [ordered]@{
     "torch" = @{
@@ -209,29 +226,44 @@ $workflows = [ordered]@{
     }
 }
 
-$executionTime = Measure-Command {
-    Write-Host "Starting workflow test.."
-    $results = @()
-    foreach ($workflow in $workflows.Keys) {
-        $testScript = $workflows[$workflow]["testScript"]
-        $libraries = $workflows[$workflow]["libraries"]
-        $requirementsUrl = $workflows[$workflow]["requirementsUrl"]
+if (-not $PSBoundParameters.ContainsKey('workflowsToTest') -or $workflowsToTest.Count -gt 0) {
+    if ($workflowsToTest -and $workflowsToTest.Count -gt 0) {
+        $workflowsToRun = @{}
+        foreach ($workflow in $workflowsToTest) {
+            if ($workflows.Contains($workflow)) {
+                $workflowsToRun[$workflow] = $workflows[$workflow]
+            } else {
+                Write-Host "Workflow $workflow not found in predefined list" -BackgroundColor Yellow
+            }
+        }
+    } else {
+        $workflowsToRun = $workflows
+    }
 
-        $result = Test-Library -library $workflow -testScript $testScript -libraries $libraries -requirementsUrl $requirementsUrl
-        $results += [PSCustomObject]@{
-            Framework = $result.Library
-            Result  = $result.Result
+    $executionTime = Measure-Command {
+        Write-Host "Starting workflow test.."
+        $results = @()
+        foreach ($workflow in $workflowsToRun.Keys) {
+            $testScript = $workflows[$workflow]["testScript"]
+            $libraries = $workflows[$workflow]["libraries"]
+            $requirementsUrl = $workflows[$workflow]["requirementsUrl"]
+
+            $result = Test-Library -library $workflow -testScript $testScript -libraries $libraries -requirementsUrl $requirementsUrl
+            $results += [PSCustomObject]@{
+                Framework = $result.Library
+                Result  = $result.Result
+            }
         }
     }
-}
 
-if (-not $Debug) {
-    Remove-Item -Recurse -Force ".temp"
-}
+    if (-not $Debug) {
+        Remove-Item -Recurse -Force ".temp"
+    }
 
-Write-Host "Workflow tests completed and environments cleaned up." -BackgroundColor Green
-Write-Host "Results:"
-$results | Format-Table -Property Framework, Result
-Write-Host "Execution Time: $($executionTime.ToString("hh'h 'mm'm 'ss's'")) or $($executionTime.TotalSeconds) seconds" -BackgroundColor Green
+    Write-Host "Workflow tests completed and environments cleaned up." -BackgroundColor Green
+    Write-Host "Results:"
+    $results | Format-Table -Property Framework, Result
+    Write-Host "Execution Time: $($executionTime.ToString("hh'h 'mm'm 'ss's'")) or $($executionTime.TotalSeconds) seconds" -BackgroundColor Green
+}
 
 Stop-Transcript
