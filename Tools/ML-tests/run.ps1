@@ -7,24 +7,24 @@ param (
     [string[]]$workflowsToTest 
 )
 
-$date = Get-Date -Format "dd-MM-yyyy_HH-mm-ss"
-
-Start-Transcript -Path "output.$date.log" -Append
-# Write-Host current timestamp
-Write-Host "$date"
-
 if (-not $pythonPath) {
     $pythonPath = "python"
 }
 
 try {
-    $pythonVersion = & $pythonPath --version
-    Write-Host "Using Python version: $pythonVersion" -BackgroundColor Green
+    $architecture = & $pythonPath "architecture.py"
+    Write-Host "Python architecture: $architecture" -BackgroundColor Blue
 }
 catch {
     Write-Host "Python executable not recognized. Please check the path: $pythonPath" -BackgroundColor Red
-    exit 1
 }
+
+$date = Get-Date -Format "dd-MM-yyyy_HH-mm-ss"
+$transcriptFile = "output_$($architecture)_$date.log"
+
+Start-Transcript -Path $transcriptFile -Append
+
+Write-Host "Using Python (processor/arch/version): $architecture" -BackgroundColor Blue
 
 if ($hfToken) {
     [System.Environment]::SetEnvironmentVariable("HF_TOKEN", $hfToken, "Process")
@@ -170,6 +170,7 @@ $libraries = [ordered]@{
     "matplotlib"    = "tests\installation\test_matplotlib.py"
 }
 
+$libraryResults = @()
 if (-not $PSBoundParameters.ContainsKey('librariesToTest') -or $librariesToTest.Count -gt 0) {
     if ($librariesToTest -and $librariesToTest.Count -ge 0) {
         $librariesToRun = @{}
@@ -184,12 +185,12 @@ if (-not $PSBoundParameters.ContainsKey('librariesToTest') -or $librariesToTest.
         $librariesToRun = $libraries
     }
 
-    $executionTime = Measure-Command {
-        Write-Host "Starting libraries installation test.."
-        $results = @()
+    $libraryExecutionTime = Measure-Command {
+        Write-Host "Starting libraries installation test..." -BackgroundColor Green
+     
         foreach ($library in $librariesToRun.Keys) {
             $result = Test-Library -library $library -libraries $library -testScript $libraries[$library]
-            $results += [PSCustomObject]@{
+            $libraryResults += [PSCustomObject]@{
                 Library = $result.Library
                 Result  = $result.Result
             }
@@ -199,11 +200,6 @@ if (-not $PSBoundParameters.ContainsKey('librariesToTest') -or $librariesToTest.
     if (-not $Debug) {
         Remove-Item -Recurse -Force ".temp"
     }
-
-    Write-Host "Installation tests completed and environments cleaned up." -BackgroundColor Green
-    Write-Host "Results:"
-    $results | Format-Table -Property Library, Result
-    Write-Host "Execution Time: $($executionTime.ToString("hh'h 'mm'm 'ss's'")) or $($executionTime.TotalSeconds) seconds" -BackgroundColor Green
 }
 
 $workflows = [ordered]@{
@@ -226,6 +222,7 @@ $workflows = [ordered]@{
     }
 }
 
+$workflowResults = @()
 if (-not $PSBoundParameters.ContainsKey('workflowsToTest') -or $workflowsToTest.Count -gt 0) {
     if ($workflowsToTest -and $workflowsToTest.Count -gt 0) {
         $workflowsToRun = @{}
@@ -240,16 +237,16 @@ if (-not $PSBoundParameters.ContainsKey('workflowsToTest') -or $workflowsToTest.
         $workflowsToRun = $workflows
     }
 
-    $executionTime = Measure-Command {
-        Write-Host "Starting workflow test.."
-        $results = @()
+    $workflowExecutionTime = Measure-Command {
+        Write-Host "Starting workflow tests..."  -BackgroundColor Green
+        
         foreach ($workflow in $workflowsToRun.Keys) {
             $testScript = $workflows[$workflow]["testScript"]
             $libraries = $workflows[$workflow]["libraries"]
             $requirementsUrl = $workflows[$workflow]["requirementsUrl"]
 
             $result = Test-Library -library $workflow -testScript $testScript -libraries $libraries -requirementsUrl $requirementsUrl
-            $results += [PSCustomObject]@{
+            $workflowResults += [PSCustomObject]@{
                 Framework = $result.Library
                 Result  = $result.Result
             }
@@ -259,11 +256,28 @@ if (-not $PSBoundParameters.ContainsKey('workflowsToTest') -or $workflowsToTest.
     if (-not $Debug) {
         Remove-Item -Recurse -Force ".temp"
     }
+}
 
-    Write-Host "Workflow tests completed and environments cleaned up." -BackgroundColor Green
-    Write-Host "Results:"
-    $results | Format-Table -Property Framework, Result
-    Write-Host "Execution Time: $($executionTime.ToString("hh'h 'mm'm 'ss's'")) or $($executionTime.TotalSeconds) seconds" -BackgroundColor Green
+if ($workflowResults.Count -gt 0 -or $libraryResults.Count -gt 0) {
+    
+    Write-Host "Tests completed and environments cleaned up." -BackgroundColor Green
+    Write-Host
+
+    if ($workflowResults.Count -gt 0) {
+        Write-Host "Workflows Results:"
+        $workflowResults | Format-Table -Property Framework, Result
+        Write-Host "Execution Time: $($workflowExecutionTime.ToString("hh'h 'mm'm 'ss's'")) or $($workflowExecutionTime.TotalSeconds) seconds" -BackgroundColor Blue
+    }
+
+    if ($workflowResults.Count -gt 0 -and $libraryResults.Count -gt 0) {
+        Write-Host
+    }
+
+    if ($libraryResults.Count -gt 0) {
+        Write-Host "Library Results:"
+        $libraryResults | Format-Table -Property Library, Result
+        Write-Host "Execution Time: $($libraryExecutionTime.ToString("hh'h 'mm'm 'ss's'")) or $($libraryExecutionTime.TotalSeconds) seconds" -BackgroundColor Blue
+    }
 }
 
 Stop-Transcript
