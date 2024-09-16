@@ -13,7 +13,6 @@ if (-not $pythonPath) {
 
 try {
     $architecture = & $pythonPath "architecture.py"
-    Write-Host "Python architecture: $architecture" -BackgroundColor Blue
 }
 catch {
     Write-Host "Python executable not recognized. Please check the path: $pythonPath" -BackgroundColor Red
@@ -104,13 +103,13 @@ function Remove-VirtualEnv {
     try {
         Get-ChildItem -Recurse .\$envName | ForEach-Object {
             if ($_.PSIsContainer) {
-                $_ | Remove-Item -Recurse -Force
+                $_ | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
             } else {
                 $_.Delete()
             }
         }
     } catch {}
-    Remove-Item -Recurse -Force .\$envName
+    Remove-Item -Recurse -Force .\$envName -ErrorAction SilentlyContinue
 }
 
 function Test-Library {
@@ -198,7 +197,7 @@ if (-not $PSBoundParameters.ContainsKey('librariesToTest') -or $librariesToTest.
     }
 
     if (-not $Debug) {
-        Remove-Item -Recurse -Force ".temp"
+        Remove-Item -Recurse -Force ".temp" -ErrorAction SilentlyContinue
     }
 }
 
@@ -254,7 +253,7 @@ if (-not $PSBoundParameters.ContainsKey('workflowsToTest') -or $workflowsToTest.
     }
 
     if (-not $Debug) {
-        Remove-Item -Recurse -Force ".temp"
+        Remove-Item -Recurse -Force ".temp" -ErrorAction SilentlyContinue
     }
 }
 
