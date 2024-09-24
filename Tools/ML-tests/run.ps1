@@ -206,6 +206,10 @@ $workflows = [ordered]@{
         "testScript" = "tests\workflow\test_torch.py"
         "libraries"  = @("torch", "numpy==1.26.4", "onnx")
     }
+    "tensorflow" = @{
+        "testScript" = "tests\workflow\test_tensorflow.py"
+        "libraries"  = @("tensorflow", "numpy")
+    }
     "onnxruntime" = @{
         "testScript" = "tests\workflow\test_onnxruntime.py"
         "libraries"  = @("onnxruntime", "requests", "numpy")
