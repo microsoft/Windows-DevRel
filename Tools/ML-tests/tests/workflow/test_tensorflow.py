@@ -1,5 +1,12 @@
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+import os
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
 import tensorflow as tf
 import numpy as np
+
+
 
 # Ensure TensorFlow is running on CPU
 tf.config.set_visible_devices([], 'GPU')
@@ -17,7 +24,7 @@ y_train = tf.keras.utils.to_categorical(y_train, num_classes)
 
 # Create a simple feedforward neural network model
 model = tf.keras.Sequential([
-    tf.keras.layers.InputLayer(input_shape=(num_features,)),
+    tf.keras.layers.InputLayer(shape=(num_features,)),
     tf.keras.layers.Dense(64, activation='relu'),
     tf.keras.layers.Dense(32, activation='relu'),
     tf.keras.layers.Dense(num_classes, activation='softmax')
@@ -29,18 +36,18 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 # Train the model
-model.fit(X_train, y_train, epochs=10, batch_size=32, validation_split=0.2)
+model.fit(X_train, y_train, epochs=10, batch_size=32, validation_split=0.2, verbose=0)
 
 # Evaluate the model
 loss, accuracy = model.evaluate(X_train, y_train)
 print(f"Loss: {loss:.4f}, Accuracy: {accuracy:.4f}")
 
 # Save the model
-model.save('dummy_model.h5')
+model.save('.temp/dummy_model.keras')
 
 # Load the model (for demonstration purposes)
-loaded_model = tf.keras.models.load_model('dummy_model.h5')
+loaded_model = tf.keras.models.load_model('.temp/dummy_model.keras')
 
 # Verify the loaded model
-loss, accuracy = loaded_model.evaluate(X_train, y_train)
+loss, accuracy = loaded_model.evaluate(X_train, y_train, verbose=0)
 print(f"Loaded Model - Loss: {loss:.4f}, Accuracy: {accuracy:.4f}")
