@@ -19,7 +19,7 @@ catch {
 }
 
 $date = Get-Date -Format "dd-MM-yyyy_HH-mm-ss"
-$transcriptFile = "output_$($architecture)_$date.log"
+$transcriptFile = "log/output_$($architecture)_$date.log"
 
 Start-Transcript -Path $transcriptFile -Append
 

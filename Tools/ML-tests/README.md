@@ -1,6 +1,6 @@
 Run from PowerShell Admin:
 ```powershell
-.\run.ps1 -pythonPath "C:\Program Files\Python312\python.exe" -hfToken "TOKEN" -Debug
+.\compat_run.ps1 -pythonPath "C:\Program Files\Python312\python.exe" -hfToken "TOKEN" -Debug
 ```
 
 ### Typical python path
@@ -26,9 +26,14 @@ Run from PowerShell Admin:
 
 #### skip all tests
 ```powershell
-.\run.ps1 -pythonPath "C:\Program Files\Python312\python.exe"  -librariesToTest @() -workflowsToTest @()
+.\compat_run.ps1 -pythonPath "C:\Program Files\Python312\python.exe"  -librariesToTest @() -workflowsToTest @()
 ```
 #### run some tests
 ```powershell
-.\run.ps1 -pythonPath "C:\Program Files\Python312\python.exe"  -librariesToTest "pandas", "scipy" -workflowsToTest "torch", "olive"
+.\compat_run.ps1 -pythonPath "C:\Program Files\Python312\python.exe"  -librariesToTest "pandas", "scipy" -workflowsToTest "torch", "olive"
+```
+
+### performance benchmark
+```powershell
+.\perf_run.ps1 -pythonPath1 "C:\Program Files\Python312\python.exe" -pythonPath2 "C:\Users\AppData\Local\Programs\Python\Python312-arm64\python.exe"
 ```
