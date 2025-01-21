@@ -90,7 +90,7 @@ try {
         )
         Write-Host "Running performance tests..."
 
-        $tests = "async_tree_cpu_io_mixed,async_tree_eager_memoization,scimark,sympy,python_startup,gc_collect,gc_traversal"
+        $tests = "async_tree_cpu_io_mixed,async_tree_eager_memoization,scimark,sympy,python_startup,gc_collect,gc_traversal,float"
         $command = "python -m pyperformance run --benchmarks=$tests -o $outputFile"
     
         $log = Invoke-Expression "$command 2>&1"
@@ -106,9 +106,11 @@ try {
         )
 
 		Write-Host "Comparing performance results..."
-        $compareCommand = "python -m pyperformance compare $baselineFile $changedFile"
+        $compareCommand = "python -m pyperformance compare $baselineFile $changedFile -O table --csv log\perf_run_$date.csv"
         $log = Invoke-Expression "$compareCommand 2>&1"
         Write-LogMessage $log
+        
+        $log | Out-File -FilePath "log\perf_run_$date.txt" -Append
     }
 
     Initialize-VirtualEnv -envName $envName1 -pythonPath $pythonPath1
