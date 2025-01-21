@@ -80,7 +80,7 @@ try {
 
     function Install-PyPerformance {
         Write-Host "Installing pyperformance..."
-        $log = Invoke-Expression "pip install pyperformance --disable-pip-version-check 2>&1"
+        $log = Invoke-Expression "python -m pip install pyperformance --disable-pip-version-check 2>&1"
         Write-LogMessage $log
     }
 
