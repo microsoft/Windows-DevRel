@@ -24,6 +24,8 @@ try {
 
 	$py1File = "log/py1_$($architecture1)_$date.json"
 	$py2File = "log/py2_$($architecture2)_$date.json"
+    $csvFile = "log/perf_run_$date.csv"
+    $logFile = "log/perf_run_$date.txt"
 
 	function Write-LogMessage {
 		param (
@@ -89,8 +91,10 @@ try {
             [string]$outputFile
         )
         Write-Host "Running performance tests..."
-
-        $tests = "async_tree_cpu_io_mixed,async_tree_eager_memoization,scimark,sympy,python_startup,gc_collect,gc_traversal,float"
+        
+        # Change this values to run different tests
+        #$tests = "async_tree_cpu_io_mixed,async_tree_eager_memoization,scimark,sympy,python_startup,gc_collect,float"
+        $tests = "-asyncio_websockets"
         $command = "python -m pyperformance run --benchmarks=$tests -o $outputFile"
     
         $log = Invoke-Expression "$command 2>&1"
@@ -106,11 +110,28 @@ try {
         )
 
 		Write-Host "Comparing performance results..."
-        $compareCommand = "python -m pyperformance compare $baselineFile $changedFile -O table --csv log\perf_run_$date.csv"
+        $compareCommand = "python -m pyperformance compare $baselineFile $changedFile -O table --csv $csvFile"
         $log = Invoke-Expression "$compareCommand 2>&1"
         Write-LogMessage $log
         
-        $log | Out-File -FilePath "log\perf_run_$date.txt" -Append
+        $log | Out-File -FilePath $logFile -Append
+
+        $data = Import-Csv -Path $csvFile
+
+        $totalDifference = 0
+        $count = 0
+
+        foreach ($row in $data) {
+            $baseValue = [float]$row.Base
+            $changedValue = [float]$row.Changed
+
+            $difference = ($baseValue - $changedValue) / $baseValue
+            $totalDifference += $difference
+            $count++
+        }
+
+        $averageDifference = ($totalDifference / $count * 100) | ForEach-Object { "{0:N2}" -f $_ }
+        Write-Output "The avg speed gain: $averageDifference%" | Out-File -FilePath $logFile -Append
     }
 
     Initialize-VirtualEnv -envName $envName1 -pythonPath $pythonPath1
