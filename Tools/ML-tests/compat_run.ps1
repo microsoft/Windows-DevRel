@@ -204,7 +204,8 @@ if (-not $PSBoundParameters.ContainsKey('librariesToTest') -or $librariesToTest.
 $workflows = [ordered]@{
     "torch" = @{
         "testScript" = "tests\workflow\test_torch.py"
-        "libraries"  = @("torch", "numpy==1.26.4", "onnx")
+        # you can use internal wheel to test workflow on arm - "X:\Python\wheels\apl\torch-2.7.0-cp312-cp312-win_arm64.whl"
+        "libraries"  = @("torch", "numpy==1.26.4", "matplotlib")
     }
     "tensorflow" = @{
         "testScript" = "tests\workflow\test_tensorflow.py"
@@ -212,16 +213,18 @@ $workflows = [ordered]@{
     }
     "onnxruntime" = @{
         "testScript" = "tests\workflow\test_onnxruntime.py"
+        # you have to use onnxruntime-qnn for arm64
         "libraries"  = @("onnxruntime", "requests", "numpy")
     }
     "olive-ai" = @{
         "testScript" = "tests\workflow\test_olive.py"
-        "libraries"  = @("numpy==1.26.4", "huggingface_hub[cli]", "git+https://github.com/microsoft/Olive.git@main") # "git+https://github.com/microsoft/TransformerCompression.git@quarot-main")
+        # you have to use onnxruntime-qnn for arm64, as well as internal torch "X:\Python\wheels\apl\torch-2.7.0-cp312-cp312-win_arm64.whl"
+        "libraries"  = @("onnxruntime","numpy==1.26.4", "huggingface_hub[cli]", "git+https://github.com/microsoft/Olive.git@main") # "git+https://github.com/microsoft/TransformerCompression.git@quarot-main")
         "requirementsUrl" = "https://raw.githubusercontent.com/microsoft/Olive/main/examples/phi3/requirements.txt"
     }
     "jax" = @{
         "testScript" = "tests\workflow\test_jax.py"
-        "libraries"  = @("jax", "onnx")
+        "libraries"  = @("jax", "jaxlib", "numpy")
     }
 }
 
