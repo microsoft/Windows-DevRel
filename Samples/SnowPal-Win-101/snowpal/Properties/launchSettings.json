@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "snowpal (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "snowpal (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
