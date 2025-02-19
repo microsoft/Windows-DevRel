@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="snowpal.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:snowpal"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="snowpal">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" DataContext="{x:Bind ViewModel}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="50*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Title -->
+        <TextBlock Text="SnowPal" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="2"/>
+
+        <!-- Hangman Drawing -->
+        <Image x:Name="hangmanImage" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,10,10,10" Source="{Binding HangmanImageSource}"/>
+
+        <!-- Guesses Left Display -->
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
+            <TextBlock Text="Guesses Left: " Style="{StaticResource GuessesLeftTextBlockStyle}"/>
+            <TextBlock Text="{Binding GuessesLeft}" Style="{StaticResource GuessesLeftTextBlockStyle}"/>
+        </StackPanel>
+
+        <!-- Alphabet Buttons -->
+        <Grid x:Name="AlphabetButtonsGrid" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,50,10,10" Loaded="Grid_Loaded" KeyUp="Grid_KeyUp">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Alphabet Buttons -->
+            <Button Content="A" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="0" Grid.Column="0" Click="OnLetterButtonClick"/>
+            <Button Content="B" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="0" Grid.Column="1" Click="OnLetterButtonClick"/>
+            <Button Content="C" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="0" Grid.Column="2" Click="OnLetterButtonClick"/>
+            <Button Content="D" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="0" Grid.Column="3" Click="OnLetterButtonClick"/>
+            <Button Content="E" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="0" Grid.Column="4" Click="OnLetterButtonClick"/>
+            <Button Content="F" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="1" Grid.Column="0" Click="OnLetterButtonClick"/>
+            <Button Content="G" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="1" Grid.Column="1" Click="OnLetterButtonClick"/>
+            <Button Content="H" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="1" Grid.Column="2" Click="OnLetterButtonClick"/>
+            <Button Content="I" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="1" Grid.Column="3" Click="OnLetterButtonClick"/>
+            <Button Content="J" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="1" Grid.Column="4" Click="OnLetterButtonClick"/>
+            <Button Content="K" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="2" Grid.Column="0" Click="OnLetterButtonClick"/>
+            <Button Content="L" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="2" Grid.Column="1" Click="OnLetterButtonClick"/>
+            <Button Content="M" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="2" Grid.Column="2" Click="OnLetterButtonClick"/>
+            <Button Content="N" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="2" Grid.Column="3" Click="OnLetterButtonClick"/>
+            <Button Content="O" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="2" Grid.Column="4" Click="OnLetterButtonClick"/>
+            <Button Content="P" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="3" Grid.Column="0" Click="OnLetterButtonClick"/>
+            <Button Content="Q" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="3" Grid.Column="1" Click="OnLetterButtonClick"/>
+            <Button Content="R" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="3" Grid.Column="2" Click="OnLetterButtonClick"/>
+            <Button Content="S" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="3" Grid.Column="3" Click="OnLetterButtonClick"/>
+            <Button Content="T" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="3" Grid.Column="4" Click="OnLetterButtonClick"/>
+            <Button Content="U" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="4" Grid.Column="0" Click="OnLetterButtonClick"/>
+            <Button Content="V" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="4" Grid.Column="1" Click="OnLetterButtonClick"/>
+            <Button Content="W" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="4" Grid.Column="2" Click="OnLetterButtonClick"/>
+            <Button Content="X" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="4" Grid.Column="3" Click="OnLetterButtonClick"/>
+            <Button Content="Y" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="4" Grid.Column="4" Click="OnLetterButtonClick"/>
+            <Button Content="Z" Style="{StaticResource AlphabetButtonStyle}" Grid.Row="5" Grid.Column="0" Click="OnLetterButtonClick"/>
+        </Grid>
+
+        <!-- Word Display Area -->
+        <TextBlock x:Name="Word" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding WordDisplay}" Style="{StaticResource WordDisplayTextBlockStyle}"/>
+
+        <!-- ContentDialog for messages -->
+        <ContentDialog x:Name="MessageDialog" CloseButtonText="OK"/>
+    </Grid>
+</Window>
