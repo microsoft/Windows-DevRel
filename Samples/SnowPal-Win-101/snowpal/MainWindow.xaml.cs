@@ -20,7 +20,7 @@ namespace snowpal
         {
             this.InitializeComponent();
             ViewModel = new SnowpalViewModel();
-            AlphabetButtonsListView.ItemsSource = GenerateAlphabet();
+            AlphabetButtonsGridView.ItemsSource = GenerateAlphabet();
         }
 
 
@@ -28,7 +28,7 @@ namespace snowpal
         // TODO: is there way to handle this on the window instead? 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            AlphabetButtonsListView.Focus(FocusState.Programmatic);
+            AlphabetButtonsGridView.Focus(FocusState.Programmatic);
         }
 
         // Method to handle key up events
@@ -51,12 +51,12 @@ namespace snowpal
         // Method to process the guessed letter
         private void EnterGuess(string letter)
         {
-            var alphabet = (List<string>)AlphabetButtonsListView.ItemsSource;
+            var alphabet = (List<string>)AlphabetButtonsGridView.ItemsSource;
             for (int i = 0; i < alphabet.Count; i++)
             {
                 if (alphabet[i].ToUpper() == letter)
                 {
-                    var container = (ListViewItem)AlphabetButtonsListView.ContainerFromIndex(i);
+                    var container = (GridViewItem)AlphabetButtonsGridView.ContainerFromIndex(i);
                     var button = (Button)container.ContentTemplateRoot;
                     if (button != null && button.IsEnabled)
                     {
@@ -99,10 +99,10 @@ namespace snowpal
         // Method to reset the alphabet buttons for a new game
         private void ResetAlphabetButtons()
         {
-            var alphabet = (List<string>)AlphabetButtonsListView.ItemsSource;
+            var alphabet = (List<string>)AlphabetButtonsGridView.ItemsSource;
             for (int i = 0; i < alphabet.Count; i++)
             {
-                var container = (ListViewItem)AlphabetButtonsListView.ContainerFromIndex(i);
+                var container = (GridViewItem)AlphabetButtonsGridView.ContainerFromIndex(i);
                 var button = (Button)container.ContentTemplateRoot;
                 if (button != null)
                 {

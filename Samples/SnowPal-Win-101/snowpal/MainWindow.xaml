@@ -34,22 +34,22 @@
         </StackPanel>
 
         <!-- Alphabet Buttons -->
-        <ListView x:Name="AlphabetButtonsListView" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,50,10,10" Loaded="Grid_Loaded" KeyUp="Grid_KeyUp"
+        <GridView x:Name="AlphabetButtonsGridView" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,50,10,10" Loaded="Grid_Loaded" KeyUp="Grid_KeyUp"
                   ScrollViewer.HorizontalScrollMode="Enabled"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
                   ScrollViewer.VerticalScrollMode="Disabled"
                   ScrollViewer.VerticalScrollBarVisibility="Hidden">
-            <ListView.ItemsPanel>
+            <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="5"/>
                 </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
+            </GridView.ItemsPanel>
+            <GridView.ItemTemplate>
                 <DataTemplate x:DataType="x:String">
                     <Button Content="{x:Bind}" Style="{StaticResource AlphabetButtonStyle}" Click="OnLetterButtonClick"/>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </GridView.ItemTemplate>
+        </GridView>
 
         <!-- Word Display Area -->
         <TextBlock x:Name="Word" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding WordDisplay}" Style="{StaticResource WordDisplayTextBlockStyle}"/>
