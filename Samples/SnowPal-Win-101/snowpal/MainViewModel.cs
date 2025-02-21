@@ -1,56 +1,89 @@
-﻿using System.ComponentModel;
+﻿using SnowPal.Models;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 
-namespace snowpal
+namespace SnowPal
 {
     public class SnowpalViewModel : INotifyPropertyChanged
     {
-        // Private properties
         private readonly SnowpalGame _game;
 
-        // Public properties
-        public string WordDisplay => _game.GetWordDisplay();
-        public int IncorrectGuesses => _game.IncorrectGuesses;
-        public string CurrentWord => _game.CurrentWord;
-        public int GuessesLeft => _game.GuessesLeft;
-        public string HangmanImageSource => _game.GetHangmanImageSource();
-        public int MaxIncorrectGuesses => _game.MaxIncorrectGuesses;
+        private string wordDisplay;
+        public string WordDisplay
+        {
+            get => wordDisplay;
+            set
+            {
+                if (wordDisplay != value)
+                {
+                    wordDisplay = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int incorrectGuesses;
+        public int IncorrectGuesses
+        {
+            get => incorrectGuesses;
+            set
+            {
+                if (incorrectGuesses != value)
+                {
+                    incorrectGuesses = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private int guessesLeft;
+        public int GuessesLeft
+        {
+            get => guessesLeft;
+            set
+            {
+                if (guessesLeft != value)
+                {
+                    guessesLeft = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public SnowpalViewModel()
         {
             _game = new SnowpalGame();
-            OnPropertyChanged(nameof(WordDisplay));
-            OnPropertyChanged(nameof(HangmanImageSource));
-            OnPropertyChanged(nameof(GuessesLeft));
+            StartNewGame();
         }
 
         public void StartNewGame()
         {
             _game.StartNewGame();
-            OnPropertyChanged(nameof(WordDisplay));
-            OnPropertyChanged(nameof(HangmanImageSource));
-            OnPropertyChanged(nameof(GuessesLeft));
+            UpdateProperties();
         }
 
         public void OnLetterGuessed(char letter)
         {
             _game.GuessLetter(letter);
-            OnPropertyChanged(nameof(WordDisplay));
-            OnPropertyChanged(nameof(HangmanImageSource));
-            OnPropertyChanged(nameof(GuessesLeft));
+            UpdateProperties();
         }
 
         public bool IsGameWon() => _game.IsGameWon();
-
         public bool IsGameOver() => _game.IsGameOver();
-
-        public string GetWinningMessage(int GuessesLeft) => _game.GetWinningMessage(GuessesLeft);
-
+        public string GetWinningMessage(int guessesLeft) => _game.GetWinningMessage(guessesLeft);
         public string GetRandomGameOverMessage() => _game.GetRandomGameOverMessage();
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private void UpdateProperties()
+        {
+            WordDisplay = _game.GetWordDisplay();
+            IncorrectGuesses = _game.IncorrectGuesses;
+            GuessesLeft = _game.GuessesLeft;
+        }
 
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

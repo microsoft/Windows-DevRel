@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace snowpal
+namespace SnowPal.Models
 {
     public class SnowpalGame
     {

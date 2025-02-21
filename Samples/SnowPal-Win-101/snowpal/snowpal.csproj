@@ -22,6 +22,7 @@
     <Content Remove="Assets\snow-6.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="MainPage.xaml" />
     <None Remove="Styles.xaml" />
   </ItemGroup>
 
@@ -73,6 +74,9 @@
     <None Update="Assets\snow-6.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
