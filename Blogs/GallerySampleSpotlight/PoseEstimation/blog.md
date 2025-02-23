@@ -157,7 +157,7 @@ Next up is rendering.
 
 ### Rendering Pose Predictions
 
-Rendering is handled by the `RenderPredictions` helper function which takes in the original image, the predictions that were just generated, and a marker ratio to define how large to draw the predictions on the image. Note that this code is still being called from the `DetectPose` function:
+Rendering is handled by the `RenderPredictions` helper function which takes in the original image, the predictions that were generated, and a marker ratio to define how large to draw the predictions on the image. Note that this code is still being called from the `DetectPose` function:
 
 ```c#
 using Bitmap output = PoseHelper.RenderPredictions(originalImage, predictions, .02f);
