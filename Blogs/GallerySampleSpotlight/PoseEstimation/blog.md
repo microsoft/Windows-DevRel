@@ -139,7 +139,7 @@ float outputHeight = outputDimensions[3];
 
 The output width and height are passed, along with the heatmaps list and the original image dimensions, to the [`PostProcessResults`]() helper function. Ths function does two actions with each heatmap:
 
-1. It iterates over every value in the heatmap to find at which coordinates the probability is highest for each pose key point.
+1. It iterates over every value in the heatmap to find the coordinates where the probability is highest for each pose key point.
 1. It scales that value back to the size of the original image, since it was changed when it was passed into inference. This is why the original image dimensions were passed.
 
 From this function, a list of tuples containing the X and Y location of each key point is returned, so that they can be properly rendered onto the image:
