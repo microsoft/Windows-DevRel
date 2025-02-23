@@ -9,7 +9,7 @@ For this first sample spotlight, we will be taking a look at one of my favorite 
 
 ## Pose Estimation Demo
 
-This sample takes in a photo upload and renders pose estimations onto the main human figure in the photo. It will render connections between the torso and limbs, along with five points corresponding to key facial features (eyes, nose, and ears). Before diving into the code for this sample, here's a quick video example:
+This sample takes in an uploaded photo and renders pose estimations onto the main human figure in the photo. It will render connections between the torso and limbs, along with five points corresponding to key facial features (eyes, nose, and ears). Before diving into the code for this sample, here's a quick video example:
 
 [VIDEO HERE]
 
