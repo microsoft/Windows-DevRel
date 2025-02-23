@@ -208,7 +208,7 @@ List<(int StartIdx, int EndIdx)> connections =
 ];
 ```
 
-Next, for each tuple in that list, a blue line represenating a connection is drawn on the image with `DrawLine`. It takes in the `Pen` that was created and start and end coordinates from the keypoints list that was passed into the function:
+Next, for each tuple in that list, a blue line represenating a connection is drawn on the image with `DrawLine`. It takes in the `Pen` that was created, along with start and end coordinates from the keypoints list that was passed into the function:
 
 ```c#
 // Iterate over connections with a foreach loop
