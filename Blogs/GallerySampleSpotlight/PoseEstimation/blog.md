@@ -80,7 +80,7 @@ Once the image is stored in a bitmap of the proper size, we create a `Tensor` of
 
 Taken as a whole, this tensor represents a single image where each pixel in that image is defined by an X (width) and Y (height) pixel value and three color values (red, green, blue). 
 
-Also, it is good to note that processing and inference section of this function is being ran in a Task to prevent the UI from becoming blocked:
+Also, it is good to note that the processing and inference section of this function is being ran in a Task to prevent the UI from becoming blocked:
 
 ```c#
 // Run our processing and inference logic as a Task to prevent the UI from being blocked
