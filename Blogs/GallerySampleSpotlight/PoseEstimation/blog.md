@@ -90,7 +90,7 @@ var predictions = await Task.Run(() =>
     Tensor<float> input = new DenseTensor<float>([1, 3, modelInputWidth, modelInputHeight]);
 ```
 
-To improve the quality of the input, instead of just passing in the original pixel values to the tensor, the pixels values are normalized with the [`PreprocessBitmapWithStdDev`]() helper function. This function uses the mean of each RGB value and the standard deviation (how far a value typically varies away from its mean) to "level out" outlier color values. You can think of it as a way of preventing images with really dramatic color differences from confusing the model. This step does not affect the dimensionality of the input, and just adjusts the values that will be stored in the tensor:
+To improve the quality of the input, instead of just passing in the original pixel values to the tensor, the pixels values are normalized with the [`PreprocessBitmapWithStdDev`]() helper function. This function uses the mean of each RGB value and the standard deviation (how far a value typically varies away from its mean) to "level out" outlier color values. You can think of it as a way of preventing images with really dramatic color differences from confusing the model. This step does not affect the dimensionality of the input. It only adjusts the values that will be stored in the tensor:
 
 ```c#
 // Normalize our input and store it in the "input" tensor. Dimension is still 1x3x256x192
