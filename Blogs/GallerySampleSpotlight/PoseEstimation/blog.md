@@ -34,7 +34,7 @@ protected override async Task LoadModelAsync(SampleNavigationParameters samplePa
 
 In this function, a `ModelPath` and `HardwareAccelerator` are passed into our `InitModel` function, which handles instantiating an ONNX Runtime `InferenceSession` with our model location and the hardware that inference will be performed on. You can jump to [Switching to NPU or GPU Execution]() later in this post for more in depth information on how the `InferenceSession` is instantiated.
 
-Once the model has finished initializing, this function calls an initial round of inference via `DetectPose`, which is passed a default image.
+Once the model has finished initializing, this function calls for an initial round of inference via `DetectPose` on a default image.
 
 ### Preprocessing, Calling For Inference, and Postprocessing Output
 
