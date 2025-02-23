@@ -5,7 +5,7 @@ This blog post is the first in an upcoming series that will spotlight the local 
 
 The Gallery is available on the [Microsoft Store]() and is entirely open-sourced on [GitHub.]()
 
-For this first sample spotlight, we will be taking a look at one of my favorite scenarios: Human Pose Estimation with HRNet. This samples is enabled ONNX Runtime, and deepending on the processor in your Windows device, this sample supports running on the CPU, GPU, and NPU. I'll cover how to check which hardware is supported and how to switch between them later in the post.
+For this first sample spotlight, we will be taking a look at one of my favorite scenarios: Human Pose Estimation with HRNet. This sample is enabled by ONNX Runtime, and deepending on the processor in your Windows device, this sample supports running on the CPU and NPU. I'll cover how to check which hardware is supported and how to switch between them later in the post.
 
 ## Pose Estimation Demo
 
