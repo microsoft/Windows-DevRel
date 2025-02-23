@@ -76,7 +76,7 @@ Once the image is stored in a bitmap of the proper size, we create a `Tensor` of
 * *Batch Size:* our first value of `1` is just the number of inputs that are being processed. This implementation processes a single image at a time, so the batch size is just one.
 * *Color Channels:* The next dimension has a value of `3`, and coressponds to each of the typical color channels: red, green, and blue. This will define the color of each pixel in the image.
 * *Width:* The next value of `256` (passed as `modelInputWidth`) is the pixel width of our image.
-* *Height:* The last value of `192` (passed as `modelInputHeight`) is the pixel width of our image.
+* *Height:* The last value of `192` (passed as `modelInputHeight`) is the pixel height of our image.
 
 Taken as a whole, this tensor represents a single image where each pixel in that image is defined by an X (width) and Y (height) pixel value and three color values (red, green, blue). 
 
