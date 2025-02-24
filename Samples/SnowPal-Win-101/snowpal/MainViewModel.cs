@@ -1,92 +1,123 @@
-﻿using SnowPal.Models;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using SnowPal.Models;
+using System.Collections.Generic;
 
+namespace SnowPal;
 
-namespace SnowPal
+public partial class SnowpalViewModel : ObservableObject
 {
-    public class SnowpalViewModel : INotifyPropertyChanged
+    private readonly SnowpalGame _game;
+
+    // Properties bound to the UI
+    [ObservableProperty]
+    public partial string WordDisplay { get; set; }
+
+    [ObservableProperty]
+    public partial int IncorrectGuesses { get; set; }
+
+    [ObservableProperty]
+    public partial int GuessesLeft { get; set; }
+
+    [ObservableProperty]
+    public partial List<GameLetter> Letters { get; set; }
+
+    [ObservableProperty]
+    public partial string ImageSource { get; set; }
+
+    [ObservableProperty]
+    public partial string MessageTitle { get; set; }
+
+    [ObservableProperty]
+    public partial string MessageContent { get; set; }
+    [ObservableProperty]
+    public partial string PopUpToDisplay { get; set; }
+
+
+    // Constructor initializes the game and letters
+    public SnowpalViewModel()
     {
-        private readonly SnowpalGame _game;
-
-        private string wordDisplay;
-        public string WordDisplay
+        Letters = new List<GameLetter>();
+        for (char letter = 'A'; letter <= 'Z'; letter++)
         {
-            get => wordDisplay;
-            set
+            Letters.Add(new GameLetter(letter));
+        }
+        PopUpToDisplay = "false";
+        _game = new SnowpalGame();
+        StartNewGame();
+    }
+
+    // Starts a new game and updates the properties
+    public void StartNewGame()
+    {
+        _game.StartNewGame();
+        UpdateProperties();
+    }
+
+    // Command executed when a letter is guessed
+    [RelayCommand]
+    public void OnLetterGuessed(char LetterValue)
+    {
+        _game.PlayGame(LetterValue);
+        if (_game.GameEnd)
+        {
+            EndGame();
+        }
+        else
+        {
+            UpdateProperties(LetterValue);
+        }
+    }
+
+    // Ends the game, disables letters, and shows the end game message
+    private void EndGame()
+    {
+        SetLettersIsEnabled(false);
+        UpdateProperties();
+        ShowEndGameMessage();
+
+    }
+
+    // Command executed when the popup close button is clicked
+    [RelayCommand]
+    private void ClosePopupClicked()
+    {
+        PopUpToDisplay = "false";
+        SetLettersIsEnabled(true);
+        StartNewGame();
+    }
+
+    // Shows the end game message in a popup
+    private void ShowEndGameMessage()
+    {
+        MessageTitle = _game.MessageTitle;
+        MessageContent = _game.MessageContent;
+        PopUpToDisplay = "true";
+    }
+
+    // Updates the properties bound to the UI
+    private void UpdateProperties(char LetterValue = '\0')
+    {
+        if (LetterValue != '\0')
+        {
+            GameLetter foundLetter = Letters.Find(letter => letter.Character == LetterValue);
+            if (foundLetter != null)
             {
-                if (wordDisplay != value)
-                {
-                    wordDisplay = value;
-                    OnPropertyChanged();
-                }
+                foundLetter.IsAvailable = false;
             }
         }
+        WordDisplay = _game.GetWordDisplay();
+        IncorrectGuesses = _game.IncorrectGuesses;
+        GuessesLeft = _game.GuessesLeft;
+        ImageSource = $"ms-appx:///Assets/snow-{IncorrectGuesses}.png";
+    }
 
-        private int incorrectGuesses;
-        public int IncorrectGuesses
+    // Enables or disables the letter buttons
+    private void SetLettersIsEnabled(bool status)
+    {
+        foreach (var letter in Letters)
         {
-            get => incorrectGuesses;
-            set
-            {
-                if (incorrectGuesses != value)
-                {
-                    incorrectGuesses = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        private int guessesLeft;
-        public int GuessesLeft
-        {
-            get => guessesLeft;
-            set
-            {
-                if (guessesLeft != value)
-                {
-                    guessesLeft = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public SnowpalViewModel()
-        {
-            _game = new SnowpalGame();
-            StartNewGame();
-        }
-
-        public void StartNewGame()
-        {
-            _game.StartNewGame();
-            UpdateProperties();
-        }
-
-        public void OnLetterGuessed(char letter)
-        {
-            _game.GuessLetter(letter);
-            UpdateProperties();
-        }
-
-        public bool IsGameWon() => _game.IsGameWon();
-        public bool IsGameOver() => _game.IsGameOver();
-        public string GetWinningMessage(int guessesLeft) => _game.GetWinningMessage(guessesLeft);
-        public string GetRandomGameOverMessage() => _game.GetRandomGameOverMessage();
-
-        private void UpdateProperties()
-        {
-            WordDisplay = _game.GetWordDisplay();
-            IncorrectGuesses = _game.IncorrectGuesses;
-            GuessesLeft = _game.GuessesLeft;
-        }
-
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            letter.IsAvailable = status;
         }
     }
 }
