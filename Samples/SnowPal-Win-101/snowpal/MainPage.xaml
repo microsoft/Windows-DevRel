@@ -6,11 +6,9 @@
     xmlns:local="using:SnowPal.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    x:Name="ThisPage">
 
-    <Page.Resources>
-        <local:IncorrectGuessesToImageConverter x:Key="IncorrectGuessesToImageConverter"/>
-    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions> 
@@ -28,36 +26,37 @@
         <TextBlock Text="SnowPal" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="2"/>
 
         <!-- Hangman Drawing -->
-        <Image x:Name="hangmanImage" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,10,10,10" Source="{Binding IncorrectGuesses, Converter={StaticResource IncorrectGuessesToImageConverter}}"/>
+        <Image x:Name="hangmanImage" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,10,10,10" Source="{x:Bind ViewModel.ImageSource, Mode=OneWay}"/>
 
         <!-- Guesses Left Display -->
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
             <TextBlock Text="Guesses Left: " Style="{StaticResource GuessesLeftTextBlockStyle}"/>
-            <TextBlock Text="{Binding GuessesLeft, Mode=OneWay}" Style="{StaticResource GuessesLeftTextBlockStyle}"/>
+            <TextBlock Text="{x:Bind ViewModel.GuessesLeft, Mode=OneWay}" Style="{StaticResource GuessesLeftTextBlockStyle}"/>
         </StackPanel>
 
         <!-- Alphabet Buttons -->
-        <GridView x:Name="AlphabetButtonsGridView" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,50,10,10" Loaded="Grid_Loaded" KeyUp="Grid_KeyUp"
+        <GridView x:Name="AlphabetButtonsGridView" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,50,10,10" 
                   ScrollViewer.HorizontalScrollMode="Enabled"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
                   ScrollViewer.VerticalScrollMode="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                  ItemsSource="{x:Bind ViewModel.Letters}">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="5"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
             <GridView.ItemTemplate>
-                <DataTemplate x:DataType="x:String">
-                    <Button Content="{x:Bind}" Style="{StaticResource AlphabetButtonStyle}" Click="OnLetterButtonClick"/>
+                <DataTemplate x:DataType="local:GameLetter">
+                    <Button Content="{x:Bind Character}" IsEnabled="{x:Bind IsAvailable, Mode=OneWay}" Style="{StaticResource AlphabetButtonStyle}" CommandParameter="{x:Bind Character}"
+                            Command="{Binding ViewModel.LetterGuessedCommand, ElementName=ThisPage}"/>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
 
         <!-- Word Display Area -->
-        <TextBlock x:Name="Word" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding WordDisplay, Mode=OneWay}" Style="{StaticResource WordDisplayTextBlockStyle}"/>
+        <TextBlock x:Name="Word" Grid.Row="2" Grid.ColumnSpan="2" Text="{x:Bind ViewModel.WordDisplay, Mode=OneWay}" Style="{StaticResource WordDisplayTextBlockStyle}"/>
 
-        <!-- ContentDialog for messages -->
-        <ContentDialog x:Name="MessageDialog" CloseButtonText="OK"/>
+        <!-- Popup for End message -->
     </Grid>
 </Page>

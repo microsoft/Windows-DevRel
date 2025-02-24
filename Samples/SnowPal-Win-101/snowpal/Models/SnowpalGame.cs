@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Windows.Gaming.Input;
 
 namespace SnowPal.Models
 {
     public class SnowpalGame
     {
-        // Private properties
-        private readonly List<string> _wordList = new List<string> { "windows", "view", "model", "taskbar", "xaml", "csharp", "debugger", "grid", "stackpanel", "random" };
+        private readonly List<string> _wordList = ["WINDOWS", "VIEW", "MODEL", "TASKBAR", "XAML", "CSHARP", "DEBUGGER", "GRID", "STACKPANEL", "RANDOM"];
         private const int MaxIncorrectGuessesValue = 6;
-        private static readonly Random Random = new Random();
 
-        // Public properties
         public string CurrentWord { get; private set; }
         public char[] GuessedWord { get; private set; }
         public int IncorrectGuesses { get; private set; }
         public int MaxIncorrectGuesses => MaxIncorrectGuessesValue;
         public int GuessesLeft => MaxIncorrectGuesses - IncorrectGuesses;
+        public bool GameEnd = false;
+        public bool GameWon = false;
+
+        public string message { get; private set; }
 
         public SnowpalGame()
         {
@@ -29,9 +32,17 @@ namespace SnowPal.Models
             CurrentWord = _wordList[random.Next(_wordList.Count)];
             GuessedWord = new string('_', CurrentWord.Length).ToCharArray();
             IncorrectGuesses = 0;
+            GameWon = false;
         }
 
-        public bool GuessLetter(char letter)
+        public void PlayGame(char letter)
+        {
+            GuessLetter(letter);
+            CheckGameStatus();
+
+        }
+
+        public void GuessLetter(char letter)
         {
             bool isCorrect = false;
 
@@ -47,44 +58,66 @@ namespace SnowPal.Models
             {
                 IncorrectGuesses++;
             }
-
-            return isCorrect;
         }
 
         public string GetWordDisplay() => string.Join(" ", GuessedWord);
 
-        public string GetHangmanImageSource() => $"ms-appx:///Assets/snow-{IncorrectGuesses}.png";
-
-        public bool IsGameWon() => GuessedWord.All(c => c != '_');
-
-        public bool IsGameOver() => IncorrectGuesses >= MaxIncorrectGuesses;
-
-        public string GetWinningMessage(int GuessesLeft)
+        public void CheckGameStatus()
         {
-            if (GuessesLeft == MaxIncorrectGuesses)
+            if (GuessedWord.All(c => c != '_'))
             {
-                return "Incredible! You guessed the word without a single mistake! You're a true word master!";
+                Debug.WriteLine("Game won");
+                GameEnd = true;
+                GameWon = true;
+                StartNewGame();
             }
-            else if (GuessesLeft == 1)
+            else if (IncorrectGuesses >= MaxIncorrectGuesses)
             {
-                return "Phew! That was close! You guessed the word just in time! Well done!";
+                Debug.WriteLine("Game over");
+                GameEnd = true;
+                StartNewGame();
             }
-            else
-            {
-                return "Great job! You guessed the word!";
-            }
-
         }
-        public string GetRandomGameOverMessage()
+
+        public string GetWinningMessage()
         {
-            var messages = new[]
-            {
-                    $"Game Over! Better luck next time! The word was {CurrentWord}. Keep trying, you'll get it!",
-                    $"Game Over! Don't give up! The word was {CurrentWord}. Practice makes perfect!",
-                    $"Game Over! The word was {CurrentWord}. Remember, every mistake is a step towards success!"
-                };
-
-            return messages[Random.Next(messages.Length)];
+            return "Congratulations! You guessed the word!";
         }
+
+        public string GetLosingMessage()
+        {
+            return $"Game Over! The word was {CurrentWord}. Better luck next time!";
+        }
+
+
+
+
+        //public string GetWinningMessage(int GuessesLeft)
+        //{
+        //    if (GuessesLeft == MaxIncorrectGuesses)
+        //    {
+        //        return "Incredible! You guessed the word without a single mistake! You're a true word master!";
+        //    }
+        //    else if (GuessesLeft == 1)
+        //    {
+        //        return "Phew! That was close! You guessed the word just in time! Well done!";
+        //    }
+        //    else
+        //    {
+        //        return "Great job! You guessed the word!";
+        //    }
+
+        //}
+        //public string GetRandomGameOverMessage()
+        //{
+        //    var messages = new[]
+        //    {
+        //                $"Game Over! Better luck next time! The word was {CurrentWord}. Keep trying, you'll get it!",
+        //                $"Game Over! Don't give up! The word was {CurrentWord}. Practice makes perfect!",
+        //                $"Game Over! The word was {CurrentWord}. Remember, every mistake is a step towards success!"
+        //            };
+
+        //    return messages[Random.Next(messages.Length)];
+        //}
     }
 }
