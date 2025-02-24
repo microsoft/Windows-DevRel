@@ -1,7 +1,7 @@
 # Pose Estimation with the AI Dev Gallery
 
 ## What's Going On Here?
-This blog post is the first in an upcoming series that will spotlight the local AI samples contained in the new [AI Dev Gallery](). The Gallery is a recently released project that aims to showcase local AI scenarios on Windows and to give developers the guidance they need to enable those scenarios themselves. The Gallery is open-source and contains a wide selection of different models and samples, including text, image, audio, and video use cases. In addition to being able to see a given model in action, each sample contains a source code view and a button to export the sample directly to a new Visual Studio project.
+This blog post is the first in an upcoming series that will spotlight the local AI samples contained in the new [AI Dev Gallery](). The Gallery is a preview project that aims to showcase local AI scenarios on Windows and to give developers the guidance they need to enable those scenarios themselves. The Gallery is open-source and contains a wide selection of different models and samples, including text, image, audio, and video use cases. In addition to being able to see a given model in action, each sample contains a source code view and a button to export the sample directly to a new Visual Studio project.
 
 The Gallery is available on the [Microsoft Store]() and is entirely open-sourced on [GitHub.]()
 
@@ -32,7 +32,7 @@ protected override async Task LoadModelAsync(SampleNavigationParameters samplePa
 }
 ```
 
-In this function, a `ModelPath` and `HardwareAccelerator` are passed into our `InitModel` function, which handles instantiating an ONNX Runtime `InferenceSession` with our model location and the hardware that inference will be performed on. You can jump to [Switching to NPU or GPU Execution]() later in this post for more in depth information on how the `InferenceSession` is instantiated.
+In this function, a `ModelPath` and `HardwareAccelerator` are passed into our `InitModel` function, which handles instantiating an ONNX Runtime `InferenceSession` with our model location and the hardware that inference will be performed on. You can jump to [Switching to NPU Execution]() later in this post for more in depth information on how the `InferenceSession` is instantiated.
 
 Once the model has finished initializing, this function calls for an initial round of inference via `DetectPose` on a default image.
 
@@ -259,21 +259,18 @@ That's it! The final output looks like this:
 
 [IMAGE HERE]
 
-## Switching to NPU or GPU Execution
-As mentioned before, this sample supports running on the NPU or GPU, in addition to the CPU, if you have meet the correct device requirements:
+## Switching to NPU Execution
+This sample also supports running on the NPU, in addition to the CPU, if you have meet the correct device requirements. You will need a Windows with device with a Qualcomm NPU to run 
 
-* **For GPU:** A DirectML enabled Windows device without a Qualcomm NPU
-* **For NPU:** A Windows device with a Qualcomm NPU
-
-The easiest way to check if your device is NPU or GPU capable is within the sample in the Gallery. Using the Select Model dropdown, you can see which execution providers are supported on your device:
+The easiest way to check if your device is NPU capable is within the Gallery itself. Using the Select Model dropdown, you can see which execution providers are supported on your device:
 
 [IMAGE HERE]
 
-I'm on a device with a Qualcomm NPU, so the Gallery is only giving me to the option to run the sample on CPU or NPU.
+I'm on a device with a Qualcomm NPU, so the Gallery is giving the option to run the sample on CPU or NPU.
 
 ### How The Pose Sample Handles Switching Between Execution Providers
 
-When the pose is selected with specific hardware accelerator, that information is passed to the `InitModel` function that handles how the inference session is instantiated. The DML execution provider enables GPU execution while the Qualcomm QNN execution provider enables NPU execution. 
+When the pose is selected with specific hardware accelerator, that information is passed to the `InitModel` function that handles how the inference session is instantiated. It will specify the Qualcomm QNN execution provider that enables NPU execution. 
 
 It looks like this: 
 
@@ -291,14 +288,8 @@ private Task InitModel(string modelPath, HardwareAccelerator hardwareAccelerator
         // Set up ONNX Runtime (ORT) session options object
         SessionOptions sessionOptions = new();
         sessionOptions.RegisterOrtExtensions();
-
-        // Check if DML was passed
-        if (hardwareAccelerator == HardwareAccelerator.DML)
-        {
-            // Add the DML execution provider if so
-            sessionOptions.AppendExecutionProvider_DML(DeviceUtils.GetBestDeviceId());
-        }
-        else if (hardwareAccelerator == HardwareAccelerator.QNN) // Check if QNN was passed
+        
+        if (hardwareAccelerator == HardwareAccelerator.QNN) // Check if QNN was passed
         {
             // Add the QNN execution provider if so
             Dictionary<string, string> options = new()
