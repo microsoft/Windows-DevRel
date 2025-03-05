@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SnowPal.Models;
+using System;
 using System.Collections.Generic;
 
 namespace SnowPal;
@@ -8,6 +9,8 @@ namespace SnowPal;
 public partial class SnowpalViewModel : ObservableObject
 {
     private readonly SnowpalGame _game;
+
+    private string ImageSourcePath = "ms-appx:///Assets/snow-{0}.png";
 
     // Properties bound to the UI
     [ObservableProperty]
@@ -24,6 +27,7 @@ public partial class SnowpalViewModel : ObservableObject
 
     [ObservableProperty]
     public partial string ImageSource { get; set; }
+
 
     [ObservableProperty]
     public partial string MessageTitle { get; set; }
@@ -109,7 +113,7 @@ public partial class SnowpalViewModel : ObservableObject
         WordDisplay = _game.GetWordDisplay();
         IncorrectGuesses = _game.IncorrectGuesses;
         GuessesLeft = _game.GuessesLeft;
-        ImageSource = $"ms-appx:///Assets/snow-{IncorrectGuesses}.png";
+        ImageSource = string.Format(ImageSourcePath, IncorrectGuesses);
     }
 
     // Enables or disables the letter buttons

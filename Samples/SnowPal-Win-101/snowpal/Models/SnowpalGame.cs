@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Windows.Gaming.Input;
 
 namespace SnowPal.Models
 {
@@ -26,6 +28,8 @@ namespace SnowPal.Models
             };
 
         // Properties for the current game state
+        private const int MaxIncorrectGuessesValue = 6;
+
         public string CurrentWord { get; private set; }
         public char[] GuessedWord { get; private set; }
         public int IncorrectGuesses { get; private set; }
@@ -118,5 +122,6 @@ namespace SnowPal.Models
             var random = new Random();
             return string.Format(_losingMessages[random.Next(_losingMessages.Length)], CurrentWord);
         }
+
     }
 }

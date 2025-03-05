@@ -25,8 +25,8 @@
         <!-- Title -->
         <TextBlock Text="SnowPal" Style="{StaticResource TitleTextBlockStyle}" Grid.ColumnSpan="2"/>
 
-        <!-- Hangman Drawing -->
-        <Image x:Name="hangmanImage" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,10,10,10" Source="{x:Bind ViewModel.ImageSource, Mode=OneWay}"/>
+        <!-- Drawing -->
+        <Image x:Name="Image" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,10,10,10" Source="{x:Bind ViewModel.ImageSource, Mode=OneWay}"/>
 
         <!-- Guesses Left Display -->
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
