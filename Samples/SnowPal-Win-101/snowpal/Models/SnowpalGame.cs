@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using Windows.Gaming.Input;
 
 namespace SnowPal.Models
 {
@@ -41,7 +39,7 @@ namespace SnowPal.Models
                 
         public SnowpalGame()
         {
-            StartNewGame();
+            //StartNewGame();
         }
 
         // Starts a new game by selecting a random word and resetting the game state
@@ -61,9 +59,6 @@ namespace SnowPal.Models
             GuessLetter(letter);
             CheckGameStatus();
         }
-
-        // Returns the current guessed word as a string with spaces between letters
-        public string GetWordDisplay() => string.Join(" ", GuessedWord);
 
 
         // Guesses a letter and updates the guessed word and incorrect guesses count

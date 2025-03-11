@@ -110,7 +110,7 @@ public partial class SnowpalViewModel : ObservableObject
                 foundLetter.IsAvailable = false;
             }
         }
-        WordDisplay = _game.GetWordDisplay();
+        WordDisplay = string.Join(" ", _game.GuessedWord);
         IncorrectGuesses = _game.IncorrectGuesses;
         GuessesLeft = _game.GuessesLeft;
         ImageSource = string.Format(ImageSourcePath, IncorrectGuesses);
