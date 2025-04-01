@@ -21,7 +21,7 @@ using SnowPal;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace snowpal
+namespace SnowPal
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -41,17 +41,17 @@ namespace snowpal
 
         private void Leaderboard_Click(object sender, RoutedEventArgs e)
         {
-            // Navigate to the Leaderboard page
+            // TODO: Navigate to the Leaderboard page
         }
 
         private void Options_Click(object sender, RoutedEventArgs e)
         {
-            // Navigate to the Options page
+            // TODO: Navigate to the Options page
         }
 
         private void Credits_Click(object sender, RoutedEventArgs e)
         {
-            // Navigate to the Credits page
+            // TODO: Navigate to the Credits page
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)

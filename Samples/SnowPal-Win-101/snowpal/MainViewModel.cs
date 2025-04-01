@@ -8,7 +8,7 @@ namespace SnowPal;
 
 public partial class SnowpalViewModel : ObservableObject
 {
-    private readonly SnowpalGame _game;
+    private readonly Game _game;
 
     private string ImageSourcePath = "ms-appx:///Assets/snow-{0}.png";
 
@@ -17,17 +17,13 @@ public partial class SnowpalViewModel : ObservableObject
     public partial string WordDisplay { get; set; }
 
     [ObservableProperty]
+    public partial List<GameLetter> Letters { get; set; }
+
+    [ObservableProperty]
     public partial int IncorrectGuesses { get; set; }
 
     [ObservableProperty]
     public partial int GuessesLeft { get; set; }
-
-    [ObservableProperty]
-    public partial List<GameLetter> Letters { get; set; }
-
-    [ObservableProperty]
-    public partial string ImageSource { get; set; }
-
 
     [ObservableProperty]
     public partial string MessageTitle { get; set; }
@@ -36,18 +32,20 @@ public partial class SnowpalViewModel : ObservableObject
     public partial string MessageContent { get; set; }
     [ObservableProperty]
     public partial string PopUpToDisplay { get; set; }
+    [ObservableProperty]
+    public partial string ImageSource { get; set; }
 
 
     // Constructor initializes the game and letters
     public SnowpalViewModel()
     {
+        PopUpToDisplay = "false";
         Letters = new List<GameLetter>();
         for (char letter = 'A'; letter <= 'Z'; letter++)
         {
             Letters.Add(new GameLetter(letter));
         }
-        PopUpToDisplay = "false";
-        _game = new SnowpalGame();
+        _game = new Game();
         StartNewGame();
     }
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Page
-    x:Class="snowpal.StartPage"
+    x:Class="SnowPal.StartPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:snowpal"
+    xmlns:local="using:SnowPal"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -19,21 +19,15 @@
     <Grid>
 
         <!-- Title -->
-        <TextBlock Text="SNOW PAL" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Top" 
-                   FontSize="48" 
-                   FontWeight="Bold" 
-                   Margin="0,50,0,0" 
-                   Foreground="White"/>
+        <TextBlock Text="SnowPal" Style="{StaticResource MenuTitleTextBlockStyle}"/>
 
-        <!-- Menu Buttons -->
+        <!-- Menu Buttons --> 
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
-            <Button Content="New Game" Width="200" Height="50" Click="NewGame_Click"/>
-            <Button Content="Leaderboard" Width="200" Height="50" Click="Leaderboard_Click"/>
-            <Button Content="Options" Width="200" Height="50" Click="Options_Click"/>
-            <Button Content="Credits" Width="200" Height="50" Click="Credits_Click"/>
-            <Button Content="Exit" Width="200" Height="50" Click="Exit_Click"/>
+            <Button Content="New Game" Style="{StaticResource MenuButtons}" Click="NewGame_Click"/>
+            <Button Content="Leaderboard" Style="{StaticResource MenuButtons}" Click="Leaderboard_Click"/>
+            <Button Content="Options" Style="{StaticResource MenuButtons}" Click="Options_Click"/>
+            <Button Content="Credits" Style="{StaticResource MenuButtons}" Click="Credits_Click"/>
+            <Button Content="Exit" Style="{StaticResource MenuButtons}" Click="Exit_Click"/>
         </StackPanel>
     </Grid>
 </Page>

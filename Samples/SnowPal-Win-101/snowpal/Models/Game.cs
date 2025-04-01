@@ -4,12 +4,11 @@ using System.Linq;
 
 namespace SnowPal.Models
 {
-    public class SnowpalGame
+    public class Game
     {
         // List of words for the game
         private readonly List<string> _wordList = new List<string> { "WINDOWS", "VIEW", "MODEL", "TASKBAR", "XAML", "CSHARP", "DEBUGGER", "GRID", "STACKPANEL", "RANDOM" };
 
-        private const int MaxIncorrectGuesses = 6;
 
         // Messages for winning and losing the game
         private readonly string[] _winningMessages = {
@@ -26,7 +25,7 @@ namespace SnowPal.Models
             };
 
         // Properties for the current game state
-        private const int MaxIncorrectGuessesValue = 6;
+        private const int MaxIncorrectGuesses = 6;
 
         public string CurrentWord { get; private set; }
         public char[] GuessedWord { get; private set; }
@@ -37,9 +36,9 @@ namespace SnowPal.Models
         public string MessageTitle { get; private set; }
         public string MessageContent { get; private set; }
                 
-        public SnowpalGame()
+        public Game()
         {
-            //StartNewGame();
+
         }
 
         // Starts a new game by selecting a random word and resetting the game state
