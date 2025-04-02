@@ -271,7 +271,7 @@ var resultMessage = string.Join("\n\n", vectorSearchResults.Results.ToBlockingEn
 
 Woohoo! That's all it takes to implement an effecive semantic search with a local text embedding model. 
 
-This walkthrough left out a lot of the extra code in the sample for updating the UI / error handling, but you can see the full sample code and try it out yourself in the [AI Dev Gallery]().
+This walkthrough was focused on generating text embeddings and using them to execute a semantic search, but there are other elements to factor in like error handling and updating the UI. You can see the full sample code and try it out yourself in the [AI Dev Gallery]().
 
 ## Next Steps
 If you enjoyed this post and want to see more of what's possible with local AI on Windows, check out the [AI Dev Gallery]().
