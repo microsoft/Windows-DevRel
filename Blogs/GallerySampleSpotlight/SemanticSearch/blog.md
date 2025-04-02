@@ -12,7 +12,7 @@ Text embedding models are the magic behind semantic search. These models convert
 
 For different pieces of text, these vectors will have the same dimensionality (or length) which makes comparing the distance between the two vectors relatively easy. The larger the distance between two vector representations, the farther apart in embedded meaning the two texts are. And the inverse is true as well: smaller distance between embedding vectors means closer meaning.
 
-Text embedding models aren't perfect, and have limitations. For example, they can usually only handle text of up to a specified length. For longer pieces of text, the input must be chunked into smaller pieces that are manageable by the model.
+Text embedding models do have some key limitations. For example, they can usually only handle text of up to a specified length. For longer pieces of text, the input must be chunked into smaller pieces that are manageable by the model.
 
 They also are often limited to capturing meaning for a single token in a sequence (like a sentence or paragraph), rather than the entire sequence. Because of this, sometime some extra processing is required to get embeddings that represent larger groupings of words.
 
