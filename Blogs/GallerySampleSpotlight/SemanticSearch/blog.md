@@ -14,7 +14,7 @@ For different pieces of text, these vectors will have the same dimensionality (o
 
 Text embedding models do have some key limitations. For example, they can usually only handle text of up to a specified length. For longer pieces of text, the input must be chunked into smaller pieces that are manageable by the model.
 
-They also are often limited to capturing meaning for a single token in a sequence (like a sentence or paragraph), rather than the entire sequence. Because of this, sometime some extra processing is required to get embeddings that represent larger groupings of words.
+They are also often limited to capturing meaning for a single token in a sequence, rather than the entire sequence. Because of this, sometime some extra processing is required to get embeddings that represent larger groupings of words like sentences or paragraphs.
 
 ### Enabling Semantic Search with Text Embedding
 If we can capture semantic meaning with a text embedding model as described above, our step-by-step for semantic search becomes relatively straightforward. Let's assume we already have a `sourceText` string and a `searchQuery` string:
