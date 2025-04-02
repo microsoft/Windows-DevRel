@@ -8,7 +8,7 @@ This second post will cover how to implement a semantic search with a locally ru
 At its core, a semantic search is a search that matches *meaning* rather than directly matching text or text similarity. For example, if a user did a search with the query term "sports," and the source text only contained the word "athletics," a traditional search would find no matches, while a semantic search would surface the relevant text results. Semantic matching enables a robust version of searching that more closely parallels a human view of information, taking into account meaning, context, and nuance.
 
 ### How do text embedding models work?
-Text embedding models are the magic behind semantic search. These models convert source text to a numerical representation of the meaning of that original text. Instead of a string, you will have a vector of numerical values that is supposed to capture as much of the original meaning of the text as possible. 
+Text embedding models are the magic behind semantic search. These models convert source text to a numerical representation of the meaning of that original text. Instead of a string, you will have a vector of numerical values that captures as much of the original meaning of the text as possible. 
 
 For different pieces of text, these vectors will have the same dimensionality (or length) which makes comparing the distance between the two vectors relatively easy. The larger the distance between two vector representations, the farther apart in meaning the source texts supposedly are. And the inverse is true as well: smaller distance between embedding vectors means closer meaning.
 
