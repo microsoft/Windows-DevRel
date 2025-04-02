@@ -10,7 +10,7 @@ At its core, a semantic search is a search that matches *meaning* rather than di
 ### How do text embedding models work?
 Text embedding models are the magic behind semantic search. These models convert source text to a numerical representation of the meaning of that original text. Instead of a string, you will have a vector of numerical values that captures as much of the original meaning of the text as possible. 
 
-For different pieces of text, these vectors will have the same dimensionality (or length) which makes comparing the distance between the two vectors relatively easy. The larger the distance between two vector representations, the farther apart in meaning the source texts supposedly are. And the inverse is true as well: smaller distance between embedding vectors means closer meaning.
+For different pieces of text, these vectors will have the same dimensionality (or length) which makes comparing the distance between the two vectors relatively easy. The larger the distance between two vector representations, the farther apart in embedded meaning the two texts are. And the inverse is true as well: smaller distance between embedding vectors means closer meaning.
 
 Text embedding models aren't perfect, and have limitations. For example, they can usually only handle text of up to a specified length. For longer pieces of text, the input must be chunked into smaller pieces that are manageable by the model.
 
