@@ -17,7 +17,7 @@ Text embedding models do have some key limitations. For example, they can usuall
 They are also often limited to capturing meaning for a single token in a sequence, rather than the entire sequence. Because of this, sometime some extra processing is required to get embeddings that represent larger groupings of words like sentences or paragraphs.
 
 ### Enabling Semantic Search with Text Embedding
-If we can capture semantic meaning with a text embedding model as described above, our step-by-step for semantic search becomes relatively straightforward. Let's assume we already have a `sourceText` string and a `searchQuery` string:
+Given that we have a model that can produce embeddings for input text, the algorithm for semantic search is fairly straightforward. Let's assume we already have a `sourceText` string and a `searchQuery` string:
 
 1. Assuming `sourceText` is on the longer side, it must be broken it up into small enough pieces that the embedding model can handle.
 1. Once the input has been chunked, both `sourceText` and `searchQuery` must first be tokenized before they can be passed to the embeddings model. In this case, the BERT tokenizer is used.
