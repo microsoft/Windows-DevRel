@@ -37,6 +37,27 @@ You can integrate AI into your Windows application using either a local model or
 
 Windows Copilot Runtime provides these AI-powered features through APIs. The models run locally and continuously in the background on Copilot+ PCs. These APIs are included in the Windows App SDK and are currently available in the latest experimental channel release of the Windows App SDK.
 
+# Phi Silica
+
+Phi Silica is a Small Language Model (SLM) developed by Microsoft Research for local language processing on Windows devices with a Neural Processing Unit (NPU). It enables high-performance, hardware-accelerated text generation and conversation directly on the device. 
+
+> **_NOTE:_**  Phi Silica is not available in mainland China.
+
+You can integrate this model into Windows apps using the Windows App SDK. It is optimized for efficiency and performance on Windows Copilot+ PCs, offering many features found in large language models (LLMs). This optimization is exclusive to the Windows App SDK version of Phi Silica.
+
+Phi Silica is based on Phi-3.5-mini, supports a 4k context length, and is designed for Windows 11 devices with NPU hardware.
+
+- Phi-3.5-mini is a state-of-the-art, compact language model that delivers high accuracy across multiple languages and tasks, even when compared to much larger models.
+- By building on Phi-3.5-mini, Phi Silica inherits strong reasoning, multilingual, and summarization capabilities, making it suitable for a wide range of real-world applications
+
+In this section you will use Phi Silica to generate a poem with mock image descriptions and bind that to the ViewModle’s `GeneratedPoem`. You’ll manage the bulk of the ... TODO: add overview of what will happen in this section
+
+You'll start by creating a `AIModelService` that will manage initializing and generate  
+
+
+1. In the Solutions Explorer, **right click** on `Models` directory > **Add**> **Class**
+1. Name the new class **AIModelService**
+1. 
 
 
 
