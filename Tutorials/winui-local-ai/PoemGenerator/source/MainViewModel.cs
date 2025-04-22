@@ -78,7 +78,11 @@ namespace PoemGenerator
             SoftwareBitmap convertedImage = SoftwareBitmap.Convert(inputBitmap, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
             await bitmapSource.SetBitmapAsync(convertedImage);
 
-            Photos.Add(new PhotoItem { BitmapSource = bitmapSource });
+            Photos.Add(new PhotoItem 
+            {
+                BitmapSource = bitmapSource,
+                Bitmap = convertedImage
+            });
         }
 
         [RelayCommand]
