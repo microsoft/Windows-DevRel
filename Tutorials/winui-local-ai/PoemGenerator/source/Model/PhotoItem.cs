@@ -10,6 +10,8 @@ namespace PoemGenerator.Model
 {
     public class PhotoItem
     {
-        public SoftwareBitmapSource BitmapSource { get; internal set; }
+        public SoftwareBitmapSource? BitmapSource { get; internal set; }
+        public SoftwareBitmap? Bitmap { get; set; }
+        public string? Description { get; set; }
     }
 }
