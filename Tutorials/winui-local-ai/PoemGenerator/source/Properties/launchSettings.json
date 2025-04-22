@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "PoemGenerator (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "PoemGenerator (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
