@@ -11,10 +11,11 @@ namespace PoemGenerator.Pages
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public MainViewModel ViewModel { get; } = new();
+        public MainViewModel ViewModel { get; }
         public MainPage()
         {
             InitializeComponent();
+            ViewModel = new MainViewModel();
         }
 
         private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
