@@ -207,6 +207,12 @@ $workflows = [ordered]@{
         # you can use internal wheel to test workflow on arm - "X:\Python\wheels\apl\torch-2.7.0-cp312-cp312-win_arm64.whl"
         "libraries"  = @("torch", "numpy==1.26.4", "matplotlib")
     }
+    # "torchvision" = @{
+    #     "testScript" = "tests\workflow\test_torchvision.py"
+    #     # you can use internal wheel to test workflow on arm - "X:\Python\wheels\apl\torch-2.7.0-cp312-cp312-win_arm64.whl"
+    #     # "libraries"  = @("torch", "torchvision", "numpy")
+    #     "libraries"  = @("X:\Python\wheels\apl\torch-2.7.0-cp312-cp312-win_arm64.whl", "X:\Python\wheels\apl\torchvision-0.22.0a0+fab1188-cp312-cp312-win_arm64.whl", "X:\Python\wheels\apl\torchaudio-2.6.0a0+f084f34-cp312-cp312-win_arm64.whl", "numpy")
+    # }
     "tensorflow" = @{
         "testScript" = "tests\workflow\test_tensorflow.py"
         "libraries"  = @("tensorflow", "numpy")

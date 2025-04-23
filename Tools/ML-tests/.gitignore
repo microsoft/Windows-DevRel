@@ -3,3 +3,4 @@ env_*
 hf_*
 venv
 log
+dask-worker-space
