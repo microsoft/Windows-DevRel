@@ -50,15 +50,167 @@ Phi Silica is based on Phi-3.5-mini, supports a 4k context length, and is design
 - Phi-3.5-mini is a state-of-the-art, compact language model that delivers high accuracy across multiple languages and tasks, even when compared to much larger models.
 - By building on Phi-3.5-mini, Phi Silica inherits strong reasoning, multilingual, and summarization capabilities, making it suitable for a wide range of real-world applications
 
-In this section you will use Phi Silica to generate a poem with mock image descriptions and bind that to the ViewModle’s `GeneratedPoem`. You’ll manage the bulk of the ... TODO: add overview of what will happen in this section
+This section guides you through configuring your project for ARM64 processors and implementing AI-powered poem generation. By targeting ARM64, your app gains optimized performance and battery efficiency on modern Windows devices. You'll create a service that uses Windows Copilot Runtime APIs to process image descriptions and generate poems through AI models. The implementation involves initializing AI models, managing asynchronous operations, and connecting these capabilities to your app's user interface.
 
-You'll start by creating a `AIModelService` that will manage initializing and generate  
+Before you start building, you’ll need to configuring your Visual Studio project to build your app so it runs natively on devices with ARM64 processors. When you set your solution platform to ARM64, you instruct the build system to generate binaries specifically for ARM64 hardware. This allows your app to take full advantage of ARM64 device capabilities, such as improved battery life and optimized AI performance, and ensures compatibility with the latest Windows on ARM devices
 
+1. Go to the menu bar and select **Build** > **Configuration Manager**
+1. In the **Active Solution Platform dropdown**, select **ARM64**. If it is not listed:
+    - Click **<New...>**
+    - In the dialog, select **ARM64** as the new platform.
+    - Copy settings from **x64** (or another existing configuration).
+    - Click **OK**
+
+![Screenshot of Configuration Manager](assets/config-manager.png)
+
+
+In this section you will use Phi Silica to generate a poem with mock image descriptions. The Windows Copliot Runtime APIs will be managed in a service called `AIModelService`. This class will manage the initialization of the models and all the processing. The MainViewModel will call a method from the `AIModelService` and will receive the generated poem to then update the UI. 
+
+Start by creating the `AIModelService`.
 
 1. In the Solutions Explorer, **right click** on `Models` directory > **Add**> **Class**
 1. Name the new class **AIModelService**
-1. 
+1. Add to imports:
+
+```c#
+using Microsoft.Windows.AI.Generative;
+using Microsoft.Windows.AI.ContentModeration;
+using Microsoft.Windows.Management.Deployment;
+using Microsoft.Graphics.Imaging;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.Diagnostics;
+using System.Collections.ObjectModel;
+```
+
+1. Make the AIModelService class public:
+
+```c#
+public class AIModelService
+```
+
+Windows Copilot Runtime APIs, the app should first check for the availability of the AI model supporting that feature. Unlike typical Windows App SDK APIs, where a developer can call an API to immediately provide functionality or content, the Windows Copilot Runtime APIs rely on the model being available on the user's machine.
+
+To check if the model required by an AI feature is available on the user's device, begin by calling the `GetReadyState` method. This method must be called before every call to the model and will return true if the model being called is installed on the user's device.
+
+1.  Add the following to the AIModelService
+
+```c#
+public async Task InitializeModelsAsync()
+ {
+     Debug.WriteLine("Initializing AI models...");
+     if (!LanguageModel.IsAvailable())
+     {
+         var op = await LanguageModel.MakeAvailableAsync();
+     }
+     Debug.WriteLine("Language model is available.");
+}
+```
+
+For the optimal user experience, you’ll want to run this task as soon as the ViewModel is created.  
+
+1.  In the Solutions Explorer, open `MainViewModel.cs`
+1. Add a public property of type `AIModelService`:
+
+```c#
+public AIModelService AiModelService { get; }
+```
+
+1. Add a MainViewModel constroctor:
+  public MainViewModel()
+  {
+      AiModelService = new AIModelService();
+      _ = AiModelService.InitializeModelsAsync();
+  }
+
+
+You can run the project:
+1. On the title bar, **Click** on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
+1. Open the Output Window, **View** > **Output** or on your keyboard **Ctrl+Alt+O**
+1. Locate the Debug messages of:
+
+```
+Initializing AI models...
+Language model is available.
+```
+
+1. To stop debugging, **Close** the app window, or **Click** the debug "Stop" button in Visual Studio.
+
+
+1. Still in In the `MainViewModel.cs`, **add** to the `GeneratePoem` function:
+
+```c#
+GeneratedPoem = await _aiModelService.GeneratePoem(Photos, SelectedPoemType);
+
+IsGeneratingPoem = false;
+```
+
+
+<details>
+  <summary>Updated GeneratePoem()</summary>
+  
+  ```c#
+    [RelayCommand]
+    public async Task GeneratePoem()
+    {
+        IsGeneratingPoem = true;
+        GeneratedPoem = "Generating poem…";
+        
+        GeneratedPoem = await AiModelService.GeneratePoem(Photos, SelectedPoemType);
+
+        IsGeneratingPoem = false;
+}
+
+  ```
+</details>
+
+
+1. Open the `AIModelService.cs`
+1. Add the following functions:
+
+```c#
+public async Task<string> GeneratePoem(ObservableCollection<PhotoItem> photos, string poemType)
+ {
+     // mocked imageDescriptions
+     var imageDescriptions = "The image shows a cute, colorful flower drawn on a sheet of paper with a smiling face., A doodle of a dog with a tongue out, wearing a red circle around its head.";
+
+     var prompt = GeneratePrompt(imageDescriptions, poemType);
+
+     // Generate the poem using the prompt
+     return await GeneratePoemFromPrompt(prompt);
+ }
+
+ private string GeneratePrompt(string imageDescriptions, string poemType)
+ {
+     return $"Act as the most creative writer. You will be given the descriptions of images. Use that information to create a single {poemType} inspired by the image descriptions. Here are the image descriptions: {imageDescriptions}";
+ }
+
+ public async Task<string> GeneratePoemFromPrompt(string prompt)
+ {
+     using var languageModel = await LanguageModel.CreateAsync();
+     var result = await languageModel.GenerateResponseAsync(prompt);
+     return result.Response;
+ }
+```
+
+This code generates a poem based on a set of images and a chosen poem type. It starts by creating text descriptions of the images (currently using a hardcoded example), then builds a prompt that asks an AI language model to write a poem inspired by the descriptions. 
+
+
+You can run the project:
+
+1. On the title bar, **Click** on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
+1. Upload an image
+1. Select a poem type
+1. Click Generate
+
+![Screenshot of app displaying a poem](assets/generate-poem.png)
+
+1. To stop debugging, **Close** the app window, or **Click** the debug "Stop" button in Visual Studio.
 
 
 
-Next [Developer Setup](../7-image-description.md)
+You've configured your app to target ARM64 processors and implemented AI-driven poem generation. This setup ensures your app leverages hardware-specific optimizations while integrating AI capabilities through Windows Copilot Runtime APIs. The `AIModelService` handles model availability checks and response generation, while the `MainViewModel` orchestrates UI updates. Running the project demonstrates how these components work together to transform image inputs into creative outputs, showcasing the possiblity between ARM64 optimization and AI-powered features.
+
+
+
+
+Next [Image Description](../7-image-description.md)

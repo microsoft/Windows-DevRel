@@ -75,9 +75,6 @@ To update the Windows App SDK NuGet package for your project to get access to Wi
     1. On the right panel, **Click Install**.
     1. On the Preview Changes Popup, **Click Apply**.
     1. On the License Acceptance Popup, **Click I Accept**.
-1. Do the same for:
-- `CommunityToolkit.WinUI.Controls.Primitives`
-- `CommunityToolkit.WinUI.Converters`
 1. **Close** the NuGet package file
 
 The Windows Copliot Runtime APIs uses a specifies  version of the .NET runtime and the minimum Windows version that the app targets. Also, the Community Toolkit.Mvvm and uses features that are ahead of the standard C# language version that your project is configured to use by default. You need to update the project's configuration:
