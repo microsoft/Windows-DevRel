@@ -99,7 +99,6 @@ namespace PoemGenerator
             IsGeneratingPoem = true;
             GeneratedPoem = "Generating poem…";
             // Processing image via Foundry APIs here
-            Debug.WriteLine("Generating poem...");
             GeneratedPoem = await _aiModelService.GeneratePoem(Photos, SelectedPoemType);
 
             IsGeneratingPoem = false;

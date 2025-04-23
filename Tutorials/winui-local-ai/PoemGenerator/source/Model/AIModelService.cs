@@ -50,7 +50,6 @@ namespace PoemGenerator.Model
             //}
             Debug.WriteLine("Image model is available.");
             IsModelLoading = false;
-            Debug.WriteLine("IsModelLoading is set to: " + IsModelLoading);
         }
 
         public async Task<string> GeneratePoem(ObservableCollection<PhotoItem> photos, string poemType)
@@ -73,7 +72,6 @@ namespace PoemGenerator.Model
         }
         public async Task<string> GeneratePoemFromPrompt(string prompt)
         {
-            Debug.WriteLine(prompt);
             using var languageModel = await LanguageModel.CreateAsync();
             var result = await languageModel.GenerateResponseAsync(prompt);
             return result.Response;
@@ -81,7 +79,6 @@ namespace PoemGenerator.Model
 
         private async Task ProcessPhotosForDescriptions(ObservableCollection<PhotoItem> photos)
         {
-            Debug.WriteLine("ProcessPhotosForDescriptions");
             var photosToDescribe = photos.Where(photo => photo.Bitmap != null && photo.Description == null);
 
             await Parallel.ForEachAsync(photosToDescribe, async (photo, _) =>
@@ -92,7 +89,6 @@ namespace PoemGenerator.Model
         }
         public async Task<string> DescribeImageAsync(ImageBuffer inputImage)
         {
-            Debug.WriteLine("DescribeImageAsync");
             // Ensure the generator is created only when needed
             if (_imageDescriptionGenerator == null)
             {
@@ -106,7 +102,6 @@ namespace PoemGenerator.Model
             };
 
             var response = await _imageDescriptionGenerator.DescribeAsync(inputImage, ImageDescriptionScenario.Caption, filterOptions);
-            Debug.WriteLine("DescribeImageAsync response: " + response.Response);
             return response.Response;
         }
 
