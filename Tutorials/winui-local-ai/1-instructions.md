@@ -1,5 +1,9 @@
 # Overview of Windows Development
 
+Want to build apps for Windows with the latest and greatest capabilities? You’ve come to the right Lab! Today, we’ll build a WinUI app that leverages WCR APIs from start to finish.
+
+This Lab introduces you to WinUI, the Windows App SDK, Windows Copilot Runtime APIs, and the Windows Community Toolkit. These frameworks and tools provide a foundation for developing high-performance, visually consistent applications that use the latest Windows features and maintain compatibility across devices.
+
 Building Windows apps uses modern frameworks and tools to create software that runs on the Windows operating system. This course introduces you to the WinUi, Windows App SDK, Windows Copilot Runtime APIs, and the Windows Community Toolkit. These frameworks and tools provide a foundation for developing high-performance, visually consistent applications that use the latest Windows features and maintain compatibility across devices.
 
 ![Diagram of Native Windows Development ](assets/techstack.png)
@@ -30,7 +34,7 @@ To generate poems, you will integrate Windows Copilot Runtime APIs. The app uses
 
 You will test the app to ensure it creates personalized bedtime stories from images, with all features operating securely and locally.
 
-![Screenshot of Poem Generator](assets/Screenshot-poem-geneartor.png)
+![Screenshot of Poem Generator](assets/generate-poem.png)
 
 
 ## Software Architecture
@@ -50,10 +54,9 @@ The **ViewModel** component performs the databinding between View and Model comp
 
 ![Diagram of MVVM being bi-directional](assets/mvvm-bi-directional-syncing.png)
 
-
 This bi-directional syncing between View and Model components allows us to have functionality that enables a user to press a letter button in our game. This button press triggers the ViewModel to both update the View (by disabling the button) and the Model (by processing the user's guessed letter).
 
 Now that you have an overview of Windows development tools and our project goals for this course, let's dive in and start building this Windows app!
 
 
-Next [Developer Setup](../2-dev-setup.md)
+Next [Developer Setup](./2-dev-setup.md)

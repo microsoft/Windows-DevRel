@@ -113,7 +113,7 @@ Because children’s art can be abstract, there is a chance that the Image Descr
 
 You can run the project:
 
-1. On the title bar, Click on Debug > Start Debugging OR on your keyboard press F5 key
+1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
 1. Open the Output Window, View > Output or Ctrl+Alt+O
 1. Locate the Debug messages for:
 
@@ -253,4 +253,4 @@ With these updates, this app now manages image descriptions by initializing and 
 
 
 
-[Next Steps](../8-congrats.md)
+[Next Steps](./8-congrats.md)

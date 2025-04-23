@@ -131,4 +131,4 @@ In the next section, we’ll explore how MainWindow.xaml and how pages work.
 
 
 
-Next [Developer Setup](../3-build-filepicker-ui.md)
+Next [Build UI](./3-build-filepicker-ui.md)
