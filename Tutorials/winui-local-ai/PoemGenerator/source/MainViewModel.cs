@@ -12,11 +12,13 @@ using Windows.Graphics.Imaging;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using PoemGenerator.Model;
+using System.Diagnostics;
 
 namespace PoemGenerator
 {
-    public partial class MainViewModel() : ObservableObject
+    public partial class MainViewModel : ObservableObject
     {
+        public AIModelService _aiModelService;
         public ObservableCollection<PhotoItem> Photos { get; set; } = new();
 
         [ObservableProperty]
@@ -29,6 +31,13 @@ namespace PoemGenerator
         public partial string GeneratedPoem { get; set; } = "Select up to 5 images to generate a poem...";
 
         public string SelectedPoemType = "Haiku";
+
+        public MainViewModel(AIModelService aiModelService)
+        {
+            _aiModelService = aiModelService;
+            _ = _aiModelService.InitializeModelsAsync();
+        }
+
 
         [RelayCommand]
         public async Task LoadImages()
@@ -78,7 +87,10 @@ namespace PoemGenerator
             SoftwareBitmap convertedImage = SoftwareBitmap.Convert(inputBitmap, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
             await bitmapSource.SetBitmapAsync(convertedImage);
 
-            Photos.Add(new PhotoItem { BitmapSource = bitmapSource });
+            Photos.Add(new PhotoItem {
+                BitmapSource = bitmapSource,
+                Bitmap = convertedImage
+            });
         }
 
         [RelayCommand]
@@ -86,7 +98,11 @@ namespace PoemGenerator
         {
             IsGeneratingPoem = true;
             GeneratedPoem = "Generating poem…";
-	        // Processing image via Foundry APIs here
+            // Processing image via Foundry APIs here
+            Debug.WriteLine("Generating poem...");
+            GeneratedPoem = await _aiModelService.GeneratePoem(Photos, SelectedPoemType);
+
+            IsGeneratingPoem = false;
 
         }
     }

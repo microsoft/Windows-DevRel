@@ -138,5 +138,16 @@
                 </RichTextBlock>
             </StackPanel>
         </Grid>
+        <Grid x:Name="OverlayGrid"
+            Background="Transparent"
+            Visibility="{x:Bind AIModelService.IsModelLoading, Mode=OneWay}">
+            <ProgressRing
+                x:Name="ModelLoader"
+                Width="64"
+                Height="64"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                IsActive="{x:Bind AIModelService.IsModelLoading, Mode=OneWay}" />
+        </Grid>
     </Grid>
 </Page>
