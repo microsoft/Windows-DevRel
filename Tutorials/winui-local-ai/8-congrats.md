@@ -4,7 +4,7 @@ In this lab, you learned how to build a WinUI app that leverages Windows Copilot
 
 Please provide your input on the lab experience through [survey](TODO).
 
-## Recap of Main Concepts and Skills
+## Recap of Main Concepts
 - **WinUI Framework**: You used WinUI to create a modern, intuitive user interface.
 - **Windows App SDK**: You integrated Windows App SDK to access Windows platform functionality.
 - **Windows Copilot Runtime APIs**: You utilized AI models for text generation and image description.

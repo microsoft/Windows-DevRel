@@ -280,4 +280,4 @@ Now try it out:
 You successfully updated the app's UI to use modern styling techniques. By incorporating theme resources, applying consistent styles, and adding visual cues, you have created an application that aligns with Windows design principles. This approach not only improves the app's appearance, but also ensures it remains maintainable and adaptable to future design updates.
 
 
-Next [Add AI](../6-phi-silica.md)
+Next [Add AI](./6-phi-silica.md)

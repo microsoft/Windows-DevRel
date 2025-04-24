@@ -613,7 +613,7 @@ Now try it out:
 In this section, you successfully added image upload and display functionality to your application. By exploring the WinUI and AI Dev Galleries, you implemented a file upload button and integrated a ViewModel to manage and display image data. This image gallery now provides a foundation for generating poems based on the uploaded images.
 
 
-Next [Adding Style & Icon](../5-styling.md)
+Next [Adding Style & Icon](./5-styling.md)
 
 
 <details>

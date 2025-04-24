@@ -130,5 +130,4 @@ The folder is named Pages instead of Views because it stores different pages of 
 In the next section, we’ll explore how MainWindow.xaml and how pages work.
 
 
-
 Next [Build UI](./3-build-ui.md)
