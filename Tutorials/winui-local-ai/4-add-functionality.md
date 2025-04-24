@@ -1,6 +1,7 @@
 # Add Functionality 
 
-TODO: Add intro
+In this section, you will enhance an app to upload images and display these images in a gallery. You will explore the **WinUI Gallery** and **AI Dev Gallery** to leverage existing code, implementing a file upload button. This project will also guide you through using a ViewModel to manage data and display uploaded images, setting the stage for generating poems based on these images.
+
 
 ## Explore & Use Galleries
 
@@ -603,11 +604,13 @@ private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
 Now try it out:
 
 1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
-1. Click on `Uploade Images`
+1. Click on `Upload Images`
 1. Select multplie images
 1. Click Generate
 1. Close App
 
+
+In this section, you successfully added image upload and display functionality to your application. By exploring the WinUI and AI Dev Galleries, you implemented a file upload button and integrated a ViewModel to manage and display image data. This image gallery now provides a foundation for generating poems based on the uploaded images.
 
 
 Next [Adding Style & Icon](../5-styling.md)

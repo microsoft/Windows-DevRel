@@ -54,7 +54,7 @@ Important: The Project Name and Solution Name must be StoryTeller. Visual Studio
 
 The Windows App SDK (including WinUI) and tools like the Community Toolkit are distributed as [NuGet packages](https://www.nuget.org/). This distribution method allows updates to be released independently of Windows and Visual Studio. As a result, the Visual Studio template you used to create your project might not reference the latest versions of these NuGet packages. To ensure you have the latest features and fixes, you should update your NuGet packages every time you create a new project in Visual Studio.
 
-Note: NuGet packages are single ZIP files with a .nupkg extension that contains compiled code (Dynamic Link Library (DLLs)), related files, and a descriptive manifest. These packages serve as a mechanism for developers to create, share, and consume useful code in .NET applications.
+> **_Note:_**   NuGet packages are single ZIP files with a .nupkg extension that contains compiled code (Dynamic Link Library (DLLs)), related files, and a descriptive manifest. These packages serve as a mechanism for developers to create, share, and consume useful code in .NET applications.
 
 To update the Windows App SDK NuGet package for your project to get access to Windows Copliot Runtim APIs :
 
@@ -131,4 +131,4 @@ In the next section, we’ll explore how MainWindow.xaml and how pages work.
 
 
 
-Next [Build UI](./3-build-filepicker-ui.md)
+Next [Build UI](./3-build-ui.md)

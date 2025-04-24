@@ -1,5 +1,4 @@
 # Windows Copilot Runtime
-TODO: update naming
 
 Windows Copilot Runtime provides AI-powered features and APIs on Copilot+ PCs. These features are in active development and run locally in the background at all times.
 

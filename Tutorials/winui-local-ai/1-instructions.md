@@ -9,30 +9,34 @@ Building Windows apps uses modern frameworks and tools to create software that r
 ![Diagram of Native Windows Development ](assets/techstack.png)
 
 
-*WinUI* is the user interface framework included in the Windows App SDK. WinUI enables you to build applications with Fluent Design and modern controls. You can use WinUI to create intuitive, accessible, and visually appealing user experiences.
+**WinUI** is a powerful and versatile framework that offers developers a native user experience (UX) for both Windows desktop and Universal Windows Platform (UWP) applications. By incorporating the Fluent Design System into all experiences, controls, and styles, WinUI provides consistent, intuitive, and accessible experiences using the latest user interface (UI) patterns. This means that developers can create visually appealing and highly functional applications that align with modern design principles, ensuring a seamless and engaging user experience.
 
-The *Windows App SDK* supplies libraries, frameworks, and components for accessing Windows platform functionality in both new and existing desktop apps. You can use these resources with C++ Win32 or C# .NET projects. The SDK supports features such as modern window management, improved text rendering, and application lifecycle management. You can add these features to your app without rewriting existing code.
+One of the key advantages of WinUI is its flexibility and compatibility with various development targets. Whether you are building a new application from scratch or migrating an existing MFC, WinForms, or WPF app, WinUI supports a wide range of languages including C++, C#, Visual Basic, and JavaScript (using React Native for Desktop). This makes it easier for developers to leverage their existing skills and codebases while adopting the latest technologies. Additionally, WinUI is decoupled from the OS and Windows SDKs, allowing for more frequent updates and improvements without being tied to specific Windows releases. This ensures that developers can always access the latest features and enhancements, keeping their applications up-to-date and competitive.
 
-The *Windows Copilot Runtime APIs* allow you to integrate AI capabilities into your Windows apps. These APIs include features such as text content moderation, which helps flag and filter potentially harmful content. You can use these APIs to enhance your applications with responsible generative AI functionality.
+**Windows App SDK** is a comprehensive framework that unifies access to Windows APIs for desktop applications on Windows 11 and Windows 10. It provides developers with a consistent set of tools and libraries to build modern, high-performance applications. One of the standout features of the Windows App SDK is its integration with WinUI 3, the premier native user interface (UI) framework for Windows desktop apps. The WASDK supplies libraries, frameworks, and components for accessing Windows platform functionality in both new and existing desktop apps. You can use these resources with C++ Win32 or C# .NET projects. The SDK supports features such as modern window management, improved text rendering, and application lifecycle management. You can add these features to your app without rewriting existing code.
 
-The *Windows Community Toolkit() provides additional helpers, controls, and extensions for Windows app development. You can use this toolkit to simplify common tasks and accelerate your development process.
+The **Windows Copilot Runtime APIs** (WCR APIs) offer a powerful suite of AI-powered features that enable developers to integrate advanced AI capabilities into their applications without the need to find, run, or optimize their own Machine Learning (ML) models. These APIs leverage on-device AI models that run locally and continuously in the background on Copilot+ PCs, ensuring high performance and security. The initial set of APIs includes Phi Silica for language processing, Text Recognition, Image Super Resolution, Image Segmentation, and Image Description. By utilizing these APIs, developers can enhance their applications with features such as text generation, image sharpening, and natural language image descriptions, all running directly on the user's device.
 
-You use these frameworks and tools together to build Windows apps that are modern, efficient, and compatible with a wide range of Windows devices
+The **Windows Community Toolkit** is an invaluable resource for developers building applications on Windows. It is a collection of helper functions, custom controls, and app services designed to simplify and demonstrate common developer tasks. The toolkit supports a wide range of development targets, including WinUI 2, WinUI 3, and the Uno Platform, making it a versatile choice for developers working on different types of projects. By leveraging the Windows Community Toolkit, developers can access a rich set of controls and extensions that enhance productivity and streamline the development process.
+
+You use these frameworks and tools together to build Windows apps that are modern, efficient, and compatible with a wide range of Windows devices.
 
 
 ## Scenario
-Jamie has a young child who enjoys hearing a different bedtime story every night. The child often returns home from daycare with new arts and crafts projects, inspiring Jamie to create a more personalized bedtime experience. Jamie wants an app that uses images of these arts and crafts to generate unique bedtime stories.
+Jamie has a young child who enjoys hearing a different bedtime story every night. The child often returns home from daycare with new arts and crafts projects, inspiring Jamie to create a more personalized bedtime experience using those projects. Jamie wants an app that uses images of these arts and crafts to generate unique bedtime stories.
 
 At the same time, Jamie is concerned about privacy and wants to ensure that no images of her child or their creations are uploaded to online AI models or external services.
+
 
 ## App Description
 You will build a Windows app that generates poems from images of children’s arts and crafts, while keeping all data and AI processing on the device for privacy.
 
 The app uses the Windows App SDK and WinUI to provide a modern, intuitive, and accessible user experience. You will design the interface with XAML, use data binding to connect UI elements to data, and apply styles and controls to create an engaging application.
 
-To generate poems, you will integrate Windows Copilot Runtime APIs. The app uses the Image Description API to create a detailed narration of each arts and crafts image. This narration is then passed to the Phi Silica language model, which generates a unique poems—all running locally on your device for privacy and security.
+To generate poems, you will integrate Windows Copilot Runtime APIs. The app uses the Image Description API to create a detailed description of each arts and crafts image. This narration is then passed to the Phi Silica small language model, which generates unique poems—all running locally on-device for privacy and security.
 
 You will test the app to ensure it creates personalized bedtime stories from images, with all features operating securely and locally.
+
 
 ![Screenshot of Poem Generator](assets/generate-poem.png)
 
@@ -54,7 +58,7 @@ The **ViewModel** component performs the databinding between View and Model comp
 
 ![Diagram of MVVM being bi-directional](assets/mvvm-bi-directional-syncing.png)
 
-This bi-directional syncing between View and Model components allows us to have functionality that enables a user to press a letter button in our game. This button press triggers the ViewModel to both update the View (by disabling the button) and the Model (by processing the user's guessed letter).
+> **_Note:_**  This lab will not strickly adhere to MVVM, it also include codebehind patterns as well 
 
 Now that you have an overview of Windows development tools and our project goals for this course, let's dive in and start building this Windows app!
 
