@@ -44,9 +44,9 @@ To create a new project using the WinUI C# Blank App project template:
 1. Open Visual Studio and select **Create a new project** from the launch page. (If Visual Studio is already open to the editor, select **File** > **New**> **Project**)
 1. Search for **WinUI** and select the **Blank App, Packaged (WinUI 3 in Desktop)** project template
 1. Click **Next**
-1. . Name your project: **StoryTeller**
+1. . Name your project: **PoemGenerator**
 
-Important: The Project Name and Solution Name must be StoryTeller. Visual Studio creates namespaces using this information. If it's something different, the code you copy and paste from this tutorial can cause build errors.
+Important: The Project Name and Solution Name must be PoemGenerator. Visual Studio creates namespaces using this information. If it's something different, the code you copy and paste from this tutorial can cause build errors.
 
 1. Select **Create**.
 
@@ -80,8 +80,8 @@ To update the Windows App SDK NuGet package for your project to get access to Wi
 The Windows Copliot Runtime APIs uses a specifies  version of the .NET runtime and the minimum Windows version that the app targets. Also, the Community Toolkit.Mvvm and uses features that are ahead of the standard C# language version that your project is configured to use by default. You need to update the project's configuration:
 
 1. If Solution Explorer isn't already open, you can open it by selecting **View** > **Solution Explorer** from the top menu.
-1. In the Solution Explorer, you see a tree structure representing your solution and its projects. Look for the project node named **StoryTeller**. This node is usually a folder icon with the project name next to it.
-1. **Right-click** on the project node (**StoryTeller**) and select **Edit Project File**. This action opens the .csproj file in the editor.
+1. In the Solution Explorer, you see a tree structure representing your solution and its projects. Look for the project node named **PoemGenerator**. This node is usually a folder icon with the project name next to it.
+1. **Right-click** on the project node (**PoemGenerator**) and select **Edit Project File**. This action opens the .csproj file in the editor.
 1. **Locate** the first `PropertyGroup` element in the file
 1. **Add** `<LangVersion>Preview</LangVersion>`
 1. **Locate** `<TargetFramework>` 
