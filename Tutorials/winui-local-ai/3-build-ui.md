@@ -1,5 +1,11 @@
 # Build UI
 
+
+In this module, you'll construct a user interface (UI) for a WinUI 3 application using XAML. You'll start by setting up the main window and then structuring the app's UI with grids, stacks, and controls, to create a layout for image selection and poem generation. By the end of this module, you will have created the base layout for your application that you will add functionality to in the next module.
+
+## XAML
+
+
 In WinUI 3, XAML defines the app’s UI using an XML-based syntax to describe layout, appearance, and element hierarchy. It enables declarative UI construction, such as a button with properties and event bindings:
 
 ```xml
@@ -217,7 +223,28 @@ These steps creates both `MainPage.xaml` & `MainPage.xaml.cs`.
 </Grid>
 ```
 
+Below is a table that visually represents the XMAL:
+
+|                | **Column 0 (Photo Viewer)**                                                                                                                                         | **Column 1 (Poem Viewer)**                                                                                          |
+|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| **Row 0**      | **StackPanel**<br />-  Image (AppIcon.svg)<br />-  TextBlock: <br />&nbsp;&nbsp;**"Poem Generator"**<br />-  Button: <br />&nbsp;&nbsp;**"Upload images"**      | **Grid**<br />-  DropDownButton: <br />&nbsp;&nbsp;**"Select poem type"**<br />&nbsp;&nbsp;Menu: Sonnet, Haiku, Elegy, Limerick, Ballad, Free verse <br />&nbsp;&nbsp;_Each menu item:_ <br />&nbsp;&nbsp;*Click="MenuFlyoutItem_Click"*<br />-  Button: <br />&nbsp;&nbsp;**"Generate"** <br />&nbsp;&nbsp;*Click="GeneratePoemButton_Click"* |
+| **Row 1**      | **ScrollView**<br />-  Image (for uploaded images)                                                                                                                    | **StackPanel**<br />-  ProgressRing (Loader)<br />-  RichTextBlock: <br />&nbsp;&nbsp;**"Your poem will generate here"**                                      |
+
+**Table Legend / Guide**
+
+- Items listed with a dash (-) or indentation represent child elements or nested content within the parent element.
+- Bold text (e.g., StackPanel, Button) indicates the name of a XAML element.
+- Quoted text (e.g., "Poem Generator", "Upload images") represents the visible text content inside that element, such as TextBlock.Text or Button.Content.
+- Italicized text (e.g., Click="MenuFlyoutItem_Click") denotes event handlers or attributes attached to the element.
+
+
+
+
+
 This page is organized into a two-column grid: the left column (fixed width) allows users to upload and view images, while the right column (flexible width) provides controls to select a poem type, generate the poem, and display the result. The left side includes an app icon, title, upload button, and image viewer, and the right side features a dropdown for poem types, a generate button, a loading indicator, and a poem display area.
+
+
+
 
 ![Diagram of XMAL Structure](assets/xmal-struture.png)
 
@@ -237,16 +264,17 @@ private void LoadImage_Click(object sender, RoutedEventArgs e)
     
 }
 ```
-You'll manager this later in the lab.
+You'll manage these functions later in the lab.
 
+Now to test it out:
 
 1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
+1. Close the app
 
-TODO:
-![Screenshot of App](assets/xmal-struture.png)
+![Screenshot of App](assets/base-xmal.png)
 
 
-TODO: Recap
+You've completed the initial UI construction for the WinUI 3 application. By setting up the main window and structuring the layout with XAML, you've established the foundation for image uploads and poem generation. This visual structure is important for adding functionality and interactivity in the next module.
 
 
 Next [Add Functionality](./4-add-functionality.md)
