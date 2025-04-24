@@ -212,4 +212,4 @@ You've configured your app to target ARM64 processors and implemented AI-driven 
 
 
 
-Next [Image Description](../7-image-description.md)
+Next [Image Description](./7-image-description.md)

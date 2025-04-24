@@ -8,10 +8,10 @@ This section walks you through the process of enhancing the visual appeal of a X
 
 In the `MainPage.xmal` there is a `Image` element that contains `Source="/Assets/AppIcon.svg"`. Now its time to add the image to the project.
 
-1. Go to [directory]()
+1. Open in a new tap: [directory](./assets/)
 1. Locate AppIcon.svg
-1. Download image Desktop
-1. Have Visual Studio display Soution Explorer and open `Asset` directory
+1. Download image to Desktop
+1. Have Visual Studio display `Soution Explorer` and open `Asset` directory
 1. Drag and drop image from Desktop to Visual Stuido into the `Asset` directory
 1. **Right click** on the image
 1. **Click** on **Properties**
