@@ -72,9 +72,10 @@ Start by creating the `AIModelService`.
 1. Add to imports:
 
 ```c#
+using Microsoft.Windows.AI;
 using Microsoft.Windows.AI.Generative;
 using Microsoft.Windows.AI.ContentModeration;
-using Microsoft.Windows.Management.Deployment;
+using System.Threading.Tasks;
 using Microsoft.Graphics.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Diagnostics;
@@ -89,7 +90,7 @@ public class AIModelService
 
 Windows Copilot Runtime APIs, the app should first check for the availability of the AI model supporting that feature. Unlike typical Windows App SDK APIs, where a developer can call an API to immediately provide functionality or content, the Windows Copilot Runtime APIs rely on the model being available on the user's machine.
 
-To check if the model required by an AI feature is available on the user's device, begin by calling the `GetReadyState` method. This method must be called before every call to the model and will return true if the model being called is installed on the user's device.
+To check if the model required by an AI feature is available on the user's device, begin by calling the `GetReadyState` method and see if it's ready. If its not then use the `EnsureReadyAsync` to make sure it's installed on the user's device.
 
 1.  Add the following to the AIModelService
 
@@ -97,10 +98,10 @@ To check if the model required by an AI feature is available on the user's devic
 public async Task InitializeModelsAsync()
  {
      Debug.WriteLine("Initializing AI models...");
-     if (!LanguageModel.IsAvailable())
-     {
-         var op = await LanguageModel.MakeAvailableAsync();
-     }
+     if (LanguageModel.GetReadyState() == AIFeatureReadyState.EnsureNeeded)
+    {
+        var op = await LanguageModel.EnsureReadyAsync();
+    }
      Debug.WriteLine("Language model is available.");
 }
 ```
@@ -187,7 +188,7 @@ public async Task<string> GeneratePoem(ObservableCollection<PhotoItem> photos, s
  {
      using var languageModel = await LanguageModel.CreateAsync();
      var result = await languageModel.GenerateResponseAsync(prompt);
-     return result.Response;
+     return result.Text;
  }
 ```
 

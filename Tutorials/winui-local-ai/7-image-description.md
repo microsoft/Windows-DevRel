@@ -23,13 +23,9 @@ You’ll update the AIModelService.cs to manage the Image Description portion of
 1. In the `InitializeModelsAsync`, under the LanguageModel checks, add the `ImageDescriptionGenerator`:
 
 ```c#
-if (!ImageDescriptionGenerator.GetReadyState())
+if (ImageDescriptionGenerator.GetReadyState() == AIFeatureReadyState.EnsureNeeded)
 {
-    var result = await ImageDescriptionGenerator.EnsureReadyAsync();
-    if (result.Status != PackageDeploymentStatus.CompletedSuccess)
-    {
-        throw result.ExtendedError;
-    }
+    var imageDescriptionDeploymentOperation = ImageDescriptionGenerator.EnsureReadyAsync();
 }
 Debug.WriteLine("Image model is available.");
 ```
@@ -97,18 +93,18 @@ public async Task<string> DescribeImageAsync(ImageBuffer inputImage)
      }
 
      var filterOptions = new ContentFilterOptions
-     {
-         PromptMinSeverityLevelToBlock = { ViolentContentSeverity = SeverityLevel.Medium },
-         ResponseMinSeverityLevelToBlock = { ViolentContentSeverity = SeverityLevel.Medium }
-     };
+    {
+        PromptMaxAllowedSeverityLevel = {Violent = SeverityLevel.High, Sexual = SeverityLevel.High, Hate = SeverityLevel.High, SelfHarm = SeverityLevel.High},
+        ResponseMaxAllowedSeverityLevel = { Violent = SeverityLevel.High, Sexual = SeverityLevel.High, Hate = SeverityLevel.High, SelfHarm = SeverityLevel.High }
+    };
 
-     var response = await _imageDescriptionGenerator.DescribeAsync(inputImage, ImageDescriptionScenario.Caption, filterOptions);
-     return response.Response;
+     var response = await _imageDescriptionGenerator.DescribeAsync(inputImage, ImageDescriptionKind.DetailedDescrition, filterOptions);
+     return response.Description;
  }
 
 ```
 
-Because children’s art can be abstract, there is a chance that the Image Description might interpret images inappropriately, the `ContentFilterOptions` is used set the level of Severity which will block violent content. Here it is set to Medium. 
+Because children’s art can be abstract, there is a chance that the Image Description might interpret images inappropriately, the `ContentFilterOptions` is used set the level of Severity which will block violent content. Here it is set to High. 
 
 
 You can run the project:

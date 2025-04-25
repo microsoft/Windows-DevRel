@@ -20,7 +20,7 @@ You can use some of this functionality to implement simple file upload button. T
 Since we haven’t defined the logic for SetImage yet, we can comment out that line.
 
 1. Comment out `SetImage`
-1. Add to your imports:
+1. Add to your imports, in the `MainPage.xaml.cs` :
 
 ```c#
 using Windows.Storage.Pickers;
@@ -30,6 +30,7 @@ using Windows.Storage.Pickers;
   <summary>Your code should look like the following:</summary>
   
   ```c#
+using Windows.Storage.Pickers;
 public sealed partial class MainPage : Page
 {
     public MainPage()
@@ -72,13 +73,13 @@ private async void LoadImage_Click(object sender, RoutedEventArgs e)
 
 This projects allows users to multi-select images. You can use the WinUI Gallery app to reference how to do this: 
 
-1. In the **WinUI Gallery**, go to **Samples** > **Images** > **Describe Image**
+1. In the **WinUI Gallery**
 1. On the top Left corner, Search  **FilePicker** 
 1. Locate the **Pick muliple files** section
 1. **Click** on the **Source Code**
 1. **Click** on **C#**
 1. Looking at the source code, you'll see that the function call needs to change from `PickSingleFileAsync()` to ` PickMultipleFilesAsync()`. As well as it needs to iterate and load each file in a loop.
-1. In your `MainPage.xmal` update the `LoadImage_Click` function: 
+1. In your `MainPage.xmal.cs` update the `LoadImage_Click` function: 
 
 ```c#
 var files = await picker.PickMultipleFilesAsync();
@@ -118,13 +119,13 @@ public partial class MainViewModel() : ObservableObject
 TODO: explain ObservableObject
 
 1. Move the `LoadImage_Click` funtion from the MainPage to MainViewModel
-1. Rename it to `LoadImage`, make it a `Task` and remove the paramters
+1. Rename it to `LoadImages`, make it a `Task` and remove the paramters
 
 ```c#
-private async Task LoadImage()
+private async Task LoadImages()
 ```
 
-1. Above the new `LoadImage` add [RelayCommand]
+1. Above the new `LoadImages` add [RelayCommand]
 
 <details>
   <summary>Your code should look like the following:</summary>
@@ -136,7 +137,7 @@ namespace PoemGenerator
     {
 
         [RelayCommand]
-        private async Task LoadImage()
+        private async Task LoadImages()
         {
             var window = new Window();
             var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
@@ -167,7 +168,7 @@ namespace PoemGenerator
 ```
 </details>
 
-The `RelayCommand` automatically turns this into a command that can be bound to UI elements, specifically the Letter buttons that are created in the View. The `RelayCommand` allows the ViewModel to handle user interactions cleanly, without requiring event handlers in the code-behind. When the  button is clicked, this action triggers this command, executing the `LoadImage` method.
+The `RelayCommand` automatically turns this into a command that can be bound to UI elements, specifically the Letter buttons that are created in the View. The `RelayCommand` allows the ViewModel to handle user interactions cleanly, without requiring event handlers in the code-behind. When the  button is clicked, this action triggers this command, executing the `LoadImages` method.
 
 
 Now to connect the MainViewModel to MainPage.
@@ -218,13 +219,13 @@ In MainPage.xaml, we can reference our view model using x:Bind.
 
 We use both in this lab.
 
-Now to connect the `LoadImage()` from the ViewModel to the `MainPage.xmal`
+Now to connect the `LoadImages()` from the ViewModel to the `MainPage.xmal`
 1. Open `MainPage.xmal`
 1. Locate `Click="LoadImage_Click"`
 1. Replace it with:
 
 ```c#
-Command="{x:Bind ViewModel.LoadImageCommand}"
+Command="{x:Bind ViewModel.LoadImagesCommand}"
 ```
 
 
@@ -274,7 +275,7 @@ namespace PoemGenerator.Models
 public ObservableCollection<PhotoItem> Photos { get; set; } = new();
 ```
 
-When iterating through the list of images in `LoadImage`, we can replace the commented line calling `SetImage` with logic that processes each image, loads the bitmap, and saves it as a `PhotoItem`. 
+When iterating through the list of images in `LoadImages`, we can replace the commented line calling `SetImage` with logic that processes each image, loads the bitmap, and saves it as a `PhotoItem`. 
 
 We can reference this logic in the **Describe Image sample** in the `AI Dev Gallery` app, from the `SetImage` function on lines 123-139, which converts the image stream from the FilePicker and loads it into a bitmap. But for this app it will be called `AddImage` and add new PhotoItem object to `Photos`.
 
@@ -390,7 +391,7 @@ The `ItemsView` component will be `PhotosLoaded` to manage it's Visibility. It s
 public partial bool PhotosLoaded { get; set; } = false;
 ```
 
-1. Locate the end of `LoadImage` funtion and after the for loop add:
+1. Locate the end of `LoadImages` funtion and after the for loop add:
 ```c#
 PhotosLoaded = true;
 ```
@@ -410,7 +411,7 @@ namespace PoemGenerator
         public partial bool PhotosLoaded { get; set; } = true;
 
         [RelayCommand]
-        private async Task LoadImage()
+        private async Task LoadImages()
         {
             var window = new Window();
             var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
@@ -552,7 +553,7 @@ Command="{x:Bind ViewModel.GeneratePoemCommand}"
 
 Now to add the GeneratePoemCommand to the ViewModel:
 
-1. Open `ViewModel.cs`
+1. Open `MainViewModel.cs`
 1. Add `GeneratePoem`:
 
 ```c#
@@ -685,7 +686,7 @@ MainPage.xmal
                 Margin="0,8,0,0"
                 HorizontalAlignment="Center"
                 AutomationProperties.Name="Select up to 5 images"
-                Command="{x:Bind ViewModel.LoadImageCommand}"
+                Command="{x:Bind ViewModel.LoadImagesCommand}"
                 ToolTipService.ToolTip="Select images">
                     <StackPanel Orientation="Horizontal"
                             Spacing="8">
@@ -795,7 +796,7 @@ public partial class MainViewModel() : ObservableObject
     public string SelectedPoemType = "Haiku";
 
     [RelayCommand]
-    private async Task LoadImage()
+    private async Task LoadImages()
     {
         Photos.Clear();
         var window = new Window();

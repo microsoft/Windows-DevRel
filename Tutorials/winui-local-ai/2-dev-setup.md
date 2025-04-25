@@ -2,6 +2,9 @@
 
 This portion takes you through the steps needed to begin setting up your Windows app using the latest Windows development frameworks and tools: WinUI, Windows App SDK, and Community Toolkit.
 
+<!-- # Prerequisites
+See [Prerequisites](https://learn.microsoft.com/en-us/windows/ai/apis/model-setup?tabs=winui#prerequisites) -->
+
 <!-- ## Enable Developer Mode
 
 Windows has a special mode for developers that adjusts security settings to let you run the apps you're working on. You need to enable Developer Mode before you can build, deploy, and test your app using Visual Studio.
@@ -65,7 +68,7 @@ To update the Windows App SDK NuGet package for your project to get access to Wi
 1. Click on the **Installed** tab.
 1. Click on **Microsoft.WindowsAppSDK**
 1. Select the **Checkbox** to Include prelease
-1. On the right pandel, select the **checkbox** of the **Project** and the **winappsdk1.7-experimental3** and then click **install**
+1. On the right pandel, select the **checkbox** of the **Project** and the **winappsdk1.8-experimental1** and then click **install**
     1. On the Preview Changes Popup, **Click Apply**.
     1. On the License Acceptance Popup, **Click I Accept**.
 1. To install the CommunityToolkit NuGet package for your project:

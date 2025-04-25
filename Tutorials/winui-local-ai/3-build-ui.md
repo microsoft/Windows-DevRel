@@ -144,6 +144,7 @@ These steps creates both `MainPage.xaml` & `MainPage.xaml.cs`.
             Margin="0,8,0,0"
             HorizontalAlignment="Center"
             AutomationProperties.Name="Select up to 5 images"
+            Click="LoadImage_Click"
             ToolTipService.ToolTip="Select images">
                 <StackPanel Orientation="Horizontal"
                         Spacing="8">
@@ -251,7 +252,7 @@ This page is organized into a two-column grid: the left column (fixed width) all
 The XMAL includes a two onClick Event, which will need to be handled before you can run and see the project.
 
 1. Open MainPage.xmal.cs
-1. Under the MainPage constructor add:
+1. **Under** the MainPage constructor add:
 
 ```c#
 private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
@@ -264,6 +265,33 @@ private void LoadImage_Click(object sender, RoutedEventArgs e)
     
 }
 ```
+
+<details>
+  <summary>Your code should look like the following:</summary>
+  
+  ```c#
+public sealed partial class MainPage : Page
+{
+    public MainPage()
+    {
+        InitializeComponent();
+    }
+
+    private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+    {
+        
+    }
+
+    private void LoadImage_Click(object sender, RoutedEventArgs e)
+    {
+        
+    }
+    
+}
+  ```
+</details>
+
+
 You'll manage these functions later in the lab.
 
 Now to test it out:
