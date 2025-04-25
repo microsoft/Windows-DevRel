@@ -8,6 +8,7 @@ using Microsoft.Graphics.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
+using Microsoft.Windows.AI;
 
 
 namespace PoemGenerator.Model
@@ -22,33 +23,21 @@ namespace PoemGenerator.Model
         public async Task InitializeModelsAsync()
         {
             Debug.WriteLine("Initializing AI models...");
-            if (!LanguageModel.IsAvailable())
+
+
+
+            if (LanguageModel.GetReadyState() == AIFeatureReadyState.EnsureNeeded)
             {
-                var op = await LanguageModel.MakeAvailableAsync();
+                var op = await LanguageModel.EnsureReadyAsync();
             }
             Debug.WriteLine("Language model is available.");
-            //if (!LanguageModel.GetReadyState())
-            //{
-            //    var op = await LanguageModel.EnsureReadyAsync();
-            //}
 
-            if (!ImageDescriptionGenerator.IsAvailable())
+            if (ImageDescriptionGenerator.GetReadyState() == AIFeatureReadyState.EnsureNeeded)
             {
-                var result = await ImageDescriptionGenerator.MakeAvailableAsync();
-                if (result.Status != PackageDeploymentStatus.CompletedSuccess)
-                {
-                    throw result.ExtendedError;
-                }
+                var imageDescriptionDeploymentOperation = ImageDescriptionGenerator.EnsureReadyAsync();
             }
-            //if (!ImageDescriptionGenerator.GetReadyState())
-            //{
-            //    var result = await ImageDescriptionGenerator.EnsureReadyAsync();
-            //    if (result.Status != PackageDeploymentStatus.CompletedSuccess)
-            //    {
-            //        throw result.ExtendedError;
-            //    }
-            //}
             Debug.WriteLine("Image model is available.");
+
             IsModelLoading = false;
         }
 
@@ -74,7 +63,7 @@ namespace PoemGenerator.Model
         {
             using var languageModel = await LanguageModel.CreateAsync();
             var result = await languageModel.GenerateResponseAsync(prompt);
-            return result.Response;
+            return result.Text;
         }
 
         private async Task ProcessPhotosForDescriptions(ObservableCollection<PhotoItem> photos)
@@ -95,14 +84,15 @@ namespace PoemGenerator.Model
                 _imageDescriptionGenerator = await ImageDescriptionGenerator.CreateAsync();
             }
 
+
             var filterOptions = new ContentFilterOptions
             {
-                PromptMinSeverityLevelToBlock = { ViolentContentSeverity = SeverityLevel.Medium },
-                ResponseMinSeverityLevelToBlock = { ViolentContentSeverity = SeverityLevel.Medium }
+                PromptMaxAllowedSeverityLevel = {Violent = SeverityLevel.High, Sexual = SeverityLevel.High, Hate = SeverityLevel.High, SelfHarm = SeverityLevel.High},
+                ResponseMaxAllowedSeverityLevel = { Violent = SeverityLevel.High, Sexual = SeverityLevel.High, Hate = SeverityLevel.High, SelfHarm = SeverityLevel.High }
             };
 
-            var response = await _imageDescriptionGenerator.DescribeAsync(inputImage, ImageDescriptionScenario.Caption, filterOptions);
-            return response.Response;
+            var response = await _imageDescriptionGenerator.DescribeAsync(inputImage, ImageDescriptionKind.DetailedDescrition, filterOptions);
+            return response.Description;
         }
 
     }

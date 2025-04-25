@@ -40,7 +40,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.2.250402" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250127003-experimental3" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250410001-experimental1" />
   </ItemGroup>
 
   <!--
