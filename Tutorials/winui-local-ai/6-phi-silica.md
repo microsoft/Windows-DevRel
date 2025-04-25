@@ -1,6 +1,6 @@
 # Windows Copilot Runtime
 
-Windows Copilot Runtime provides AI-powered features and APIs on Copilot+ PCs. These features are in active development and run locally in the background at all times.
+Windows Copilot Runtime provides a variety of AI-powered features available via APIs, allowing you to utilize AI capabilities without the need to find, run, or optimize your own Machine Learning (ML) model. The models that power Windows Copilot Runtime on Copilot+ PCs run locally and continuously in the background.
 
 ![Diagram of Native Windows Models ](assets/windows-AI-Foundry​.png)
 
@@ -44,10 +44,10 @@ Phi Silica is a Small Language Model (SLM) developed by Microsoft Research for l
 
 You can integrate this model into Windows apps using the Windows App SDK. It is optimized for efficiency and performance on Windows Copilot+ PCs, offering many features found in large language models (LLMs). This optimization is exclusive to the Windows App SDK version of Phi Silica.
 
-Phi Silica is based on Phi-3.5-mini, supports a 4k context length, and is designed for Windows 11 devices with NPU hardware.
+Phi Silica is based on Phi-3.6-mini, supports a 4k context length, and is designed for Windows 11 devices with NPU hardware.
 
-- Phi-3.5-mini is a state-of-the-art, compact language model that delivers high accuracy across multiple languages and tasks, even when compared to much larger models.
-- By building on Phi-3.5-mini, Phi Silica inherits strong reasoning, multilingual, and summarization capabilities, making it suitable for a wide range of real-world applications
+- Phi-3.6-mini is a state-of-the-art, compact language model that delivers high accuracy across multiple languages and tasks, even when compared to much larger models.
+- By building on Phi-3.6-mini, Phi Silica inherits strong reasoning, multilingual, and summarization capabilities, making it suitable for a wide range of real-world applications
 
 This section guides you through configuring your project for ARM64 processors and implementing AI-powered poem generation. By targeting ARM64, your app gains optimized performance and battery efficiency on modern Windows devices. You'll create a service that uses Windows Copilot Runtime APIs to process image descriptions and generate poems through AI models. The implementation involves initializing AI models, managing asynchronous operations, and connecting these capabilities to your app's user interface.
 
@@ -115,13 +115,44 @@ For the optimal user experience, you’ll want to run this task as soon as the V
 public AIModelService AiModelService { get; }
 ```
 
-1. Add a MainViewModel constroctor:
+1. Locate the `MainViewModel` class declaration  `public partial class MainViewModel() : ObservableObject`
+
+1. Remove the `()`
+
+```c#
+public partial class MainViewModel : ObservableObject
+```
+
+1. Add a MainViewModel constructor:
+
+```c#
   public MainViewModel()
   {
       AiModelService = new AIModelService();
       _ = AiModelService.InitializeModelsAsync();
   }
+```
 
+<details>
+  <summary>Updated MainViewModel.cs</summary>
+  
+  ```c#
+namespace PoemGenerator
+{
+    public partial class MainViewModel : ObservableObject
+    {
+        public AIModelService AiModelService { get; }
+
+        public MainViewModel()
+        {
+            AiModelService = new AIModelService();
+            _ = AiModelService.InitializeModelsAsync();
+        }
+        ...
+    }
+}
+  ```
+</details>
 
 You can run the project:
 1. On the title bar, **Click** on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
@@ -139,7 +170,7 @@ Language model is available.
 1. Still in In the `MainViewModel.cs`, **add** to the `GeneratePoem` function:
 
 ```c#
-GeneratedPoem = await _aiModelService.GeneratePoem(Photos, SelectedPoemType);
+GeneratedPoem = await AiModelService.GeneratePoem(Photos, SelectedPoemType);
 
 IsGeneratingPoem = false;
 ```

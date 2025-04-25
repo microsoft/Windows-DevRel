@@ -174,6 +174,14 @@ The UI should reflect this, where images cannot be uploaded until the models are
 Here the Databinding is not to the `MainViewModel`, but to `AIModelService`. This could have been handled differently, but wanted to highlight that there are scenarios when you need to bind properties or methods that are specific to the view and are not part of the shared ViewModel. 
 
 1. Open MainPage.xmal.cs
+
+1. Update the `MainViewModel` property from `public MainViewModel ViewModel { get; } = new()` to:
+
+```c#
+public MainViewModel ViewModel { get; }
+
+```
+
 1. Under the `MainViewModel` property, add:
 
 ```c#
