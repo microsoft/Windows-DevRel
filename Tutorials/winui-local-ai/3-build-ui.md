@@ -285,7 +285,7 @@ Now to test it out:
 ![Screenshot of App](assets/base-xmal.png)
 
 
-You've completed the initial UI construction for the WinUI 3 application. By setting up the main window and structuring the layout with XMAL, you've established the foundation for image uploads and poem generation. This visual structure is important for adding functionality and interactivity in the next module.
+You've completed the initial UI construction for the WinUI 3 application. By setting up the main window and structuring the layout with XAML, you've established the foundation for image uploads and poem generation. This visual structure is important for adding functionality and interactivity in the next module.
 
 
 Next [Add Functionality](./4-add-functionality.md)

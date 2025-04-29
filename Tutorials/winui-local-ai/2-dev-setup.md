@@ -2,7 +2,8 @@
 
 This portion takes you through the steps needed to begin setting up your Windows app using the latest Windows development frameworks and tools: WinUI, Windows App SDK, and Community Toolkit.
 
-# Dependencies
+## Dependencies
+
 Add [Dependencies](https://learn.microsoft.com/en-us/windows/ai/apis/get-started?tabs=winget%2Cwinui%2Cwinui2#dependencies)
 
 <!-- ## Enable Developer Mode

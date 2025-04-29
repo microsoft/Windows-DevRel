@@ -236,7 +236,7 @@ In MainPage.xaml, we can reference our view model using x:Bind.
 
 We use both in this lab.
 
-Now to connect the `LoadImages()` from the ViewModel to the `MainPage.xmal`
+Now to connect the `LoadImages()` from the ViewModel to the `MainPage.xaml`
 1. Open `MainPage.xaml`
 1. Locate `Click="LoadImage_Click"`
 1. Replace it with:
@@ -253,8 +253,8 @@ Now try it out:
 1. Select multiple images
 1. Close App
 
-
 ## Saving image data
+
 With the view model set up, we can create an `ObservableCollection` that stores references to the uploaded images. In MVVM, an observable is a variable that can trigger a UI update when its value changes. In this case, whenever our list of photos changes, we want to update the UI to reflect that. We also want to store the associated bitmap data for each image so we can feed it into the Windows Copliot Runtime APIs.
 
 1. In the Solution Explorer, **Right Click** on the `Models` directory
@@ -534,7 +534,7 @@ public string SelectedPoemType = "Haiku";
 
 
 
-1. Open `MainPage.xmal`
+1. Open `MainPage.xaml`
 1. Locate the `Grid` that contains the `DropDownButton` (around line 85)
 1. Replace the `Grid` opening element with:
 
@@ -622,7 +622,7 @@ Photos.Clear();
 ```
 
 Using code-behind, update the `PoemTypeDropdownText` & `SelectedPoemType`
-1. Open `MainPage.xmal.cs`
+1. Open `MainPage.xaml.cs`
 1. Update the `MenuFlyoutItem_Click` funation with:
 
 ```c#
@@ -651,7 +651,7 @@ Next [Adding Style & Icon](./5-styling.md)
 <details>
   <summary>Your code should look like the following:</summary>
   
-  MainPage.xmal.cs
+  MainPage.xaml.cs
   ```c#
 public sealed partial class MainPage : Page
 {
@@ -669,7 +669,7 @@ public sealed partial class MainPage : Page
     }
 }
 ```
-MainPage.xmal
+MainPage.xaml
   ```xml
 <Page
     x:Class="PoemGenerator2.Pages.MainPage"
