@@ -260,7 +260,7 @@ With the view model set up, we can create an `ObservableCollection` that stores 
 1. In the Solution Explorer, **Right Click** on the `Models` directory
 1. Add > Class
 1. Name it `PhotoItem.cs`
-1. Update the class header to be from `private` to `public`:
+1. Update the class header to be from `internal` to `public`:
 
 ```c#
 public class PhotoItem
@@ -291,6 +291,12 @@ namespace PoemGenerator.Models
 
 
 1. Open `MainViewModel.cs`
+1. Add to imports:
+
+```c#
+using PoemGenerator.Model;
+```
+
 1. Add a `Photos` property:
 
 ```c#
@@ -400,7 +406,7 @@ By replacing the `local` namespace variable and adding model, Visual Studio shou
     </ItemsView.Layout>
 </ItemsView>
 ```
-In the `ItemsView` component, it is referencing the `PhotoTemplate` defined in tbe page’s resource and binding the list of photos that are created in our ViewModel. 
+In the `ItemsView` component, it is referencing the `PhotoTemplate` defined in the page’s resource and binding the list of photos that are created in our ViewModel. 
 
 
 The `ItemsView` component will be `PhotosLoaded` to manage it's Visibility. It should default to `false` and become `true` when the images are loaded.
