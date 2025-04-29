@@ -1,18 +1,18 @@
 # Adding Style & Icon
+
 This section walks you through the process of enhancing the visual appeal of a XAML page and aligning it with modern Windows design standards. You begin by adding an icon to the application. Then, you transform the look and feel of the page by applying styles and theme resources to UI elements like containers, buttons, and text. This transformation ensures that your app adheres to Windows design principles, offers a consistent user experience, and is easier to maintain and update.
 
 > **_Note:_** You can find a dedicated section discussing the approach to styling updates, along with the complete code, at the end of this article.
 
+## Add Icon to App
 
-# Add Icon to App
-
-In the `MainPage.xmal` there is a `Image` element that contains `Source="/Assets/AppIcon.svg"`. Now its time to add the image to the project.
+In the `MainPage.xaml` there is a `Image` element that contains `Source="/Assets/AppIcon.svg"`. Now its time to add the image to the project.
 
 1. Open in a new tap: [directory](./assets/)
 1. Locate AppIcon.svg
 1. Download image to Desktop
-1. Have Visual Studio display `Soution Explorer` and open `Asset` directory
-1. Drag and drop image from Desktop to Visual Stuido into the `Asset` directory
+1. Have Visual Studio display `Solution Explorer` and open `Asset` directory
+1. Drag and drop image from Desktop to Visual Studio into the `Asset` directory
 1. **Right click** on the image
 1. **Click** on **Properties**
 1. A Properties panel will open
@@ -26,10 +26,7 @@ Now try it out:
 
 1. Close App
 
-
-
-
-# Adding Style
+## Adding Style
 
 Below are the key items to transform an XAML page without styling into a visually consistent, modern, and accessible WinUI page that uses styles and theme resources. This process ensures that your app matches Windows design guidance, is maintainable, and is easier to update as design systems evolve.
 
@@ -40,6 +37,7 @@ Update controls to use styles and theme resources instead of hard-coded property
 This approach ensures that your app’s look and feel automatically match Windows’ current design language and respond to theme changes (light/dark/high contrast).
 
 **How**:
+
 - For each control, check if the styled version uses a Style or a theme resource (like {ThemeResource ...}).
 - For example, update the main TextBlock (the app title) to use Style="{StaticResource BodyStrongTextBlockStyle}" instead of the default style. This makes the title visually prominent and consistent with Windows typography.
 
@@ -129,16 +127,16 @@ Define custom styles or brushes in Page.Resources or App.xaml for reuse.
 Reusable resources reduce duplication and centralize design updates.
 
 ## Tips and Best Practices
+
 - **Prefer built-in styles and theme resources**: This keeps your app aligned with Windows updates and accessibility improvements.
 - **Define custom styles only when necessary**: Base them on the default control style for maintainability.
 - **Test in light, dark, and high-contrast modes**: Ensure your styles respond correctly to theme changes.
 - **Keep resource scope in mind**: Page-level resources override app-level ones. Use app-level resources for global styles.
 - **Use clear naming for styles and resources**: This makes your XAML easier to read and maintain.
 
-
 ## Update Project
 
-1. Open `MainPage.xmal`
+1. Open `MainPage.xaml`
 1. Replace the `Grid` with the following:
 
 ```xml
@@ -265,8 +263,7 @@ Reusable resources reduce duplication and centralize design updates.
 </Grid>
 ```
 
-
-> **_NOTE:_** It might take Visual Studio a min to update the ViewModel linking
+> **_NOTE:_** It might take Visual Studio a minute to update the ViewModel linking
 
 Now try it out:
 
@@ -276,8 +273,6 @@ Now try it out:
 
 1. Close App
 
-
 You successfully updated the app's UI to use modern styling techniques. By incorporating theme resources, applying consistent styles, and adding visual cues, you have created an application that aligns with Windows design principles. This approach not only improves the app's appearance, but also ensures it remains maintainable and adaptable to future design updates.
-
 
 Next [Add AI](./6-phi-silica.md)

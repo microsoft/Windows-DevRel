@@ -60,7 +60,7 @@ The Windows App SDK (including WinUI) and tools like the Community Toolkit are d
 
 > **_Note:_**   NuGet packages are single ZIP files with a .nupkg extension that contains compiled code (Dynamic Link Library (DLLs)), related files, and a descriptive manifest. These packages serve as a mechanism for developers to create, share, and consume useful code in .NET applications.
 
-To update the Windows App SDK NuGet package for your project to get access to Windows Copliot Runtim APIs :
+To update the Windows App SDK NuGet package for your project to get access to Windows Copliot Runtime APIs :
 
 1. In Visual Studio, with your project loaded, in the tool bar on the top, select **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution....**
 
@@ -71,7 +71,7 @@ To update the Windows App SDK NuGet package for your project to get access to Wi
 ![Screenshot of Visual Studio ](assets/package-source.png)
 
 3. Confirm that it is set to `nuget.org`
-    - if it is not, follow [these](https://learn.microsoft.com/en-us/nuget/consume-packages/install-use-packages-visual-studio#package-sources) insturctions.
+    - if it is not, follow [these](https://learn.microsoft.com/en-us/nuget/consume-packages/install-use-packages-visual-studio#package-sources) instructions.
 1. Click on the **Installed** tab.
 1. Click on **Microsoft.WindowsAppSDK**
 1. Select the **Checkbox** to Include prelease
@@ -95,7 +95,7 @@ The Windows Copliot Runtime APIs uses a specifies  version of the .NET runtime a
 1. **Right-click** on the project node (**PoemGenerator**) and select **Edit Project File**. This action opens the .csproj file in the editor.
 1. **Locate** the first `PropertyGroup` element in the file
 1. **Add** `<LangVersion>Preview</LangVersion>`
-1. **Locate** `<TargetFramework>` 
+1. **Locate** `<TargetFramework>`
 1. **Replace** it with `<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>`
 1. **Save and Close** the file
 
@@ -120,8 +120,7 @@ For this course, you modify only the `MainWindow.xaml` and `MainWindow.xaml.cs` 
 > **_Note:_**  Not all projects strictly follow the MVVM pattern. Some developers opt for a "code-behind approach," where logic is placed directly in the .xaml.cs file instead of implementing a separate ViewModel. This approach is often referred to as the **"code-behind pattern."**
 
 
-![Diagram of Project Strcture organized by MVVM](assets/blank-project-structure.png)
-
+![Diagram of Project structures organized by MVVM](assets/blank-project-structure.png)
 
 ## Organizing Your Project Files
 
@@ -134,11 +133,10 @@ Steps to Create Folders:
 1. Name the new folder `Models`.
 1. Repeat steps 1–3 and name the second folder `Pages`.
 
-
 ### Why Name It "Pages" Instead of "Views"?
+
 The folder is named Pages instead of Views because it stores different pages of your app. For example, while MainWindow.xaml is part of the View layer, it remains in the root directory because most developers expect to find it there. Moving it into a folder named "Views" would break this convention and could cause confusion.
 
 In the next section, we’ll explore how MainWindow.xaml and how pages work.
-
 
 Next [Build UI](./3-build-ui.md)

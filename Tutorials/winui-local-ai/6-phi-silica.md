@@ -5,23 +5,24 @@ Windows Copilot Runtime provides a variety of AI-powered features available via 
 ![Diagram of Native Windows Models ](assets/windows-AI-Foundry​.png)
 
 ## Choose between cloud-based and local AI services
+
 You can integrate AI into your Windows application using either a local model or a cloud-based model. Consider the following aspects:
 
 - Resource Availability
-    - Local device: Running a model depends on the device’s CPU, GPU, NPU, memory, and storage. Small Language Models (SLMs), such as Phi, are suitable for local use. Copilot+ PCs include built-in models managed by Windows Copilot Runtime.
-    - Cloud: Cloud platforms, such as Azure AI Services, provide scalable resources. Large Language Models (LLMs), such as OpenAI language models, require more resources and are available through the cloud.
+  - Local device: Running a model depends on the device’s CPU, GPU, NPU, memory, and storage. Small Language Models (SLMs), such as Phi, are suitable for local use. Copilot+ PCs include built-in models managed by Windows Copilot Runtime.
+  - Cloud: Cloud platforms, such as Azure AI Services, provide scalable resources. Large Language Models (LLMs), such as OpenAI language models, require more resources and are available through the cloud.
 - Data Privacy and Security
-    - Local device: Data remains on the device, which can benefit privacy and security.
-    - Cloud: Data is transferred to the cloud, which may raise privacy concerns.
+  - Local device: Data remains on the device, which can benefit privacy and security.
+  - Cloud: Data is transferred to the cloud, which may raise privacy concerns.
 - Accessibility and Collaboration
-    - Local device: The model and data are accessible only on the device unless shared manually.
-    - Cloud: The model and data can be accessed from anywhere with internet connectivity.
+  - Local device: The model and data are accessible only on the device unless shared manually.
+  - Cloud: The model and data can be accessed from anywhere with internet connectivity.
 - Cost
-    - Local device: There is no additional cost beyond the device hardware.
-    - Cloud: Costs are based on usage and resources consumed.
+  - Local device: There is no additional cost beyond the device hardware.
+  - Cloud: Costs are based on usage and resources consumed.
 - Maintenance and Updates
-    - Local device: The user is responsible for maintenance and updates.
-    - Cloud: The cloud provider manages maintenance and updates.
+  - Local device: The user is responsible for maintenance and updates.
+  - Cloud: The cloud provider manages maintenance and updates.
 
 ### Local AI services
 
@@ -38,7 +39,7 @@ Windows Copilot Runtime provides these AI-powered features through APIs. The mod
 
 # Phi Silica
 
-Phi Silica is a Small Language Model (SLM) developed by Microsoft Research for local language processing on Windows devices with a Neural Processing Unit (NPU). It enables high-performance, hardware-accelerated text generation and conversation directly on the device. 
+Phi Silica is a Small Language Model (SLM) developed by Microsoft Research for local language processing on Windows devices with a Neural Processing Unit (NPU). It enables high-performance, hardware-accelerated text generation and conversation directly on the device.
 
 > **_NOTE:_**  Phi Silica is not available in mainland China.
 
@@ -61,7 +62,6 @@ Before you start building, you’ll need to configuring your Visual Studio proje
     - Click **OK**
 
 ![Screenshot of Configuration Manager](assets/config-manager.png)
-
 
 In this section you will use Phi Silica to generate a poem with mock image descriptions. The Windows Copliot Runtime APIs will be managed in a service called `AIModelService`. This class will manage the initialization of the models and all the processing. The MainViewModel will call a method from the `AIModelService` and will receive the generated poem to then update the UI. 
 
@@ -92,7 +92,7 @@ Windows Copilot Runtime APIs, the app should first check for the availability of
 
 To check if the model required by an AI feature is available on the user's device, begin by calling the `GetReadyState` method and see if it's ready. If its not then use the `EnsureReadyAsync` to make sure it's installed on the user's device.
 
-1.  Add the following to the AIModelService
+1. Add the following to the AIModelService
 
 ```c#
 public async Task InitializeModelsAsync()
@@ -108,7 +108,7 @@ public async Task InitializeModelsAsync()
 
 For the optimal user experience, you’ll want to run this task as soon as the ViewModel is created.  
 
-1.  In the Solutions Explorer, open `MainViewModel.cs`
+1. In the Solutions Explorer, open `MainViewModel.cs`
 1. Add a public property of type `AIModelService`:
 
 ```c#
@@ -155,6 +155,7 @@ namespace PoemGenerator
 </details>
 
 You can run the project:
+
 1. On the title bar, **Click** on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
 1. Open the Output Window, **View** > **Output** or on your keyboard **Ctrl+Alt+O**
 1. Locate the Debug messages of:
@@ -166,7 +167,6 @@ Language model is available.
 
 1. To stop debugging, **Close** the app window, or **Click** the debug "Stop" button in Visual Studio.
 
-
 1. Still in In the `MainViewModel.cs`, **add** to the `GeneratePoem` function:
 
 ```c#
@@ -174,7 +174,6 @@ GeneratedPoem = await AiModelService.GeneratePoem(Photos, SelectedPoemType);
 
 IsGeneratingPoem = false;
 ```
-
 
 <details>
   <summary>Updated GeneratePoem()</summary>
@@ -193,7 +192,6 @@ IsGeneratingPoem = false;
 
   ```
 </details>
-
 
 1. Open the `AIModelService.cs`
 1. Add the following functions:
@@ -223,8 +221,7 @@ public async Task<string> GeneratePoem(ObservableCollection<PhotoItem> photos, s
  }
 ```
 
-This code generates a poem based on a set of images and a chosen poem type. It starts by creating text descriptions of the images (currently using a hardcoded example), then builds a prompt that asks an AI language model to write a poem inspired by the descriptions. 
-
+This code generates a poem based on a set of images and a chosen poem type. It starts by creating text descriptions of the images (currently using a hardcoded example), then builds a prompt that asks an AI language model to write a poem inspired by the descriptions.
 
 You can run the project:
 
@@ -237,11 +234,6 @@ You can run the project:
 
 1. To stop debugging, **Close** the app window, or **Click** the debug "Stop" button in Visual Studio.
 
-
-
-You've configured your app to target ARM64 processors and implemented AI-driven poem generation. This setup ensures your app leverages hardware-specific optimizations while integrating AI capabilities through Windows Copilot Runtime APIs. The `AIModelService` handles model availability checks and response generation, while the `MainViewModel` orchestrates UI updates. Running the project demonstrates how these components work together to transform image inputs into creative outputs, showcasing the possiblity between ARM64 optimization and AI-powered features.
-
-
-
+You've configured your app to target ARM64 processors and implemented AI-driven poem generation. This setup ensures your app leverages hardware-specific optimizations while integrating AI capabilities through Windows Copilot Runtime APIs. The `AIModelService` handles model availability checks and response generation, while the `MainViewModel` orchestrates UI updates. Running the project demonstrates how these components work together to transform image inputs into creative outputs, showcasing the possibility between ARM64 optimization and AI-powered features.
 
 Next [Image Description](./7-image-description.md)

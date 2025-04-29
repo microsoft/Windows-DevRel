@@ -1,10 +1,8 @@
 # Build UI
 
-
 In this module, you'll construct a user interface (UI) for a WinUI 3 application using XAML. You'll start by setting up the main window and then structuring the app's UI with grids, stacks, and controls, to create a layout for image selection and poem generation. By the end of this module, you will have created the base layout for your application that you will add functionality to in the next module.
 
 ## XAML
-
 
 In WinUI 3, XAML defines the app’s UI using an XML-based syntax to describe layout, appearance, and element hierarchy. It enables declarative UI construction, such as a button with properties and event bindings:
 
@@ -32,10 +30,9 @@ public sealed partial class MainWindow : Window
 
 MainWindow.xaml acts as the root window container hosting navigable Page element. Unlike WPF or UWP, WinUI 3’s Window element has limitations, so structuring apps with pages and grids is recommended for better flexibility and maintainability.
 
-
 ## Setting Up MainWindow
 
-1. In the Solution Explorer, open `MainWindow.xaml` 
+1. In the Solution Explorer, open `MainWindow.xaml`
 1. Delete `<StackPanel>` and `<Button>` elements
 1. Add to the Window's element: `<Frame x:Name="MainFrame" />`
 
@@ -48,15 +45,14 @@ MainWindow.xaml acts as the root window container hosting navigable Page element
     xmlns:local="using:SnowPal"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Title="snowpal">
+    mc:Ignorable="d">
 
     <Frame x:Name="MainFrame" />
 
 </Window>
 ```
 
-1. Open `MainWindow.xaml.cs` 
+1. Open `MainWindow.xaml.cs`
 1. Add to the imports:
 
 ```c#
@@ -74,10 +70,9 @@ using Windows.Graphics;
  this.ExtendsContentIntoTitleBar = true;
 ```
 
-> **_Important:_** Visual Studio will display errors because you are activly developing. If you see error you can ignore until the end of the section or when you are ask to run the app. 
+> **_Important:_** Visual Studio will display errors because you are actively developing. If you see error you can ignore until the end of the section or when you are ask to run the app.
 
 Now the MainWindow constructor is responsible for navigating the Frame control named MainFrame to display the MainPage when the application starts. It also resizes the default window and hide the default title bar.
-
 
 <details>
   <summary>Your code should look like the following:</summary>
@@ -103,7 +98,6 @@ namespace PoemGenerator
   ```
 </details>
 
-
 Next to create the MainPage:
 
 1. In the Solution Explorer, **Right Click** your new **Pages Folder** > **Add** > **New Item....**  
@@ -115,7 +109,7 @@ Next to create the MainPage:
 
 These steps creates both `MainPage.xaml` & `MainPage.xaml.cs`.
 
-## App's UI Strcture
+## App's UI Structure
 
 1. Open `MainPage.xaml`
 1. Replace the `<Grid>` element with the following:
@@ -231,7 +225,6 @@ These steps creates both `MainPage.xaml` & `MainPage.xaml.cs`.
 
 This page is organized into a two-column grid: the left column (fixed width) allows users to upload and view images, while the right column (flexible width) provides controls to select a poem type, generate the poem, and display the result. The left side includes an app icon, title, upload button, and image viewer, and the right side features a dropdown for poem types, a generate button, a loading indicator, and a poem display area.
 
-
 The XAML includes a two onClick Event, which will need to be handled before you can run and see the project.
 
 1. Open MainPage.xaml.cs
@@ -274,7 +267,6 @@ public sealed partial class MainPage : Page
   ```
 </details>
 
-
 You'll manage these functions later in the lab.
 
 Now to test it out:
@@ -284,8 +276,6 @@ Now to test it out:
 
 ![Screenshot of App](assets/base-xmal.png)
 
-
 You've completed the initial UI construction for the WinUI 3 application. By setting up the main window and structuring the layout with XAML, you've established the foundation for image uploads and poem generation. This visual structure is important for adding functionality and interactivity in the next module.
-
 
 Next [Add Functionality](./4-add-functionality.md)

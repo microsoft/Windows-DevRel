@@ -1,6 +1,6 @@
 # Image Description 
 
-The Image Description API in the Windows App SDK generates text descriptions for images using artificial intelligence. 
+The Image Description API in the Windows App SDK generates text descriptions for images using artificial intelligence.
 
 > **_NOTE:_**  The Image Description API is not available in mainland China.
 
@@ -12,14 +12,15 @@ These APIs support the following types of text descriptions:
 - **OfficeCharts**: This description provides a summary suitable for charts and diagrams.
 
 Because these APIs use machine learning models, the generated text may sometimes not accurately describe the image. Do not use these APIs for images in these scenarios:
+
 - These images contain potentially sensitive content where inaccurate descriptions could be controversial, such as flags, maps, globes, cultural symbols, or religious symbols.
-- These images require highly accurate descriptions, such as those used for medical advice or diagnosis, legal content, or financial documents. 
+- These images require highly accurate descriptions, such as those used for medical advice or diagnosis, legal content, or financial documents.
 
 In this section, you update this AI model service to handle image description generation as part of the poem creation process. This update ensures that this app can process multiple images, generate accurate descriptions, and use these descriptions to craft creative and relevant poems.
 
-You’ll update the AIModelService.cs to manage the Image Description portion of the poem generating. 
+You’ll update the AIModelService.cs to manage the Image Description portion of the poem generating.
 
-1.  In the Solutions Explorer, open `AIModelService.cs`
+1. In the Solutions Explorer, open `AIModelService.cs`
 1. In the `InitializeModelsAsync`, under the LanguageModel checks, add the `ImageDescriptionGenerator`:
 
 ```c#
@@ -62,9 +63,7 @@ var imageDescriptions = string.Join(", ", photos.Select(photo => photo.Descripti
   ```
 </details>
 
-
-The `imageDescriptionGenerator` will be managed differently then `languageModel`, where the `imageDescriptionGenerator` will be reused because the app can process up to 5 images and instead of creating 5 Generators, it will create it once and reuse it. 
-
+The `imageDescriptionGenerator` will be managed differently then `languageModel`, where the `imageDescriptionGenerator` will be reused because the app can process up to 5 images and instead of creating 5 Generators, it will create it once and reuse it.
 
 1. Add property to AIModelService:
 
@@ -72,7 +71,7 @@ The `imageDescriptionGenerator` will be managed differently then `languageModel`
 private ImageDescriptionGenerator? _imageDescriptionGenerator;
 ```
 
-1.  Add the `ProcessPhotosForDescriptions` & `DescribeImageAsync` functions:
+1. Add the `ProcessPhotosForDescriptions` & `DescribeImageAsync` functions:
 
 ```c#
 private async Task ProcessPhotosForDescriptions(ObservableCollection<PhotoItem> photos){
@@ -106,7 +105,6 @@ public async Task<string> DescribeImageAsync(ImageBuffer inputImage)
 
 Because children’s art can be abstract, there is a chance that the Image Description might interpret images inappropriately, the `ContentFilterOptions` is used set the level of Severity which will block violent content. Here it is set to High. 
 
-
 You can run the project:
 
 1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
@@ -127,7 +125,6 @@ Image-based text generation involves additional processing layers compared to te
 
 The UI should reflect this, where images cannot be uploaded until the models are ready. You’ll add an overlay and a Progress Ring that will disappear once the models are ready. 
 
-
 1. Open `MainPage.xaml` and scroll to the bottom
 1. Between the last two `</Grid>` elements add:
 
@@ -145,7 +142,6 @@ The UI should reflect this, where images cannot be uploaded until the models are
 </Grid>
 
 ```
-
 
 <details>
   <summary>Updated MainPage.xaml</summary>
@@ -169,7 +165,6 @@ The UI should reflect this, where images cannot be uploaded until the models are
 </Page>
   ```
 </details>
-
 
 Here the Databinding is not to the `MainViewModel`, but to `AIModelService`. This could have been handled differently, but wanted to highlight that there are scenarios when you need to bind properties or methods that are specific to the view and are not part of the shared ViewModel. 
 
@@ -205,7 +200,8 @@ public MainPage()
 
 ![Screenshot of Visual Studio displaying Rename...](assets/rename.png)
 
-1.  Remove the `{ get; }` from the `_aiModelService`, it should look like:
+1. Remove the `{ get; }` from the `_aiModelService`, it should look like:
+
 ```c#
 public AIModelService _aiModelService;
 ```
@@ -240,7 +236,6 @@ public partial class AIModelService : ObservableObject
 IsModelLoading = false;
 ```
 
-
 You can run the project:
 
 1. On the title bar, **Click** on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
@@ -254,7 +249,5 @@ You can run the project:
 1. Click Generate
 
 With these updates, this app now manages image descriptions by initializing and reusing a single instance of this `ImageDescriptionGenerator`. This approach avoids creating multiple generator instances when processing up to five images, which optimizes memory usage and improves performance. By implementing `ContentFilterOptions`, this service also filters out inappropriate content, maintaining a safe experience for users. The `IsModelLoading` property, exposed as an observable property, allows the UI to display a progress ring overlay until both the language and image models are fully initialized. This integration ensures that users cannot upload images until all AI models are ready, resulting in a responsive and reliable workflow for generating poems from images.
-
-
 
 [Next Steps](./8-congrats.md)

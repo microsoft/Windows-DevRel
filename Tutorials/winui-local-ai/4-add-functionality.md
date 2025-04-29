@@ -1,21 +1,20 @@
-# Add Functionality 
+# Add Functionality
 
 In this section, you will enhance the app to upload images and display these images in a gallery. You will explore the **WinUI Gallery** and **AI Dev Gallery** to leverage existing code, implementing a file upload button. This project will also guide you through using a ViewModel to manage data and display uploaded images, setting the stage for generating poems based on these images.
 
-
 ## Explore & Use Galleries
 
-Go to the computers Start bar and open `WinUI 3 Gallery` and `AI Dev Gallery` apps. Take a few minues to explore these.
+Go to the computers Start bar and open `WinUI 3 Gallery` and `AI Dev Gallery` apps. Take a few minutes  to explore these.
 
 For this project you'll use portions from a provided sample:
 
 1. In the **AI Dev Gallery**, go to **Samples** > **Images** > **Describe Image**
 1. On the top Right corner, **Click** on **`</> Code`**
-1. Click on the **Sample.xaml.cs** tab. 
+1. Click on the **Sample.xaml.cs** tab.
 
-You can use some of this functionality to implement simple file upload button. This logic lives on line 65 in `LoadImage_Click()`. 
+You can use some of this functionality to implement simple file upload button. This logic lives on line 65 in `LoadImage_Click()`.
 
-1. Copy this entire `LoadImage_Click` function into our project in `MainPage.xaml.cs` 
+1. Copy this entire `LoadImage_Click` function into our project in `MainPage.xaml.cs`
 
 Since we haven’t defined the logic for SetImage yet, we can comment out that line.
 
@@ -71,15 +70,14 @@ private async void LoadImage_Click(object sender, RoutedEventArgs e)
 ```
 </details>
 
-
-This projects allows users to multi-select images. You can use the WinUI Gallery app to reference how to do this: 
+This projects allows users to multi-select images. You can use the WinUI Gallery app to reference how to do this:
 
 1. In the **WinUI Gallery**
-1. On the top Left corner, Search  **FilePicker** 
+1. On the top Left corner, Search  **FilePicker**
 1. Locate the **Pick muliple files** section
 1. **Click** on the **Source Code**
 1. **Click** on **C#**
-1. Looking at the source code, you'll see that the function call needs to change from `PickSingleFileAsync()` to ` PickMultipleFilesAsync()`. As well as it needs to iterate and load each file in a loop.
+1. Looking at the source code, you'll see that the function call needs to change from `PickSingleFileAsync()` to `PickMultipleFilesAsync()`. As well as it needs to iterate and load each file in a loop.
 1. In your `MainPage.xaml.cs` in the `LoadImage_Click` function locate:
 
 ```c#
@@ -90,6 +88,7 @@ if (file != null)
     //await SetImage(stream);
 }
 ```
+
 1. Replace from `var file` & `if` statment with:
 
 ```c#
@@ -110,7 +109,6 @@ Now try it out:
 1. Select multiple  images
 1. Close App
 
-
 ## Add Saving & Displaying images
 
 Before going any further, a ViewModel can be used to manage the presentation logic as well as transforms data from the Model into a form that the View can easily display. The LoadImage_Click will trigger the reaction of displaying images, which the ViewModel can handle.
@@ -125,7 +123,7 @@ Add a ViewModel
 
 ```c#
 internal class MainViewModel
-``` 
+```
 
 1. Replace the class header to:
 
@@ -136,7 +134,7 @@ public partial class MainViewModel() : ObservableObject
 TODO: explain ObservableObject
 
 1. Move the `LoadImage_Click` funtion from the MainPage to MainViewModel
-1. Rename it to `LoadImages`, make it a `Task` and remove the paramters
+1. Rename it to `LoadImages`, make it a `Task` and remove the parameters
 
 ```c#
 private async Task LoadImages()
@@ -187,16 +185,16 @@ namespace PoemGenerator
 
 The `RelayCommand` automatically turns this into a command that can be bound to UI elements, specifically the Letter buttons that are created in the View. The `RelayCommand` allows the ViewModel to handle user interactions cleanly, without requiring event handlers in the code-behind. When the  button is clicked, this action triggers this command, executing the `LoadImages` method.
 
-
 Now to connect the MainViewModel to MainPage.
 
 1. Open `MainPage.xaml.cs`
-1. Above the constructor for MainPage, add a line that instantiates our view model: 
+1. Above the constructor for MainPage, add a line that instantiates our view model:
+
 ```c#
 public MainViewModel ViewModel { get; } = new();
 ```
 
-1. In the constructor for MainPage, create an instant of the MainviewModel 
+1. In the constructor for MainPage, create an instant of the MainviewModel
 
 ```c#
 ViewModel = new MainViewModel();
@@ -217,7 +215,7 @@ public sealed partial class MainPage : Page
 ```
 </details>
 
-In MainPage.xaml, we can reference our view model using x:Bind. 
+In MainPage.xaml, we can reference our view model using x:Bind.
 
 **Data binding** connects UI elements to data sources, enabling seamless synchronization between the user interface and underlying data. In WinUI 3, Windows App SDK, and the Community Toolkit, there are two primary ways to do data binding:
 
@@ -232,11 +230,12 @@ In MainPage.xaml, we can reference our view model using x:Bind.
   - provides runtime flexibility and supports advanced scenarios like relative source bindings and traversing the visual tree.
 
 > [!TIP]
-> A common pitfall for new devs is using x:Bind and Binding interchangeably. X:Bind is the preferred method and Binding is generally useld for complex binding scenarios that involve relative source bindings or traversing the visua tree.
+> A common pitfall for new devs is using x:Bind and Binding interchangeably. X:Bind is the preferred method and Binding is generally used for complex binding scenarios that involve relative source bindings or traversing the visual tree.
 
 We use both in this lab.
 
 Now to connect the `LoadImages()` from the ViewModel to the `MainPage.xaml`
+
 1. Open `MainPage.xaml`
 1. Locate `Click="LoadImage_Click"`
 1. Replace it with:
@@ -244,7 +243,6 @@ Now to connect the `LoadImages()` from the ViewModel to the `MainPage.xaml`
 ```c#
 Command="{x:Bind ViewModel.LoadImagesCommand}"
 ```
-
 
 Now try it out:
 
@@ -265,6 +263,7 @@ With the view model set up, we can create an `ObservableCollection` that stores 
 ```c#
 public class PhotoItem
 ```
+
 1. Add the following properties inside the class:
 
 ```c#
@@ -289,7 +288,6 @@ namespace PoemGenerator.Models
 ```
 </details>
 
-
 1. Open `MainViewModel.cs`
 1. Add to imports:
 
@@ -303,7 +301,7 @@ using PoemGenerator.Model;
 public ObservableCollection<PhotoItem> Photos { get; set; } = new();
 ```
 
-When iterating through the list of images in `LoadImages`, we can replace the commented line calling `SetImage` with logic that processes each image, loads the bitmap, and saves it as a `PhotoItem`. 
+When iterating through the list of images in `LoadImages`, we can replace the commented line calling `SetImage` with logic that processes each image, loads the bitmap, and saves it as a `PhotoItem`.
 
 We can reference this logic in the **Describe Image sample** in the `AI Dev Gallery` app, from the `SetImage` function on lines 123-139, which converts the image stream from the FilePicker and loads it into a bitmap. But for this app it will be called `AddImage` and add new PhotoItem object to `Photos`.
 
@@ -312,7 +310,8 @@ We can reference this logic in the **Describe Image sample** in the `AI Dev Gall
 ```c#
 await AddImage(stream);
 ```
-1. Add the `AddImage` funtion:
+
+1. Add the `AddImage` function:
 
 ```c#
 private async Task AddImage(IRandomAccessStream stream)
@@ -340,17 +339,17 @@ private async Task AddImage(IRandomAccessStream stream)
 
 ## Displaying images
 
-There are a number of ways we can display a group of images in WinUI. 
+There are a number of ways we can display a group of images in WinUI.
 
-In the **WinUI Gallery app**, we can use the `LinedFlowLayout`, which is used by multiple Windows native apps to display images, such as the Photos and FileExplorer apps. 
+In the **WinUI Gallery app**, we can use the `LinedFlowLayout`, which is used by multiple Windows native apps to display images, such as the Photos and FileExplorer apps.
 
 1. Open WinUI Gallery app
-1. Search for `ItemsView` 
-1. Scroll down to the second sample on the page titled **ItemsView with swappable layouts**. 
+1. Search for `ItemsView`
+1. Scroll down to the second sample on the page titled **ItemsView with swappable layouts**.
 
 Here, we can see an example of the LinedFlowLayout being used within an ItemsView.  
 
-At the top of the source XAML, we can also see a `DataTemplate` defined in the Page’s resource section. A `DataTemplate` is defined when we’re binding a collection of items to tell our app how each individual item, or model, should be displayed within the UI collection. In this case, we have a collection of PhotoItem objects. Each PhotoItem object should be displayed as a simple WinUI Image component with its BitmapSource set to the Image’s “Source” property. 
+At the top of the source XAML, we can also see a `DataTemplate` defined in the Page’s resource section. A `DataTemplate` is defined when we’re binding a collection of items to tell our app how each individual item, or model, should be displayed within the UI collection. In this case, we have a collection of PhotoItem objects. Each PhotoItem object should be displayed as a simple WinUI Image component with its BitmapSource set to the Image’s “Source” property.
 
 > **_NOTE:_** The LinedFlowLayout lives inside of an ItemsView component, which is where we will utilize the data template mentioned above
 
@@ -368,6 +367,7 @@ At the top of the source XAML, we can also see a `DataTemplate` defined in the P
     </DataTemplate>
 </Page.Resources>
 ```
+
 This defines data template within the page’s resource section. The `Key` property is where you define the name of the data template. `DataType` is the class/object type that we’re defining the template for.
 
 1. Locate the following:
@@ -390,6 +390,7 @@ By replacing the `local` namespace variable and adding model, Visual Studio shou
 <!--Images-->
 <Image></Image>
 ```
+
 1. Replace it with:
 
 ```xml
@@ -406,8 +407,8 @@ By replacing the `local` namespace variable and adding model, Visual Studio shou
     </ItemsView.Layout>
 </ItemsView>
 ```
-In the `ItemsView` component, it is referencing the `PhotoTemplate` defined in the page’s resource and binding the list of photos that are created in our ViewModel. 
 
+In the `ItemsView` component, it is referencing the `PhotoTemplate` defined in the page’s resource and binding the list of photos that are created in our ViewModel.
 
 The `ItemsView` component will be `PhotosLoaded` to manage it's Visibility. It should default to `false` and become `true` when the images are loaded.
 
@@ -420,10 +421,10 @@ public partial bool PhotosLoaded { get; set; } = false;
 ```
 
 1. Locate the end of `LoadImages` funtion and after the for loop add:
+
 ```c#
 PhotosLoaded = true;
 ```
-
 
 <details>
   <summary>Your code should look like the following:</summary>
@@ -499,12 +500,12 @@ namespace PoemGenerator
 Now try it out:
 
 1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
-1. Click on `Uploade Images`
-1. Select multplie images
+1. Click on `Upload Images`
+1. Select multiple images
 1. Close App
 
-
 ## Generating Poem Setup
+
 Next, you will add some databinding to make the UI reactive to various states in our application.  A few things should happen:
 
 - The “Select poem type” and “Generate” buttons should only be visible if the user has loaded photos in the photo viewer
@@ -512,15 +513,15 @@ Next, you will add some databinding to make the UI reactive to various states in
 - Selecting one of the poem options should trigger a click event that updates the selected poem option
 - The text generated by our AI model will be reflected in the poem viewer
 
-You will add observable properties in the ViewModel that manage: 
+You will add observable properties in the ViewModel that manage:
 
-- If a poem is currently being generated, and 
-- If there are currently photos loaded in the photo viewer, and 
-- The text that should be displayed in the poem viewer. 
+- If a poem is currently being generated, and
+- If there are currently photos loaded in the photo viewer, and
+- The text that should be displayed in the poem viewer.
 
 1. Open `MainViewModel.cs`
 1. Change `PhotosLoaded` from `true` to `false`
-1. Add the following ObservablePropertes:
+1. Add the following ObservableProperties:
 
 ```c#
 [ObservableProperty]
@@ -532,8 +533,6 @@ public partial string GeneratedPoem { get; set; } = "Select up to 5 images to ge
 public string SelectedPoemType = "Haiku";
 ```
 
-
-
 1. Open `MainPage.xaml`
 1. Locate the `Grid` that contains the `DropDownButton` (around line 85)
 1. Replace the `Grid` opening element with:
@@ -541,6 +540,7 @@ public string SelectedPoemType = "Haiku";
 ```xml
 <Grid Visibility="{x:Bind ViewModel.PhotosLoaded, Mode=OneWay}">
 ```
+
 1. Locate the `ProgressRing` element
 1. Replace the `IsActive` and `Visibility` with:
 
@@ -558,7 +558,7 @@ Visibility="{x:Bind ViewModel.IsGeneratingPoem, Mode=OneWay}" />
 
 A `Run` element in XAML represents a section of formatted or unformatted text within a text container, such as a TextBlock or RichTextBlock. You use the `Run` element to define a specific portion of text that can have its own formatting, separate from other text in the same container. This allows you to apply different styles to different parts of the text, such as changing the color or font of a word or phrase within a single TextBlock
 
-1. Locate the `Button` that has the properity `AutomationProperties.Name="Generate poem from selected images"`
+1. Locate the `Button` that has the property `AutomationProperties.Name="Generate poem from selected images"`
 1. Add a `command` to it:
 
 ```xml
@@ -601,16 +601,15 @@ public async Task GeneratePoem()
 Now try it out:
 
 1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
-1. Click on `Uploade Images`
-1. Select multplie images
+1. Click on `Upload Images`
+1. Select multiple images
 1. Click Generate
 1. Close App
 
-
 There are two items to take care of:
+
 - Clear the Photos when the user loads images
 - Have the DropDownButton stay on the selection and pass that to the ViewModel.
-
 
 To ensure that the list of photos is cleared prior to making a new selection of photos
 
@@ -622,8 +621,9 @@ Photos.Clear();
 ```
 
 Using code-behind, update the `PoemTypeDropdownText` & `SelectedPoemType`
+
 1. Open `MainPage.xaml.cs`
-1. Update the `MenuFlyoutItem_Click` funation with:
+1. Update the `MenuFlyoutItem_Click` function with:
 
 ```c#
 private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
@@ -637,13 +637,11 @@ Now try it out:
 
 1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
 1. Click on `Upload Images`
-1. Select multplie images
+1. Select multiple images
 1. Click Generate
 1. Close App
 
-
 In this section, you successfully added image upload and display functionality to your application. By exploring the WinUI and AI Dev Galleries, you implemented a file upload button and integrated a ViewModel to manage and display image data. This image gallery now provides a foundation for generating poems based on the uploaded images.
-
 
 Next [Adding Style & Icon](./5-styling.md)
 
