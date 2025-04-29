@@ -49,9 +49,9 @@ To create a new project using the WinUI C# Blank App project template:
 1. Click **Next**
 1. . Name your project: **PoemGenerator**
 
-Important: The Project Name and Solution Name must be PoemGenerator. Visual Studio creates namespaces using this information. If it's something different, the code you copy and paste from this tutorial can cause build errors.
+> **_Important:_** The Project Name and Solution Name must be PoemGenerator. Visual Studio creates namespaces using this information. If it's something different, the code you copy and paste from this tutorial can cause build errors.
 
-1. Select **Create**.
+5. Select **Create**.
 
 ## Update & Install Packages
 
@@ -61,24 +61,31 @@ The Windows App SDK (including WinUI) and tools like the Community Toolkit are d
 
 To update the Windows App SDK NuGet package for your project to get access to Windows Copliot Runtim APIs :
 
-1. In Visual Studio, with your project loaded, select **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution....**
+1. In Visual Studio, with your project loaded, in the tool bar on the top, select **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution....**
 
 > **_Important:_**  Projects must not be running in order to access the "Manage Nuget packages" option in the drop down
 
+2. Locate the `Package source` on the top right
+
+![Screenshot of Visual Studio ](assets/package-source.png)
+
+3. Confirm that it is set to `nuget.org`
+    - if it is not, follow [these](https://learn.microsoft.com/en-us/nuget/consume-packages/install-use-packages-visual-studio#package-sources) insturctions.
 1. Click on the **Installed** tab.
 1. Click on **Microsoft.WindowsAppSDK**
 1. Select the **Checkbox** to Include prelease
-1. On the right pandel, select the **checkbox** of the **Project** and the **winappsdk1.8-experimental1** and then click **install**
+1. On the right panel, select the **checkbox** of the **Project** and the **winappsdk1.8-experimental1** and then click **install**
     1. On the Preview Changes Popup, **Click Apply**.
     1. On the License Acceptance Popup, **Click I Accept**.
 1. To install the CommunityToolkit NuGet package for your project:
     1. Still in the Manage NuGet Packages for Solution, Click on the **Browse** tab.
     1. Enter **`CommunityToolkit.Mvvm`** in the search bar
     1. **Click to select** `CommunityToolkit.Mvvm`
+    1. **Select** version `8.4.0`
     1. On the right panel, **Click Install**.
     1. On the Preview Changes Popup, **Click Apply**.
     1. On the License Acceptance Popup, **Click I Accept**.
-1. **Close** the NuGet package file
+1. **Close** the  NuGet Package Manager
 
 The Windows Copliot Runtime APIs uses a specifies  version of the .NET runtime and the minimum Windows version that the app targets. Also, the Community Toolkit.Mvvm and uses features that are ahead of the standard C# language version that your project is configured to use by default. You need to update the project's configuration:
 
@@ -88,7 +95,7 @@ The Windows Copliot Runtime APIs uses a specifies  version of the .NET runtime a
 1. **Locate** the first `PropertyGroup` element in the file
 1. **Add** `<LangVersion>Preview</LangVersion>`
 1. **Locate** `<TargetFramework>` 
-1. **Replace** it with ``<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>`
+1. **Replace** it with `<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>`
 1. **Save and Close** the file
 
 Adding Preview is a way to unlock experimental language features required by advanced tools like Community Toolkit.Mvvm, enabling developers to use cutting-edge capabilities in their projects.

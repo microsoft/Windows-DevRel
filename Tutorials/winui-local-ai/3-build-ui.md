@@ -30,7 +30,7 @@ public sealed partial class MainWindow : Window
 
 ```
 
-MainWindow.xaml acts as the root window container hosting navigable Page elemente. Unlike WPF or UWP, WinUI 3’s Window element has limitations, so structuring apps with pages and grids is recommended for better flexibility and maintainability.
+MainWindow.xaml acts as the root window container hosting navigable Page element. Unlike WPF or UWP, WinUI 3’s Window element has limitations, so structuring apps with pages and grids is recommended for better flexibility and maintainability.
 
 
 ## Setting Up MainWindow
@@ -42,7 +42,7 @@ MainWindow.xaml acts as the root window container hosting navigable Page element
 ```xaml
 <?xml version="1.0" encoding="utf-8"?>
 <Window
-    x:Class="SnowPal.MainWindow"
+    x:Class="PoemGenerator.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SnowPal"
@@ -65,7 +65,7 @@ using Windows.Graphics;
 ```
 
 1. Delete `myButton_Click` function.
-1. Under the `InitializeComponent();` add:
+1. In the constructor, after `InitializeComponent();` add:
 
 ```c#
  MainFrame.Navigate(typeof(MainPage));
@@ -73,6 +73,8 @@ using Windows.Graphics;
  this.AppWindow.Resize(new SizeInt32(1280, 800));
  this.ExtendsContentIntoTitleBar = true;
 ```
+
+> **_Important:_** Visual Studio will display errors because you are activly developing. If you see error you can ignore until the end of the section or when you are ask to run the app. 
 
 Now the MainWindow constructor is responsible for navigating the Frame control named MainFrame to display the MainPage when the application starts. It also resizes the default window and hide the default title bar.
 
@@ -105,9 +107,10 @@ namespace PoemGenerator
 Next to create the MainPage:
 
 1. In the Solution Explorer, **Right Click** your new **Pages Folder** > **Add** > **New Item....**  
+    - if you do not see **New Item....**, select **Class....**
 1. In the **Add New Item** dialog, select **WinUI** in the template list on the left-side of the window.
 1. Select the **Blank Page (WinUI 3)** template.
-1. Name the file **MainPage**
+1. Name the file **MainPage.xaml**
 1. **Click Add**
 
 These steps creates both `MainPage.xaml` & `MainPage.xaml.cs`.
@@ -224,34 +227,14 @@ These steps creates both `MainPage.xaml` & `MainPage.xaml.cs`.
 </Grid>
 ```
 
-Below is a table that visually represents the XMAL:
-
-|                | **Column 0 (Photo Viewer)**                                                                                                                                         | **Column 1 (Poem Viewer)**                                                                                          |
-|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-| **Row 0**      | **StackPanel**<br />-  Image (AppIcon.svg)<br />-  TextBlock: <br />&nbsp;&nbsp;**"Poem Generator"**<br />-  Button: <br />&nbsp;&nbsp;**"Upload images"**      | **Grid**<br />-  DropDownButton: <br />&nbsp;&nbsp;**"Select poem type"**<br />&nbsp;&nbsp;Menu: Sonnet, Haiku, Elegy, Limerick, Ballad, Free verse <br />&nbsp;&nbsp;_Each menu item:_ <br />&nbsp;&nbsp;*Click="MenuFlyoutItem_Click"*<br />-  Button: <br />&nbsp;&nbsp;**"Generate"** <br />&nbsp;&nbsp;*Click="GeneratePoemButton_Click"* |
-| **Row 1**      | **ScrollView**<br />-  Image (for uploaded images)                                                                                                                    | **StackPanel**<br />-  ProgressRing (Loader)<br />-  RichTextBlock: <br />&nbsp;&nbsp;**"Your poem will generate here"**                                      |
-
-**Table Legend / Guide**
-
-- Items listed with a dash (-) or indentation represent child elements or nested content within the parent element.
-- Bold text (e.g., StackPanel, Button) indicates the name of a XAML element.
-- Quoted text (e.g., "Poem Generator", "Upload images") represents the visible text content inside that element, such as TextBlock.Text or Button.Content.
-- Italicized text (e.g., Click="MenuFlyoutItem_Click") denotes event handlers or attributes attached to the element.
-
-
-
-
+![Diagram of XAML Structure](assets/xmal-struture.png)
 
 This page is organized into a two-column grid: the left column (fixed width) allows users to upload and view images, while the right column (flexible width) provides controls to select a poem type, generate the poem, and display the result. The left side includes an app icon, title, upload button, and image viewer, and the right side features a dropdown for poem types, a generate button, a loading indicator, and a poem display area.
 
 
+The XAML includes a two onClick Event, which will need to be handled before you can run and see the project.
 
-
-![Diagram of XMAL Structure](assets/xmal-struture.png)
-
-The XMAL includes a two onClick Event, which will need to be handled before you can run and see the project.
-
-1. Open MainPage.xmal.cs
+1. Open MainPage.xaml.cs
 1. **Under** the MainPage constructor add:
 
 ```c#
@@ -302,7 +285,7 @@ Now to test it out:
 ![Screenshot of App](assets/base-xmal.png)
 
 
-You've completed the initial UI construction for the WinUI 3 application. By setting up the main window and structuring the layout with XAML, you've established the foundation for image uploads and poem generation. This visual structure is important for adding functionality and interactivity in the next module.
+You've completed the initial UI construction for the WinUI 3 application. By setting up the main window and structuring the layout with XMAL, you've established the foundation for image uploads and poem generation. This visual structure is important for adding functionality and interactivity in the next module.
 
 
 Next [Add Functionality](./4-add-functionality.md)

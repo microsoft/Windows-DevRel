@@ -1,6 +1,6 @@
 # Add Functionality 
 
-In this section, you will enhance an app to upload images and display these images in a gallery. You will explore the **WinUI Gallery** and **AI Dev Gallery** to leverage existing code, implementing a file upload button. This project will also guide you through using a ViewModel to manage data and display uploaded images, setting the stage for generating poems based on these images.
+In this section, you will enhance the app to upload images and display these images in a gallery. You will explore the **WinUI Gallery** and **AI Dev Gallery** to leverage existing code, implementing a file upload button. This project will also guide you through using a ViewModel to manage data and display uploaded images, setting the stage for generating poems based on these images.
 
 
 ## Explore & Use Galleries
@@ -24,6 +24,7 @@ Since we haven’t defined the logic for SetImage yet, we can comment out that l
 
 ```c#
 using Windows.Storage.Pickers;
+using System;
 ```
 
 <details>
@@ -79,7 +80,17 @@ This projects allows users to multi-select images. You can use the WinUI Gallery
 1. **Click** on the **Source Code**
 1. **Click** on **C#**
 1. Looking at the source code, you'll see that the function call needs to change from `PickSingleFileAsync()` to ` PickMultipleFilesAsync()`. As well as it needs to iterate and load each file in a loop.
-1. In your `MainPage.xmal.cs` update the `LoadImage_Click` function: 
+1. In your `MainPage.xaml.cs` in the `LoadImage_Click` function locate:
+
+```c#
+var file = await picker.PickSingleFileAsync();
+if (file != null)
+{
+    using var stream = await file.OpenReadAsync();
+    //await SetImage(stream);
+}
+```
+1. Replace from `var file` & `if` statment with:
 
 ```c#
 var files = await picker.PickMultipleFilesAsync();
@@ -95,8 +106,8 @@ if (files != null && files.Count > 0)
 Now try it out:
 
 1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
-1. Click on `Uploade Images`
-1. Select multplie images
+1. Click on `Upload Images`
+1. Select multiple  images
 1. Close App
 
 
@@ -110,7 +121,13 @@ Add a ViewModel
 1. Click Add > New Item
 1. Select Class
 1. Name it `MainViewModel.cs`
-1. Update the class header to:
+1. Locate the class header:
+
+```c#
+internal class MainViewModel
+``` 
+
+1. Replace the class header to:
 
 ```c#
 public partial class MainViewModel() : ObservableObject
@@ -125,7 +142,7 @@ TODO: explain ObservableObject
 private async Task LoadImages()
 ```
 
-1. Above the new `LoadImages` add [RelayCommand]
+1. Above the new `LoadImages` add `[RelayCommand]`
 
 <details>
   <summary>Your code should look like the following:</summary>
@@ -179,7 +196,7 @@ Now to connect the MainViewModel to MainPage.
 public MainViewModel ViewModel { get; } = new();
 ```
 
-1. In the constructor for MainPage, reate an instant of the MainviewModel 
+1. In the constructor for MainPage, create an instant of the MainviewModel 
 
 ```c#
 ViewModel = new MainViewModel();
@@ -220,7 +237,7 @@ In MainPage.xaml, we can reference our view model using x:Bind.
 We use both in this lab.
 
 Now to connect the `LoadImages()` from the ViewModel to the `MainPage.xmal`
-1. Open `MainPage.xmal`
+1. Open `MainPage.xaml`
 1. Locate `Click="LoadImage_Click"`
 1. Replace it with:
 
@@ -232,18 +249,23 @@ Command="{x:Bind ViewModel.LoadImagesCommand}"
 Now try it out:
 
 1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
-1. Click on `Uploade Images`
-1. Select multplie images
+1. Click on `Upload Images`
+1. Select multiple images
 1. Close App
 
 
 ## Saving image data
-With the view model set up, we can create an `ObservableCollection` that stores references to the uploaded images. In MVVM, an observable is a variable that can trigger a UI update when its value changes. In this case, whenever our list of photos changes, we want to update the UI to reflect that. We also want to store the associated bitmap data for each image so we can feed it into the Foundry APIs.
+With the view model set up, we can create an `ObservableCollection` that stores references to the uploaded images. In MVVM, an observable is a variable that can trigger a UI update when its value changes. In this case, whenever our list of photos changes, we want to update the UI to reflect that. We also want to store the associated bitmap data for each image so we can feed it into the Windows Copliot Runtime APIs.
 
 1. In the Solution Explorer, **Right Click** on the `Models` directory
 1. Add > Class
 1. Name it `PhotoItem.cs`
-1. Add the following properites:
+1. Update the class header to be from `private` to `public`:
+
+```c#
+public class PhotoItem
+```
+1. Add the following properties inside the class:
 
 ```c#
 public SoftwareBitmapSource? BitmapSource { get; internal set; }
@@ -401,6 +423,9 @@ PhotosLoaded = true;
   <summary>Your code should look like the following:</summary>
   
   ```c#
+using Windows.Storage.Pickers;
+using System;
+
 namespace PoemGenerator
 {
     public partial class MainViewModel() : ObservableObject
