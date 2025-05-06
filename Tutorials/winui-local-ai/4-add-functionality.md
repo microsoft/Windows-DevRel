@@ -1,24 +1,26 @@
 # Add Functionality
 
-In this section, you will enhance the app to upload images and display these images in a gallery. You will explore the **WinUI Gallery** and **AI Dev Gallery** to leverage existing code, implementing a file upload button. This project will also guide you through using a ViewModel to manage data and display uploaded images, setting the stage for generating poems based on these images.
+In this section, you will build the app to upload images and display these images in a gallery. You will explore the **WinUI Gallery** and **AI Dev Gallery** to leverage existing code, implementing a file upload button. This project will also guide you through using a ViewModel to manage data and display uploaded images, setting the stage for generating poems based on these images.
 
 ## Explore & Use Galleries
+
+<!-- Add instructions to install `WinUI 3 Gallery` and `AI Dev Gallery` apps for post build -->
 
 Go to the computers Start bar and open `WinUI 3 Gallery` and `AI Dev Gallery` apps. Take a few minutes  to explore these.
 
 For this project you'll use portions from a provided sample:
 
-1. In the **AI Dev Gallery**, go to **Samples** > **Images** > **Describe Image**
-1. On the top Right corner, **Click** on **`</> Code`**
+1. In the **AI Dev Gallery**, go to **Samples** > **Image** > **Describe Image**
+1. On the top right corner, **Click** on **`</> Code`**
 1. Click on the **Sample.xaml.cs** tab.
 
-You can use some of this functionality to implement simple file upload button. This logic lives on line 65 in `LoadImage_Click()`.
+You can use some of this functionality to implement simple file upload button. This logic lives around line 70 in `LoadImage_Click()`.
 
-1. Copy this entire `LoadImage_Click` function into our project in `MainPage.xaml.cs`
+1. Copy this entire `LoadImage_Click` function from the gallery into our project in `MainPage.xaml.cs`, replacing the current empty `LoadImage_Click` function
 
 Since we haven’t defined the logic for SetImage yet, we can comment out that line.
 
-1. Comment out `SetImage`
+1. Comment out `SetImage`, by adding ``//``
 1. Add to your imports, in the `MainPage.xaml.cs` :
 
 ```c#
@@ -77,7 +79,9 @@ This projects allows users to multi-select images. You can use the WinUI Gallery
 1. Locate the **Pick muliple files** section
 1. **Click** on the **Source Code**
 1. **Click** on **C#**
-1. Looking at the source code, you'll see that the function call needs to change from `PickSingleFileAsync()` to `PickMultipleFilesAsync()`. As well as it needs to iterate and load each file in a loop.
+
+Looking at the source code, you'll see that the function call needs to change from `PickSingleFileAsync()` to `PickMultipleFilesAsync()`. As well as it needs to iterate and load each file in a loop.
+
 1. In your `MainPage.xaml.cs` in the `LoadImage_Click` function locate:
 
 ```c#
@@ -115,25 +119,32 @@ Before going any further, a ViewModel can be used to manage the presentation log
 
 Add a ViewModel
 
-1. In the Solution Explorer, right click Project File
+1. In the Solution Explorer, . **Right-click** on the project node (**PoemGenerator**)
 1. Click Add > New Item
-1. Select Class
+1. Select **Class**
+    1. If you do not see **Class**, on the top right, there is a Search bar, enter **Class**
 1. Name it `MainViewModel.cs`
-1. Locate the class header:
+1. Locate the following text which makes up the Class Header:
 
 ```c#
 internal class MainViewModel
 ```
 
-1. Replace the class header to:
+1. Replace the class header with the following:
 
 ```c#
 public partial class MainViewModel() : ObservableObject
 ```
 
-TODO: explain ObservableObject
+The ObservableObject in the Community Toolkit is a base class that makes this ViewModel observable by implementing the `INotifyPropertyChanged` and `INotifyPropertyChanging` interfaces. This class provides automatic notification when property values change, which helps the UI update itself whenever data changes in the view model.
 
-1. Move the `LoadImage_Click` funtion from the MainPage to MainViewModel
+When this MainViewModel class inherits from ObservableObject, this class gains:
+
+- Support for property change notifications through the PropertyChanged and PropertyChanging events.
+- Access to helper methods like SetProperty, which update property values and raise notifications automatically.
+- The ability to use attributes like `ObservableProperty` to simplify property declarations and generate boilerplate code for observable properties.
+
+1. Move the `LoadImage_Click` function from the **MainPage.xaml.cs** to **MainViewModel.cs**
 1. Rename it to `LoadImages`, make it a `Task` and remove the parameters
 
 ```c#
@@ -141,11 +152,18 @@ private async Task LoadImages()
 ```
 
 1. Above the new `LoadImages` add `[RelayCommand]`
+1. Add to your imports:
+
+```csharp
+using Windows.Storage.Pickers;
+```
+
 
 <details>
   <summary>Your code should look like the following:</summary>
   
   ```c#
+using Windows.Storage.Pickers;
 namespace PoemGenerator
 {
     public partial class MainViewModel() : ObservableObject
@@ -183,7 +201,7 @@ namespace PoemGenerator
 ```
 </details>
 
-The `RelayCommand` automatically turns this into a command that can be bound to UI elements, specifically the Letter buttons that are created in the View. The `RelayCommand` allows the ViewModel to handle user interactions cleanly, without requiring event handlers in the code-behind. When the  button is clicked, this action triggers this command, executing the `LoadImages` method.
+The `RelayCommand` automatically turns this into a command that can be bound to UI elements, specifically the buttons the View. The `RelayCommand` allows the ViewModel to handle user interactions cleanly, without requiring event handlers in the code-behind. When the  button is clicked, this action triggers this command, executing the `LoadImages` method.
 
 Now to connect the MainViewModel to MainPage.
 
@@ -199,6 +217,8 @@ public MainViewModel ViewModel { get; } = new();
 ```c#
 ViewModel = new MainViewModel();
 ```
+
+1. Save the file by pressing `Ctrl + S`
 
 <details>
   <summary>Your code should look like the following:</summary>
@@ -229,10 +249,11 @@ In MainPage.xaml, we can reference our view model using x:Bind.
   - is more flexible but less type-safe.
   - provides runtime flexibility and supports advanced scenarios like relative source bindings and traversing the visual tree.
 
+We use both in this lab.
+
 > [!TIP]
 > A common pitfall for new devs is using x:Bind and Binding interchangeably. X:Bind is the preferred method and Binding is generally used for complex binding scenarios that involve relative source bindings or traversing the visual tree.
 
-We use both in this lab.
 
 Now to connect the `LoadImages()` from the ViewModel to the `MainPage.xaml`
 

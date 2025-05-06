@@ -54,7 +54,7 @@ MainWindow.xaml acts as the root window container hosting navigable Page element
 
 1. Open `MainWindow.xaml.cs`
     1. if you do not see the file, click on the arrow next to `MainWindow.xaml`
-1. Add to the imports:
+1. Add to the imports, located at the top of the file:
 
 ```c#
 using PoemGenerator.Pages;
