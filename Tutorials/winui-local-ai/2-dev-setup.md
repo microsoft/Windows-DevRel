@@ -1,6 +1,6 @@
 # Dev Set up & Project Structure
 
-This portion takes you through the steps needed to begin setting up your Windows app using the latest Windows development frameworks and tools: WinUI, Windows App SDK, and Community Toolkit.
+This portion takes you through the steps needed to begin creating your Windows app using the latest Windows development frameworks and tools: WinUI, Windows App SDK, and Community Toolkit.
 
 ## Dependencies
 
@@ -75,23 +75,31 @@ To update the Windows App SDK NuGet package for your project to get access to Wi
 1. Click on the **Installed** tab.
 1. Click on **Microsoft.WindowsAppSDK**
 1. Select the **Checkbox** to Include prelease
-1. On the right panel, select the **checkbox** of the **Project** and the **winappsdk1.8-experimental1** and then click **install**
-    1. On the Preview Changes Popup, **Click Apply**.
-    1. On the License Acceptance Popup, **Click I Accept**.
+1. On the right panel:
+    1. select the **checkbox** of the **Project**
+    1. Select from the dropdown  **winappsdk1.8-experimental1** 
+    1. Click **install**
+        1. On the Preview Changes Popup, **Click Apply**.
+        1. On the License Acceptance Popup, **Click I Accept**.
 1. To install the CommunityToolkit NuGet package for your project:
     1. Still in the Manage NuGet Packages for Solution, Click on the **Browse** tab.
     1. Enter **`CommunityToolkit.Mvvm`** in the search bar
     1. **Click to select** `CommunityToolkit.Mvvm`
-    1. **Select** version `8.4.0`
-    1. On the right panel, **Click Install**.
-    1. On the Preview Changes Popup, **Click Apply**.
-    1. On the License Acceptance Popup, **Click I Accept**.
+    1. On the right panel:
+        1. Select the **checkbox** of the **Project**
+        1. **Select** version `8.4.0`
+        1. Click **Install**.
+            1. On the Preview Changes Popup, **Click Apply**.
+            1. On the License Acceptance Popup, **Click I Accept**.
 1. **Close** the  NuGet Package Manager
 
 The Windows Copliot Runtime APIs uses a specifies  version of the .NET runtime and the minimum Windows version that the app targets. Also, the Community Toolkit.Mvvm and uses features that are ahead of the standard C# language version that your project is configured to use by default. You need to update the project's configuration:
 
 1. If Solution Explorer isn't already open, you can open it by selecting **View** > **Solution Explorer** from the top menu.
-1. In the Solution Explorer, you see a tree structure representing your solution and its projects. Look for the project node named **PoemGenerator**. This node is usually a folder icon with the project name next to it.
+1. In the Solution Explorer, you see a tree structure representing your solution and its projects. Look for the project node named **PoemGenerator**. This node is usually a icon of a box with "C#" written inside, the project name next to it.
+
+![Screenshot of Edit Project](assets/edit-project.png)
+
 1. **Right-click** on the project node (**PoemGenerator**) and select **Edit Project File**. This action opens the .csproj file in the editor.
 1. **Locate** the first `PropertyGroup` element in the file
 1. **Add** `<LangVersion>Preview</LangVersion>`
@@ -109,7 +117,7 @@ You can run this blank project:
 
 1. On the title bar, **Click** on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
 
-1. To stop debugging, **Close** the app window, or **Click** the debug "Stop" button in Visual Studio.
+1. To stop debugging, **Close** the app window, or press **Shift + F5** or in Visual Studio, on the title bar, **Click** on **Debug** > **Stop Debugging**
 
 ## The project's file structure
 
@@ -119,7 +127,6 @@ For this course, you modify only the `MainWindow.xaml` and `MainWindow.xaml.cs` 
 
 > **_Note:_**  Not all projects strictly follow the MVVM pattern. Some developers opt for a "code-behind approach," where logic is placed directly in the .xaml.cs file instead of implementing a separate ViewModel. This approach is often referred to as the **"code-behind pattern."**
 
-
 ![Diagram of Project structures organized by MVVM](assets/blank-project-structure.png)
 
 ## Organizing Your Project Files
@@ -128,7 +135,7 @@ To improve maintainability, you create two new folders for organizing your proje
 
 Steps to Create Folders:
 
-1. In Solution Explorer, **right-click** on your project.
+1. In Solution Explorer, **right-click** on **PoemGenerator** (the icon with box containing C# in it).
 1. Select **Add** > **New Folder**.
 1. Name the new folder `Models`.
 1. Repeat steps 1–3 and name the second folder `Pages`.

@@ -32,7 +32,7 @@ MainWindow.xaml acts as the root window container hosting navigable Page element
 
 ## Setting Up MainWindow
 
-1. In the Solution Explorer, open `MainWindow.xaml`
+1. In the Solution Explorer, open `MainWindow.xaml` by double clicking
 1. Delete `<StackPanel>` and `<Button>` elements
 1. Add to the Window's element: `<Frame x:Name="MainFrame" />`
 
@@ -53,6 +53,7 @@ MainWindow.xaml acts as the root window container hosting navigable Page element
 ```
 
 1. Open `MainWindow.xaml.cs`
+    1. if you do not see the file, click on the arrow next to `MainWindow.xaml`
 1. Add to the imports:
 
 ```c#
@@ -103,6 +104,7 @@ Next to create the MainPage:
 1. In the Solution Explorer, **Right Click** your new **Pages Folder** > **Add** > **New Item....**  
     - if you do not see **New Item....**, select **Class....**
 1. In the **Add New Item** dialog, select **WinUI** in the template list on the left-side of the window.
+    1. Or on the top right, there is a Search bar, enter **Blank Page (WinUI 3)** 
 1. Select the **Blank Page (WinUI 3)** template.
 1. Name the file **MainPage.xaml**
 1. **Click Add**
@@ -228,7 +230,7 @@ This page is organized into a two-column grid: the left column (fixed width) all
 The XAML includes a two onClick Event, which will need to be handled before you can run and see the project.
 
 1. Open MainPage.xaml.cs
-1. **Under** the MainPage constructor add:
+1. **Under** the MainPage constructor, which is `public MainPage()` add:
 
 ```c#
 private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
@@ -276,6 +278,6 @@ Now to test it out:
 
 ![Screenshot of App](assets/base-xmal.png)
 
-You've completed the initial UI construction for the WinUI 3 application. By setting up the main window and structuring the layout with XAML, you've established the foundation for image uploads and poem generation. This visual structure is important for adding functionality and interactivity in the next module.
+You've completed the initial UI construction for your Poem Generating application. By setting up the main window and structuring the layout with XAML, you've established the foundation for image uploads and poem generation. This visual structure is important for adding functionality and interactivity in the next module.
 
 Next [Add Functionality](./4-add-functionality.md)
