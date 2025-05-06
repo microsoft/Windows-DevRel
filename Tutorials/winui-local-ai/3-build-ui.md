@@ -109,7 +109,7 @@ Next to create the MainPage:
 1. Name the file **MainPage.xaml**
 1. **Click Add**
 
-These steps creates both `MainPage.xaml` & `MainPage.xaml.cs`.
+These steps creates both `MainPage.xaml` & `MainPage.xaml.cs`. Theses files are part of the View. `.xaml` contains the XAML content and the `.xaml.cs` contains the code-behind.
 
 ## App's UI Structure
 
