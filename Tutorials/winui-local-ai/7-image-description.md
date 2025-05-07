@@ -200,6 +200,7 @@ public MainPage()
 
 ![Screenshot of Visual Studio displaying Rename...](assets/rename.png)
 
+1. Confirm that in the `GeneratePoem` function, that it changed from `GeneratedPoem = await AIModelService.GeneratePoem(Photos, SelectedPoemType);` to `GeneratedPoem = await _aiModelService.GeneratePoem(Photos, SelectedPoemType);`
 1. Remove the `{ get; }` from the `_aiModelService`, it should look like:
 
 ```c#
@@ -236,8 +237,10 @@ public partial class AIModelService : ObservableObject
 IsModelLoading = false;
 ```
 
-You can run the project:
+You can run the project, but let's do it without internet:
 
+1. On the Window's menu bar at the bottom of your screen, on the right side, **Click** on the **battery icon**
+1. **Click** on the **Airplane mode**
 1. On the title bar, **Click** on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
 
 
