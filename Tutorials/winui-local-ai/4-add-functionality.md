@@ -6,7 +6,7 @@ In this section, you will build the app to upload images and display these image
 
 <!-- Add instructions to install `WinUI 3 Gallery` and `AI Dev Gallery` apps for post build -->
 
-Go to the computers Start bar and open `WinUI 3 Gallery` and `AI Dev Gallery` apps. Take a few minutes  to explore these.
+Go to the computers Start bar and open `WinUI 3 Gallery` and `AI Dev Gallery` apps. Take a few minutes to explore these.
 
 For this project you'll use portions from a provided sample:
 
@@ -72,15 +72,16 @@ private async void LoadImage_Click(object sender, RoutedEventArgs e)
 ```
 </details>
 
-This projects allows users to multi-select images. You can use the WinUI Gallery app to reference how to do this:
+This projects allows users to multi-select images. 
+<!-- You can use the WinUI Gallery app to reference how to do this:
 
 1. In the **WinUI Gallery**
 1. On the top Left corner, Search  **FilePicker**
-1. Locate the **Pick muliple files** section
+1. Locate the **Pick multiple files** section
 1. **Click** on the **Source Code**
 1. **Click** on **C#**
 
-Looking at the source code, you'll see that the function call needs to change from `PickSingleFileAsync()` to `PickMultipleFilesAsync()`. As well as it needs to iterate and load each file in a loop.
+Looking at the source code, you'll see that the function call needs to change from `PickSingleFileAsync()` to `PickMultipleFilesAsync()`. As well as it needs to iterate and load each file in a loop. -->
 
 1. In your `MainPage.xaml.cs` in the `LoadImage_Click` function locate:
 
@@ -143,11 +144,11 @@ public partial class MainViewModel() : ObservableObject
 
 The ObservableObject in the Community Toolkit is a base class that makes this ViewModel observable by implementing the `INotifyPropertyChanged` and `INotifyPropertyChanging` interfaces. This class provides automatic notification when property values change, which helps the UI update itself whenever data changes in the view model.
 
-When this MainViewModel class inherits from ObservableObject, this class gains:
+<!-- When this MainViewModel class inherits from ObservableObject, this class gains:
 
 - Support for property change notifications through the PropertyChanged and PropertyChanging events.
 - Access to helper methods like SetProperty, which update property values and raise notifications automatically.
-- The ability to use attributes like `ObservableProperty` to simplify property declarations and generate boilerplate code for observable properties.
+- The ability to use attributes like `ObservableProperty` to simplify property declarations and generate boilerplate code for observable properties. -->
 
 1. Move the `LoadImage_Click` function from the **MainPage.xaml.cs** to **MainViewModel.cs**
 1. Rename it to `LoadImages`, make it a `Task` and remove the parameters
@@ -259,7 +260,6 @@ We use both in this lab.
 > [!TIP]
 > A common pitfall for new devs is using x:Bind and Binding interchangeably. X:Bind is the preferred method and Binding is generally used for complex binding scenarios that involve relative source bindings or traversing the visual tree.
 
-
 Now to connect the `LoadImages()` from the ViewModel to the `MainPage.xaml`
 
 1. Open `MainPage.xaml`
@@ -318,7 +318,7 @@ namespace PoemGenerator.Models
 1. Add to imports:
 
 ```c#
-using PoemGenerator.Model;
+using PoemGenerator.Models;
 ```
 
 1. Add a `Photos` property:

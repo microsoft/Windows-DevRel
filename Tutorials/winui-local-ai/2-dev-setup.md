@@ -56,9 +56,9 @@ To create a new project using the WinUI C# Blank App project template:
 
 ## Update & Install Packages
 
-The Windows App SDK (including WinUI) and tools like the Community Toolkit are distributed as [NuGet packages](https://www.nuget.org/). This distribution method allows updates to be released independently of Windows and Visual Studio. As a result, the Visual Studio template you used to create your project might not reference the latest versions of these NuGet packages. To ensure you have the latest features and fixes, you should update your NuGet packages every time you create a new project in Visual Studio.
+<!-- The Windows App SDK (including WinUI) and tools like the Community Toolkit are distributed as [NuGet packages](https://www.nuget.org/). This distribution method allows updates to be released independently of Windows and Visual Studio. As a result, the Visual Studio template you used to create your project might not reference the latest versions of these NuGet packages. To ensure you have the latest features and fixes, you should update your NuGet packages every time you create a new project in Visual Studio.
 
-> **_Note:_**   NuGet packages are single ZIP files with a .nupkg extension that contains compiled code (Dynamic Link Library (DLLs)), related files, and a descriptive manifest. These packages serve as a mechanism for developers to create, share, and consume useful code in .NET applications.
+> **_Note:_**   NuGet packages are single ZIP files with a .nupkg extension that contains compiled code (Dynamic Link Library (DLLs)), related files, and a descriptive manifest. These packages serve as a mechanism for developers to create, share, and consume useful code in .NET applications. -->
 
 To update the Windows App SDK NuGet package for your project to get access to Windows Copliot Runtime APIs :
 
@@ -119,7 +119,7 @@ You can run this blank project:
 
 1. To stop debugging, **Close** the app window, or press **Shift + F5** or in Visual Studio, on the title bar, **Click** on **Debug** > **Stop Debugging**
 
-## The project's file structure
+<!-- ## The project's file structure
 
 To see the starting boilerplate code from the WinUI project template, you need to open the Solution Explorer. If Solution Explorer isn't already open, you can access it by selecting **View** > **Solution Explorer** from the top menu.
 
@@ -127,7 +127,7 @@ For this course, you modify only the `MainWindow.xaml` and `MainWindow.xaml.cs` 
 
 > **_Note:_**  Not all projects strictly follow the MVVM pattern. Some developers opt for a "code-behind approach," where logic is placed directly in the .xaml.cs file instead of implementing a separate ViewModel. This approach is often referred to as the **"code-behind pattern."**
 
-![Diagram of Project structures organized by MVVM](assets/blank-project-structure.png)
+![Diagram of Project structures organized by MVVM](assets/blank-project-structure.png) -->
 
 ## Organizing Your Project Files
 
@@ -138,11 +138,11 @@ Steps to Create Folders:
 1. In Solution Explorer, **right-click** on **PoemGenerator** (the icon with box containing C# in it).
 1. Select **Add** > **New Folder**.
 1. Name the new folder `Models`.
-1. Repeat steps 1–3 and name the second folder `Pages`.
+1. Repeat steps 1 & 2 and name the second folder `Pages`.
 
-### Why Name It "Pages" Instead of "Views"?
+<!-- ### Why Name It "Pages" Instead of "Views"?
 
-The folder is named Pages instead of Views because it stores different pages of your app. For example, while MainWindow.xaml is part of the View layer, it remains in the root directory because most developers expect to find it there. Moving it into a folder named "Views" would break this convention and could cause confusion.
+The folder is named Pages instead of Views because it stores different pages of your app. For example, while MainWindow.xaml is part of the View layer, it remains in the root directory because most developers expect to find it there. Moving it into a folder named "Views" would break this convention and could cause confusion. -->
 
 In the next section, we’ll explore how MainWindow.xaml and how pages work.
 

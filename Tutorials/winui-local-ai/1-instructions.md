@@ -8,7 +8,7 @@ Building Windows apps uses modern frameworks and tools to create software that r
 
 ![Diagram of Native Windows Development ](assets/techstack.png)
 
-**WinUI** is a powerful and versatile framework that offers developers a native user experience (UX) for Windows desktop applications. By incorporating the Fluent Design System into all experiences, controls, and styles, WinUI provides consistent, intuitive, and accessible experiences using the latest user interface (UI) patterns. This means that developers can create visually appealing and highly functional applications that align with modern design principles, ensuring a seamless and engaging user experience.
+<!-- **WinUI** is a powerful and versatile framework that offers developers a native user experience (UX) for Windows desktop applications. By incorporating the Fluent Design System into all experiences, controls, and styles, WinUI provides consistent, intuitive, and accessible experiences using the latest user interface (UI) patterns. This means that developers can create visually appealing and highly functional applications that align with modern design principles, ensuring a seamless and engaging user experience.
 
 One of the key advantages of WinUI is its flexibility and compatibility with various development targets. Whether you are building a new application from scratch or migrating an existing [UWP](https://learn.microsoft.com/en-us/windows/uwp/get-started/) (Universal Windows Platform), [WinForms](https://learn.microsoft.com/en-us/dotnet/desktop/winforms/overview/?view=netdesktop-9.0), or [WPF](https://learn.microsoft.com/en-us/windows/apps/get-started/?tabs=cpp-win32%2Cnet-maui#wpf/dotnet/desktop/wpf/overview/?view=netdesktop-9.0) (Windows Presentation Foundation) app, WinUI supports a wide range of languages including C++, C#, Visual Basic, and JavaScript (using React Native for Desktop). This makes it easier for developers to leverage their existing skills and codebases while adopting the latest technologies. Additionally, WinUI is decoupled from the OS and Windows SDKs, allowing for more frequent updates and improvements without being tied to specific Windows releases. This ensures that developers can always access the latest features and enhancements, keeping their applications up-to-date and competitive.
 
@@ -18,7 +18,7 @@ The **Windows Copilot Runtime APIs** (WCR APIs) offer a powerful suite of AI(Art
 
 The **Windows Community Toolkit** is an invaluable resource for developers building applications on Windows. It is a collection of helper functions, custom controls, and app services designed to simplify and demonstrate common developer tasks. The toolkit supports a wide range of development targets, including WinUI 2, WinUI 3, and the Uno Platform, making it a versatile choice for developers working on different types of projects. By leveraging the Windows Community Toolkit, developers can access a rich set of controls and extensions that enhance productivity and streamline the development process.
 
-You use these frameworks and tools together to build Windows apps that are modern, efficient, and compatible with a wide range of Windows devices.
+You use these frameworks and tools together to build Windows apps that are modern, efficient, and compatible with a wide range of Windows devices. -->
 
 ## Scenario
 

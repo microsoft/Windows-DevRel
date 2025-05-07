@@ -1,8 +1,6 @@
-# Adding Style & Icon
+# Add Icon & Styling
 
-This section walks you through the process of enhancing the visual appeal of a XAML page and aligning it with modern Windows design standards. You begin by adding an icon to the application. Then, you transform the look and feel of the page by applying styles and theme resources to UI elements like containers, buttons, and text. This transformation ensures that your app adheres to Windows design principles, offers a consistent user experience, and is easier to maintain and update.
-
-> **_Note:_** You can find a dedicated section discussing the approach to styling updates, along with the complete code, at the end of this article.
+This section you begin by adding an icon to the application. Then, you transform the look and feel of the page by applying styles and theme resources to UI elements like containers, buttons, and text. This transformation ensures that your app adheres to Windows design principles, offers a consistent user experience, and is easier to maintain and update.
 
 ## Add Icon to App
 
@@ -28,113 +26,7 @@ Now try it out:
 
 ## Adding Style
 
-Below are the key items to transform an XAML page without styling into a visually consistent, modern, and accessible WinUI page that uses styles and theme resources. This process ensures that your app matches Windows design guidance, is maintainable, and is easier to update as design systems evolve.
-
-## Use Theme and Style Resources for Consistent Appearance
-
-Update controls to use styles and theme resources instead of hard-coded property values.
-
-This approach ensures that your app’s look and feel automatically match Windows’ current design language and respond to theme changes (light/dark/high contrast).
-
-**How**:
-
-- For each control, check if the styled version uses a Style or a theme resource (like {ThemeResource ...}).
-- For example, update the main TextBlock (the app title) to use Style="{StaticResource BodyStrongTextBlockStyle}" instead of the default style. This makes the title visually prominent and consistent with Windows typography.
-
-**Why**:
-
-Using built-in styles and theme resources provides visual consistency and makes future updates easier, as you only need to update the style or resource rather than every control.
-
-## Add Background, Border, and Corner Styling to Containers
-
-Apply background, border, and corner radius styles to major layout containers (such as the right-side poem viewer grid).
-
-**How:**
-
-Add these attributes to the poem viewer grid:
-
-- Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-- BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-- BorderThickness="1"
-- CornerRadius="{StaticResource OverlayCornerRadius}" (if defined in your resources)
-
-**Why**:
-
-These theme resources ensure that this grid looks like a card, visually separating it from the rest of the UI and aligning it with Fluent Design principles.
-
-> **_TIP:_** Define OverlayCornerRadius in your resource dictionary if it’s not already present.
-
-## Style Buttons for Visual Hierarchy
-
-Use accent styles for primary actions (like the "Generate" button).
-
-**How:**
-
-- Add Style="{StaticResource AccentButtonStyle}" to the "Generate" button.
-
-**Why:**
-
-This style highlights the button as a primary action, improving discoverability and accessibility. Using accent styles also ensures the button color matches the system accent color, which users can personalize.
-
-## Apply Foreground Styling for Readability
-
-Use theme resources for foreground colors, especially for text blocks that display dynamic content.
-
-**How:**
-
-- For the RichTextBlock that shows the generated poem, add Foreground="{ThemeResource TextFillColorSecondaryBrush}".
-
-**Why:**
-
-This ensures text remains readable in all themes and meets accessibility guidelines.
-
-## Ensure Consistent Command and Property Bindings
-
-Double-check that command and property names match your ViewModel. For example, update LoadImageCommand to LoadImagesCommand if that’s the correct property.
-
-**How:**
-
-- Review all {x:Bind ...} expressions and update them to match the styled version and your ViewModel’s properties.
-
-**Why:**
-
-This prevents runtime errors and ensures that UI actions are properly connected to your logic.
-
-## Use Spacing and Padding for Layout Consistency
-
-Maintain consistent spacing and padding between controls and within containers.
-
-**How:**
-
-- Use properties like Spacing, Padding, and Margin as shown in the styled version.
-
-- For example, ensure the outer grid uses Padding="36,96,36,36" and ColumnSpacing="36".
-
-**Why:**
-
-Consistent spacing improves readability and touch target size, making your app more usable on all devices.
-
-## Leverage Reusable Resources
-
-Define custom styles or brushes in Page.Resources or App.xaml for reuse.
-
-**How:**
-
-- If you need a custom look, define a style with a TargetType and use it via Style="{StaticResource YourCustomStyle}".
-
-**Why:**
-
-Reusable resources reduce duplication and centralize design updates.
-
-## Tips and Best Practices
-
-- **Prefer built-in styles and theme resources**: This keeps your app aligned with Windows updates and accessibility improvements.
-- **Define custom styles only when necessary**: Base them on the default control style for maintainability.
-- **Test in light, dark, and high-contrast modes**: Ensure your styles respond correctly to theme changes.
-- **Keep resource scope in mind**: Page-level resources override app-level ones. Use app-level resources for global styles.
-- **Use clear naming for styles and resources**: This makes your XAML easier to read and maintain.
-
-## Update Project
+Now to add WinUI default styling.
 
 1. Open `MainPage.xaml`
 1. Replace the `Grid` with the following:
@@ -273,6 +165,13 @@ Now try it out:
 
 1. Close App
 
-You successfully updated the app's UI to use modern styling techniques. By incorporating theme resources, applying consistent styles, and adding visual cues, you have created an application that aligns with Windows design principles. This approach not only improves the app's appearance, but also ensures it remains maintainable and adaptable to future design updates.
+## Tips and Best Practices
+
+- **Prefer built-in styles and theme resources**: This keeps your app aligned with Windows updates and accessibility improvements.
+- **Define custom styles only when necessary**: Base them on the default control style for maintainability.
+- **Test in light, dark, and high-contrast modes**: Ensure your styles respond correctly to theme changes.
+- **Keep resource scope in mind**: Page-level resources override app-level ones. Use app-level resources for global styles.
+- **Use clear naming for styles and resources**: This makes your XAML easier to read and maintain.
+
 
 Next [Add AI](./6-phi-silica.md)
