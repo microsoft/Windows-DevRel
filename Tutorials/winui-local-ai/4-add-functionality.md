@@ -106,11 +106,16 @@ if (files != null && files.Count > 0)
 }
 ```
 
+Before you try it out, the lab has provided sample images that you can use to test out this app.
+
+1. In a new tab, open [repo](./children-arts-craft-samples/)
+1. Download images to the `Desktop`
+
 Now try it out:
 
 1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
 1. Click on `Upload Images`
-1. Select multiple  images
+1. Select multiple images from `Desktop`
 1. Close App
 
 ## Add Saving & Displaying images
