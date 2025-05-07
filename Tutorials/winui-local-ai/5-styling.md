@@ -8,7 +8,7 @@ This section walks you through the process of enhancing the visual appeal of a X
 
 In the `MainPage.xaml` there is a `Image` element that contains `Source="/Assets/AppIcon.svg"`. Now its time to add the image to the project.
 
-1. Open in a new tap: [directory](./assets/)
+1. Open in a new tab: [directory](./assets/)
 1. Locate AppIcon.svg
 1. Download image to Desktop
 1. Have Visual Studio display `Solution Explorer` and open `Asset` directory
@@ -28,7 +28,7 @@ Now try it out:
 
 ## Adding Style
 
-Below are the key items to transform an XAML page without styling into a visually consistent, modern, and accessible WinUI page that uses styles and theme resources. This process ensures that your app matches Windows design guidance, is maintainable, and is easier to update as design systems evolve.
+Below are the key items to transform a XAML page without styling into a visually consistent, modern, and accessible WinUI page that uses styles and theme resources. This process ensures that your app matches Windows design guidance, is maintainable, and is easier to update as design systems evolve.
 
 ## Use Theme and Style Resources for Consistent Appearance
 
