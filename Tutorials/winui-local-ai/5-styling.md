@@ -6,7 +6,7 @@ This section you begin by adding an icon to the application. Then, you transform
 
 In the `MainPage.xaml` there is a `Image` element that contains `Source="/Assets/AppIcon.svg"`. Now its time to add the image to the project.
 
-1. Open in a new tap: [directory](./assets/)
+1. Open in a new tab: [directory](./assets/)
 1. Locate AppIcon.svg
 1. Download image to Desktop
 1. Have Visual Studio display `Solution Explorer` and open `Asset` directory
