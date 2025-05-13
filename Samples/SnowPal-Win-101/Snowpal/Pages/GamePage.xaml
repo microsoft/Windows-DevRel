@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Page
-    x:Class="SnowPal.MainPage"
+    x:Class="SnowPal.Pages.GamePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:SnowPal.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     x:Name="ThisPage">
 
-
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions> 
+        <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -23,24 +23,26 @@
         </Grid.ColumnDefinitions>
 
         <!-- Title -->
-        <TextBlock Text="SnowPal" Style="{StaticResource BaseTextBlockStyle}" Grid.ColumnSpan="2"/>
+        <TextBlock Text="SnowPal" Style="{StaticResource TitleTextStyle}" Grid.ColumnSpan="2"/>
 
         <!-- Drawing -->
         <Image x:Name="Image" Grid.Row="1" Grid.Column="0" Style="{StaticResource ImageStyle}" Source="{x:Bind ViewModel.ImageSource, Mode=OneWay}"/>
 
         <!-- Guesses Left Display -->
-        <StackPanel Grid.Row="1" Grid.Column="1" Style="{StaticResource TopHorizontalCenterStackPanel}">
-            <TextBlock Text="Guesses Left: " Style="{StaticResource GuessesLeftTextBlockStyle}"/>
-            <TextBlock Text="{x:Bind ViewModel.GuessesLeft, Mode=OneWay}" Style="{StaticResource GuessesLeftTextBlockStyle}"/>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <StackPanel Style="{StaticResource HorizontalCenterStackPanel}">
+                <TextBlock Text="Guesses Left: " Style="{StaticResource BaseTextBlock}"/>
+                <TextBlock Text="{x:Bind ViewModel.GuessesLeft, Mode=OneWay}" Style="{StaticResource BaseTextBlock}"/>
+            </StackPanel>
         </StackPanel>
 
         <!-- Alphabet Buttons -->
         <GridView x:Name="AlphabetButtonsGridView" Grid.Row="1" Grid.Column="1" Style="{StaticResource GridViewStyle}" 
-                  ScrollViewer.HorizontalScrollMode="Enabled"
-                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                  ScrollViewer.VerticalScrollMode="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                  ItemsSource="{x:Bind ViewModel.Letters}">
+              ScrollViewer.HorizontalScrollMode="Enabled"
+              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+              ScrollViewer.VerticalScrollMode="Disabled"
+              ScrollViewer.VerticalScrollBarVisibility="Hidden"
+              ItemsSource="{x:Bind ViewModel.Letters}">
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="5"/>
@@ -48,23 +50,23 @@
             </GridView.ItemsPanel>
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="local:GameLetter">
-                    <Button Content="{x:Bind Character}" IsEnabled="{x:Bind IsAvailable, Mode=OneWay}" Style="{StaticResource AlphabetButtonStyle}" CommandParameter="{x:Bind Character}"
-                            Command="{Binding ViewModel.LetterGuessedCommand, ElementName=ThisPage}"/>
+                    <Button Content="{x:Bind Character}" IsEnabled="{x:Bind IsAvailable, Mode=OneWay}" Style="{StaticResource AlphabetButton}" CommandParameter="{x:Bind Character}"
+                        Command="{Binding ViewModel.LetterGuessedCommand, ElementName=ThisPage}"/>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
 
         <!-- Word Display Area -->
-        <TextBlock x:Name="Word" Grid.Row="2" Grid.ColumnSpan="2" Text="{x:Bind ViewModel.WordDisplay, Mode=OneWay}" Style="{StaticResource WordDisplayTextBlockStyle}"/>
+        <TextBlock x:Name="Word" Grid.Row="2" Grid.ColumnSpan="2" Text="{x:Bind ViewModel.WordDisplay, Mode=OneWay}" Style="{StaticResource LargerTextBlock}"/>
 
         <!-- Popup for message -->
         <Grid x:Name="Output" Style="{StaticResource GridStyle}">
             <Popup x:Name="StandardPopup" Style="{StaticResource PopupStyle}" IsLightDismissEnabled="False" IsOpen="{x:Bind ViewModel.PopUpToDisplay, Mode=OneWay}">
                 <Border Style="{StaticResource BorderStyle}" BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}" Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}">
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12">
-                        <TextBlock Text="{x:Bind ViewModel.MessageTitle, Mode=OneWay}" Style="{StaticResource MessageTitlePopupTextBlockStyle}" />
-                        <TextBlock Text="{x:Bind ViewModel.MessageContent, Mode=OneWay}" Style="{StaticResource MessageContentPopupTextBlockStyle}"/>
-                        <Button Content="Close" Command="{Binding ViewModel.ClosePopupClickedCommand, ElementName=ThisPage}" Style="{StaticResource PopupButtonStyle}"/>
+                    <StackPanel Style="{StaticResource VerticalCenterStackPanel}">
+                        <TextBlock Text="{x:Bind ViewModel.MessageTitle, Mode=OneWay}" Style="{StaticResource LargerTextBlock}" />
+                        <TextBlock Text="{x:Bind ViewModel.MessageContent, Mode=OneWay}" Style="{StaticResource BaseTextBlock}"/>
+                        <Button Content="Close" Command="{Binding ViewModel.ClosePopupClickedCommand, ElementName=ThisPage}" Style="{StaticResource PopupButton}"/>
                     </StackPanel>
                 </Border>
             </Popup>

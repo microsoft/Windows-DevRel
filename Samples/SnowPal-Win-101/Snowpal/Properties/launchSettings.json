@@ -1,9 +1,9 @@
 {
   "profiles": {
-    "snowpal (Package)": {
+    "SnowPal (Package)": {
       "commandName": "MsixPackage"
     },
-    "snowpal (Unpackaged)": {
+    "SnowPal (Unpackaged)": {
       "commandName": "Project"
     }
   }

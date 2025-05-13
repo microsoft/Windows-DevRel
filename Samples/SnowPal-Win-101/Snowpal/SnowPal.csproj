@@ -1,11 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
-    
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	<LangVersion>Preview</LangVersion>
-	<OutputType>WinExe</OutputType>
+    <OutputType>WinExe</OutputType>
+	  <LangVersion>Preview</LangVersion>
     <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-    <RootNamespace>snowpal</RootNamespace>
+    <RootNamespace>SnowPal</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
@@ -14,19 +13,9 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-    
   <ItemGroup>
-    <Content Remove="Assets\snow-0.png" />
-    <Content Remove="Assets\snow-1.png" />
-    <Content Remove="Assets\snow-2.png" />
-    <Content Remove="Assets\snow-3.png" />
-    <Content Remove="Assets\snow-4.png" />
-    <Content Remove="Assets\snow-5.png" />
-    <Content Remove="Assets\snow-6.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="MainPage.xaml" />
-    <None Remove="StartPage.xaml" />
+    <None Remove="Pages\GamePage.xaml" />
+    <None Remove="Pages\MenuPage.xaml" />
     <None Remove="Styles.xaml" />
   </ItemGroup>
 
@@ -54,45 +43,46 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.3916" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250401001" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="StartPage.xaml">
+    <Content Update="Assets\snow-0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\snow-1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\snow-2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\snow-3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\snow-4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\snow-5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\snow-6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\MenuPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Update="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Pages\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Assets\snow-0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\snow-1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\snow-2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\snow-3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\snow-4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\snow-5.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\snow-6.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Page Update="Pages\GamePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!--

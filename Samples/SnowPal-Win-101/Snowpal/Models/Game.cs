@@ -1,32 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SnowPal.Models
 {
-    public class Game
+    class Game
     {
         // List of words for the game
         private readonly List<string> _wordList = new List<string> { "WINDOWS", "VIEW", "MODEL", "TASKBAR", "XAML", "CSHARP", "DEBUGGER", "GRID", "STACKPANEL", "RANDOM" };
 
-
         // Messages for winning and losing the game
         private readonly string[] _winningMessages = {
-                "Incredible! You guessed the word without a single mistake! You're a true word master!",
-                "Phew! That was close! You guessed the word just in time! Well done!",
-                "Great job! You guessed the word!"
-            };
+            "Incredible! You guessed the word without a single mistake! You're a true word master!",
+            "Phew! That was close! You guessed the word just in time! Well done!",
+            "Great job! You guessed the word!"
+        };
         private readonly string[] _losingMessages = {
-                "Better luck next time! The word was {0}. Keep trying, you'll get it!",
-                "Don't give up! The word was {0}.",
-                "Oh no! The word was {0}.",
-                "Sorry, you didn't guess it. The word was {0}.",
-                "You ran out of guesses. The word was {0}."
-            };
+            "Better luck next time! The word was {0}. Keep trying, you'll get it!",
+            "Don't give up! The word was {0}.",
+            "Oh no! The word was {0}.",
+            "Sorry, you didn't guess it. The word was {0}.",
+            "You ran out of guesses. The word was {0}."
+        };
 
         // Properties for the current game state
         private const int MaxIncorrectGuesses = 6;
-
         public string CurrentWord { get; private set; }
         public char[] GuessedWord { get; private set; }
         public int IncorrectGuesses { get; private set; }
@@ -35,7 +36,7 @@ namespace SnowPal.Models
         public bool GameWon { get; private set; }
         public string MessageTitle { get; private set; }
         public string MessageContent { get; private set; }
-                
+
         public Game()
         {
 
@@ -64,7 +65,6 @@ namespace SnowPal.Models
         public void GuessLetter(char letter)
         {
             bool isCorrect = false;
-
             for (int i = 0; i < CurrentWord.Length; i++)
             {
                 if (CurrentWord[i] == letter)
