@@ -36,7 +36,7 @@ MainWindow.xaml acts as the root window container hosting navigable Page element
 1. Delete `<StackPanel>` and `<Button>` elements
 1. Add to the Window's element: `<Frame x:Name="MainFrame" />`
 
-```xaml
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <Window
     x:Class="PoemGenerator.MainWindow"
@@ -52,17 +52,17 @@ MainWindow.xaml acts as the root window container hosting navigable Page element
 </Window>
 ```
 
-1. Open `MainWindow.xaml.cs`
+4. Open `MainWindow.xaml.cs`
     1. if you do not see the file, click on the arrow next to `MainWindow.xaml`
-1. Add to the imports, located at the top of the file:
+5. Add to the imports, located at the top of the file:
 
 ```c#
 using PoemGenerator.Pages;
 using Windows.Graphics;
 ```
 
-1. Delete `myButton_Click` function.
-1. In the constructor, after `InitializeComponent();` add:
+6. Delete `myButton_Click` function.
+7. In the constructor, after `InitializeComponent();` add:
 
 ```c#
  MainFrame.Navigate(typeof(MainPage));
@@ -101,20 +101,20 @@ namespace PoemGenerator
 
 Next to create the MainPage:
 
-1. In the Solution Explorer, **Right Click** your new **Pages Folder** > **Add** > **New Item....**  
+8. In the Solution Explorer, **Right Click** your new **Pages Folder** > **Add** > **New Item....**  
     - if you do not see **New Item....**, select **Class....**
-1. In the **Add New Item** dialog, select **WinUI** in the template list on the left-side of the window.
+9. In the **Add New Item** dialog, select **WinUI** in the template list on the left-side of the window.
     1. Or on the top right, there is a Search bar, enter **Blank Page (WinUI 3)** 
-1. Select the **Blank Page (WinUI 3)** template.
-1. Name the file **MainPage.xaml**
-1. **Click Add**
+10. Select the **Blank Page (WinUI 3)** template.
+11. Name the file **MainPage.xaml**
+12. **Click Add**
 
 These steps creates both `MainPage.xaml` & `MainPage.xaml.cs`. Theses files are part of the View. `.xaml` contains the XAML content and the `.xaml.cs` contains the code-behind.
 
 ## App's UI Structure
 
-1. Open `MainPage.xaml`
-1. Replace the `<Grid>` element with the following:
+13. Open `MainPage.xaml`
+14. Replace the `<Grid>` element with the following:
 
 ```xml
 <!--Photo viewer-->
@@ -229,8 +229,8 @@ This page is organized into a two-column grid: the left column (fixed width) all
 
 The XAML includes a two onClick Event, which will need to be handled before you can run and see the project.
 
-1. Open MainPage.xaml.cs
-1. **Under** the MainPage constructor, which is `public MainPage()` add:
+15. Open MainPage.xaml.cs
+16. **Under** the MainPage constructor, which is `public MainPage()` add:
 
 ```c#
 private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)

@@ -18,18 +18,18 @@ In the `MainPage.xaml` there is a `Image` element that contains `Source="/Assets
 
 Now try it out:
 
-1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
+10. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
 
 ![Screenshot of App](assets/add-image.png)
 
-1. Close App
+11. Close App
 
 ## Adding Style
 
 Now to add WinUI default styling.
 
-1. Open `MainPage.xaml`
-1. Replace the `Grid` with the following:
+12. Open `MainPage.xaml`
+13. Replace the `Grid` with the following:
 
 ```xml
 <!--Photo viewer-->
@@ -159,11 +159,11 @@ Now to add WinUI default styling.
 
 Now try it out:
 
-1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
+14. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
 
 ![Screenshot of App](assets/with-style.png)
 
-1. Close App
+15. Close App
 
 ## Tips and Best Practices
 

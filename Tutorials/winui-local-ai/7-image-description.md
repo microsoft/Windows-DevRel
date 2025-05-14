@@ -1,8 +1,10 @@
-# Image Description 
+# Image Description
 
 The Image Description API in the Windows App SDK generates text descriptions for images using artificial intelligence.
 
 > **_NOTE:_**  The Image Description API is not available in mainland China.
+
+![Diagram of Native Windows Models ](assets/windows-ai-api.png)
 
 These APIs support the following types of text descriptions:
 
@@ -31,7 +33,7 @@ if (ImageDescriptionGenerator.GetReadyState() == AIFeatureReadyState.EnsureNeede
 Debug.WriteLine("Image model is available.");
 ```
 
-1. In the `GeneratePoem`, replace `imageDescriptions` with:
+3. In the `GeneratePoem`, replace `imageDescriptions` with:
 
 ```c#
 // Process photos to generate descriptions
@@ -65,13 +67,13 @@ var imageDescriptions = string.Join(", ", photos.Select(photo => photo.Descripti
 
 The `imageDescriptionGenerator` will be managed differently then `languageModel`, where the `imageDescriptionGenerator` will be reused because the app can process up to 5 images and instead of creating 5 Generators, it will create it once and reuse it.
 
-1. Add property to AIModelService:
+4. Add property to AIModelService:
 
 ```c#
 private ImageDescriptionGenerator? _imageDescriptionGenerator;
 ```
 
-1. Add the `ProcessPhotosForDescriptions` & `DescribeImageAsync` functions:
+5. Add the `ProcessPhotosForDescriptions` & `DescribeImageAsync` functions:
 
 ```c#
 private async Task ProcessPhotosForDescriptions(ObservableCollection<PhotoItem> photos){
@@ -107,9 +109,9 @@ Because children’s art can be abstract, there is a chance that the Image Descr
 
 You can run the project:
 
-1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
-1. Open the Output Window, View > Output or Ctrl+Alt+O
-1. Locate the Debug messages for:
+6. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
+7. Open the Output Window, View > Output or Ctrl+Alt+O
+8. Locate the Debug messages for:
 
 ```
 Initializing AI models...
@@ -125,8 +127,8 @@ Image-based text generation involves additional processing layers compared to te
 
 The UI should reflect this, where images cannot be uploaded until the models are ready. You’ll add an overlay and a Progress Ring that will disappear once the models are ready. 
 
-1. Open `MainPage.xaml` and scroll to the bottom
-1. Between the last two `</Grid>` elements add:
+9. Open `MainPage.xaml` and scroll to the bottom
+10. Between the last two `</Grid>` elements add:
 
 ```xml
 <Grid x:Name="OverlayGrid"
@@ -168,22 +170,22 @@ The UI should reflect this, where images cannot be uploaded until the models are
 
 Here the Databinding is not to the `MainViewModel`, but to `AIModelService`. This could have been handled differently, but wanted to highlight that there are scenarios when you need to bind properties or methods that are specific to the view and are not part of the shared ViewModel. 
 
-1. Open MainPage.xaml.cs
+11. Open MainPage.xaml.cs
 
-1. Update the `MainViewModel` property from `public MainViewModel ViewModel { get; } = new()` to:
+12. Update the `MainViewModel` property from `public MainViewModel ViewModel { get; } = new()` to:
 
 ```c#
 public MainViewModel ViewModel { get; }
 
 ```
 
-1. Under the `MainViewModel` property, add:
+13. Under the `MainViewModel` property, add:
 
 ```c#
 public AIModelService AIModelService { get; }
 ```
 
-1. Update the MainPage constructor to initialize the `AIModelService`and pass it to the ViewModel:
+14. Update the MainPage constructor to initialize the `AIModelService`and pass it to the ViewModel:
 
 ```c#
 public MainPage()
@@ -194,20 +196,20 @@ public MainPage()
 }
 ```
 
-1. Open `MainViewModel.cs`
-1. Locate the `AIModelService` property
-1. **Right click** or press **Ctrl+R** to rename it to: `_aiModelService`
+15. Open `MainViewModel.cs`
+16. Locate the `AIModelService` property
+17. **Right click** or press **Ctrl+R** to rename it to: `_aiModelService`
 
 ![Screenshot of Visual Studio displaying Rename...](assets/rename.png)
 
-1. Confirm that in the `GeneratePoem` function, that it changed from `GeneratedPoem = await AIModelService.GeneratePoem(Photos, SelectedPoemType);` to `GeneratedPoem = await _aiModelService.GeneratePoem(Photos, SelectedPoemType);`
-1. Remove the `{ get; }` from the `_aiModelService`, it should look like:
+18. Confirm that in the `GeneratePoem` function, that it changed from `GeneratedPoem = await AIModelService.GeneratePoem(Photos, SelectedPoemType);` to `GeneratedPoem = await _aiModelService.GeneratePoem(Photos, SelectedPoemType);`
+19. Remove the `{ get; }` from the `_aiModelService`, it should look like:
 
 ```c#
 public AIModelService _aiModelService;
 ```
 
-1. Replace the `MainViewModel` constructor:
+20. Replace the `MainViewModel` constructor:
 
 ```c#
 public MainViewModel(AIModelService aiModelService)
@@ -217,21 +219,21 @@ public MainViewModel(AIModelService aiModelService)
 }
 ```
 
-1. Open `AIModelService.cs`
-1. Replace the class declaration line with:
+21. Open `AIModelService.cs`
+22. Replace the class declaration line with:
 
 ```c#
 public partial class AIModelService : ObservableObject
 ```
 
-1. Add an ObservableProperty of IsModelLoading:
+23. Add an ObservableProperty of IsModelLoading:
 
 ```c#
 [ObservableProperty]
  public partial bool IsModelLoading { get; set; } = true;
 ```
 
-1. Add to the end of the `InitializeModelsAsync`:
+24. Add to the end of the `InitializeModelsAsync`:
 
 ```c#
 IsModelLoading = false;
@@ -239,17 +241,17 @@ IsModelLoading = false;
 
 You can run the project, but let's do it without internet:
 
-1. On the Window's menu bar at the bottom of your screen, on the right side, **Click** on the **battery icon**
-1. **Click** on the **Airplane mode**
-1. On the title bar, **Click** on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
+25. On the Window's menu bar at the bottom of your screen, on the right side, **Click** on the **battery icon**
+26. **Click** on the **Airplane mode**
+27. On the title bar, **Click** on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
 
 
 ![Screenshot of App Running with ProgressRing](assets/app-running-with-IsModelLoading.png)
 
 
-1. Upload an image
-1. Select a poem type
-1. Click Generate
+28. Upload an image
+29. Select a poem type
+30. Click Generate
 
 With these updates, this app now manages image descriptions by initializing and reusing a single instance of this `ImageDescriptionGenerator`. This approach avoids creating multiple generator instances when processing up to five images, which optimizes memory usage and improves performance. By implementing `ContentFilterOptions`, this service also filters out inappropriate content, maintaining a safe experience for users. The `IsModelLoading` property, exposed as an observable property, allows the UI to display a progress ring overlay until both the language and image models are fully initialized. This integration ensures that users cannot upload images until all AI models are ready, resulting in a responsive and reliable workflow for generating poems from images.
 

@@ -60,7 +60,7 @@ To create a new project using the WinUI C# Blank App project template:
 
 > **_Note:_**   NuGet packages are single ZIP files with a .nupkg extension that contains compiled code (Dynamic Link Library (DLLs)), related files, and a descriptive manifest. These packages serve as a mechanism for developers to create, share, and consume useful code in .NET applications. -->
 
-To update the Windows App SDK NuGet package for your project to get access to Windows Copliot Runtime APIs :
+To update the Windows App SDK NuGet package for your project to get access to Windows AI Foundry​ APIs :
 
 1. In Visual Studio, with your project loaded, in the tool bar on the top, select **Tools** > **NuGet Package Manager** > **Manage NuGet Packages for Solution....**
 
@@ -72,16 +72,16 @@ To update the Windows App SDK NuGet package for your project to get access to Wi
 
 3. Confirm that it is set to `nuget.org`
     - if it is not, follow [these](https://learn.microsoft.com/en-us/nuget/consume-packages/install-use-packages-visual-studio#package-sources) instructions.
-1. Click on the **Installed** tab.
-1. Click on **Microsoft.WindowsAppSDK**
-1. Select the **Checkbox** to Include prelease
-1. On the right panel:
+4. Click on the **Installed** tab.
+5. Click on **Microsoft.WindowsAppSDK**
+6. Select the **Checkbox** to Include prelease
+7. On the right panel:
     1. select the **checkbox** of the **Project**
     1. Select from the dropdown  **winappsdk1.8-experimental1** 
     1. Click **install**
         1. On the Preview Changes Popup, **Click Apply**.
         1. On the License Acceptance Popup, **Click I Accept**.
-1. To install the CommunityToolkit NuGet package for your project:
+8. To install the CommunityToolkit NuGet package for your project:
     1. Still in the Manage NuGet Packages for Solution, Click on the **Browse** tab.
     1. Enter **`CommunityToolkit.Mvvm`** in the search bar
     1. **Click to select** `CommunityToolkit.Mvvm`
@@ -91,21 +91,21 @@ To update the Windows App SDK NuGet package for your project to get access to Wi
         1. Click **Install**.
             1. On the Preview Changes Popup, **Click Apply**.
             1. On the License Acceptance Popup, **Click I Accept**.
-1. **Close** the  NuGet Package Manager
+9. **Close** the  NuGet Package Manager
 
-The Windows Copliot Runtime APIs uses a specifies  version of the .NET runtime and the minimum Windows version that the app targets. Also, the Community Toolkit.Mvvm and uses features that are ahead of the standard C# language version that your project is configured to use by default. You need to update the project's configuration:
+The Windows AI Foundry​ APIs uses a specifies  version of the .NET runtime and the minimum Windows version that the app targets. Also, the Community Toolkit.Mvvm and uses features that are ahead of the standard C# language version that your project is configured to use by default. You need to update the project's configuration:
 
-1. If Solution Explorer isn't already open, you can open it by selecting **View** > **Solution Explorer** from the top menu.
-1. In the Solution Explorer, you see a tree structure representing your solution and its projects. Look for the project node named **PoemGenerator**. This node is usually a icon of a box with "C#" written inside, the project name next to it.
+10. If Solution Explorer isn't already open, you can open it by selecting **View** > **Solution Explorer** from the top menu.
+11. In the Solution Explorer, you see a tree structure representing your solution and its projects. Look for the project node named **PoemGenerator**. This node is usually a icon of a box with "C#" written inside, the project name next to it.
 
 ![Screenshot of Edit Project](assets/edit-project.png)
 
-1. **Right-click** on the project node (**PoemGenerator**) and select **Edit Project File**. This action opens the .csproj file in the editor.
-1. **Locate** the first `PropertyGroup` element in the file
-1. **Add** `<LangVersion>Preview</LangVersion>`
-1. **Locate** `<TargetFramework>`
-1. **Replace** it with `<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>`
-1. **Save and Close** the file
+12. **Right-click** on the project node (**PoemGenerator**) and select **Edit Project File**. This action opens the .csproj file in the editor.
+13. **Locate** the first `PropertyGroup` element in the file
+14. **Add** `<LangVersion>Preview</LangVersion>`
+15. **Locate** `<TargetFramework>`
+16. **Replace** it with `<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>`
+17. **Save and Close** the file
 
 Adding Preview is a way to unlock experimental language features required by advanced tools like Community Toolkit.Mvvm, enabling developers to use cutting-edge capabilities in their projects.
 

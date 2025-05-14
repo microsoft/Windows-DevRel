@@ -16,12 +16,12 @@ For this project you'll use portions from a provided sample:
 
 You can use some of this functionality to implement simple file upload button. This logic lives around line 70 in `LoadImage_Click()`.
 
-1. Copy this entire `LoadImage_Click` function from the gallery into our project in `MainPage.xaml.cs`, replacing the current empty `LoadImage_Click` function
+4. Copy this entire `LoadImage_Click` function from the gallery into our project in `MainPage.xaml.cs`, replacing the current empty `LoadImage_Click` function
 
 Since we haven’t defined the logic for SetImage yet, we can comment out that line.
 
-1. Comment out `SetImage`, by adding ``//``
-1. Add to your imports, in the `MainPage.xaml.cs` :
+5. Comment out `SetImage`, by adding ``//``
+6. Add to your imports, in the `MainPage.xaml.cs` :
 
 ```c#
 using Windows.Storage.Pickers;
@@ -83,7 +83,7 @@ This projects allows users to multi-select images.
 
 Looking at the source code, you'll see that the function call needs to change from `PickSingleFileAsync()` to `PickMultipleFilesAsync()`. As well as it needs to iterate and load each file in a loop. -->
 
-1. In your `MainPage.xaml.cs` in the `LoadImage_Click` function locate:
+7. In your `MainPage.xaml.cs` in the `LoadImage_Click` function locate:
 
 ```c#
 var file = await picker.PickSingleFileAsync();
@@ -94,7 +94,7 @@ if (file != null)
 }
 ```
 
-1. Replace from `var file` & `if` statment with:
+8. Replace from `var file` & `if` statment with:
 
 ```c#
 var files = await picker.PickMultipleFilesAsync();
@@ -109,15 +109,15 @@ if (files != null && files.Count > 0)
 
 Before you try it out, the lab has provided sample images that you can use to test out this app.
 
-1. In a new tab, open [repo](./children-arts-craft-samples/)
-1. Download images to the `Desktop`
+9. In a new tab, open [repo](./children-arts-craft-samples/)
+10. Download images to the `Desktop`
 
 Now try it out:
 
-1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
-1. Click on `Upload Images`
-1. Select multiple images from `Desktop`
-1. Close App
+11. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
+12. Click on `Upload Images`
+13. Select multiple images from `Desktop`
+14. Close App
 
 ## Add Saving & Displaying images
 
@@ -125,18 +125,18 @@ Before going any further, a ViewModel can be used to manage the presentation log
 
 Add a ViewModel
 
-1. In the Solution Explorer, . **Right-click** on the project node (**PoemGenerator**)
-1. Click Add > New Item
-1. Select **Class**
+15. In the Solution Explorer, . **Right-click** on the project node (**PoemGenerator**)
+16. Click Add > New Item
+17. Select **Class**
     1. If you do not see **Class**, on the top right, there is a Search bar, enter **Class**
-1. Name it `MainViewModel.cs`
-1. Locate the following text which makes up the Class Header:
+18. Name it `MainViewModel.cs`
+19. Locate the following text which makes up the Class Header:
 
 ```c#
 internal class MainViewModel
 ```
 
-1. Replace the class header with the following:
+20. Replace the class header with the following:
 
 ```c#
 public partial class MainViewModel() : ObservableObject
@@ -150,15 +150,15 @@ The ObservableObject in the Community Toolkit is a base class that makes this Vi
 - Access to helper methods like SetProperty, which update property values and raise notifications automatically.
 - The ability to use attributes like `ObservableProperty` to simplify property declarations and generate boilerplate code for observable properties. -->
 
-1. Move the `LoadImage_Click` function from the **MainPage.xaml.cs** to **MainViewModel.cs**
-1. Rename it to `LoadImages`, make it a `Task` and remove the parameters
+21. Move the `LoadImage_Click` function from the **MainPage.xaml.cs** to **MainViewModel.cs**
+22. Rename it to `LoadImages`, make it a `Task` and remove the parameters
 
 ```c#
 private async Task LoadImages()
 ```
 
-1. Above the new `LoadImages` add `[RelayCommand]`
-1. Add to your imports:
+23. Above the new `LoadImages` add `[RelayCommand]`
+24. Add to your imports:
 
 ```csharp
 using Windows.Storage.Pickers;
@@ -211,20 +211,20 @@ The `RelayCommand` automatically turns this into a command that can be bound to 
 
 Now to connect the MainViewModel to MainPage.
 
-1. Open `MainPage.xaml.cs`
-1. Above the constructor for MainPage, add a line that instantiates our view model:
+25. Open `MainPage.xaml.cs`
+26. Above the constructor for MainPage, add a line that instantiates our view model:
 
 ```c#
 public MainViewModel ViewModel { get; } = new();
 ```
 
-1. In the constructor for MainPage, create an instant of the MainviewModel
+27. In the constructor for MainPage, create an instant of the MainviewModel
 
 ```c#
 ViewModel = new MainViewModel();
 ```
 
-1. Save the file by pressing `Ctrl + S`
+28. Save the file by pressing `Ctrl + S`
 
 <details>
   <summary>Your code should look like the following:</summary>
@@ -262,9 +262,9 @@ We use both in this lab.
 
 Now to connect the `LoadImages()` from the ViewModel to the `MainPage.xaml`
 
-1. Open `MainPage.xaml`
-1. Locate `Click="LoadImage_Click"`
-1. Replace it with:
+29. Open `MainPage.xaml`
+30. Locate `Click="LoadImage_Click"`
+31. Replace it with:
 
 ```c#
 Command="{x:Bind ViewModel.LoadImagesCommand}"
@@ -272,25 +272,25 @@ Command="{x:Bind ViewModel.LoadImagesCommand}"
 
 Now try it out:
 
-1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
-1. Click on `Upload Images`
-1. Select multiple images
-1. Close App
+32. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
+33. Click on `Upload Images`
+34. Select multiple images
+35. Close App
 
 ## Saving image data
 
-With the view model set up, we can create an `ObservableCollection` that stores references to the uploaded images. In MVVM, an observable is a variable that can trigger a UI update when its value changes. In this case, whenever our list of photos changes, we want to update the UI to reflect that. We also want to store the associated bitmap data for each image so we can feed it into the Windows Copliot Runtime APIs.
+With the view model set up, we can create an `ObservableCollection` that stores references to the uploaded images. In MVVM, an observable is a variable that can trigger a UI update when its value changes. In this case, whenever our list of photos changes, we want to update the UI to reflect that. We also want to store the associated bitmap data for each image so we can feed it into the Windows AI Foundry​ APIs.
 
-1. In the Solution Explorer, **Right Click** on the `Models` directory
-1. Add > Class
-1. Name it `PhotoItem.cs`
-1. Update the class header to be from `internal` to `public`:
+36. In the Solution Explorer, **Right Click** on the `Models` directory
+37. Add > Class
+38. Name it `PhotoItem.cs`
+39. Update the class header to be from `internal` to `public`:
 
 ```c#
 public class PhotoItem
 ```
 
-1. Add the following properties inside the class:
+40. Add the following properties inside the class:
 
 ```c#
 public SoftwareBitmapSource? BitmapSource { get; internal set; }
@@ -314,14 +314,14 @@ namespace PoemGenerator.Models
 ```
 </details>
 
-1. Open `MainViewModel.cs`
-1. Add to imports:
+41. Open `MainViewModel.cs`
+42. Add to imports:
 
 ```c#
 using PoemGenerator.Models;
 ```
 
-1. Add a `Photos` property:
+43. Add a `Photos` property:
 
 ```c#
 public ObservableCollection<PhotoItem> Photos { get; set; } = new();
@@ -331,13 +331,13 @@ When iterating through the list of images in `LoadImages`, we can replace the co
 
 We can reference this logic in the **Describe Image sample** in the `AI Dev Gallery` app, from the `SetImage` function on lines 123-139, which converts the image stream from the FilePicker and loads it into a bitmap. But for this app it will be called `AddImage` and add new PhotoItem object to `Photos`.
 
-1. Replace `//await SetImage(stream)` with:
+44. Replace `//await SetImage(stream)` with:
 
 ```c#
 await AddImage(stream);
 ```
 
-1. Add the `AddImage` function:
+45. Add the `AddImage` function:
 
 ```c#
 private async Task AddImage(IRandomAccessStream stream)
@@ -369,9 +369,9 @@ There are a number of ways we can display a group of images in WinUI.
 
 In the **WinUI Gallery app**, we can use the `LinedFlowLayout`, which is used by multiple Windows native apps to display images, such as the Photos and FileExplorer apps.
 
-1. Open WinUI Gallery app
-1. Search for `ItemsView`
-1. Scroll down to the second sample on the page titled **ItemsView with swappable layouts**.
+46. Open WinUI Gallery app
+47. Search for `ItemsView`
+48. Scroll down to the second sample on the page titled **ItemsView with swappable layouts**.
 
 Here, we can see an example of the LinedFlowLayout being used within an ItemsView.  
 
@@ -379,8 +379,8 @@ At the top of the source XAML, we can also see a `DataTemplate` defined in the P
 
 > **_NOTE:_** The LinedFlowLayout lives inside of an ItemsView component, which is where we will utilize the data template mentioned above
 
-1. Open `MainPage.xaml`
-1. Before the first `Grid` element add:
+49. Open `MainPage.xaml`
+50. Before the first `Grid` element add:
 
 ```xml
 <Page.Resources>
@@ -396,13 +396,13 @@ At the top of the source XAML, we can also see a `DataTemplate` defined in the P
 
 This defines data template within the page’s resource section. The `Key` property is where you define the name of the data template. `DataType` is the class/object type that we’re defining the template for.
 
-1. Locate the following:
+51. Locate the following:
 
 ```xml
 xmlns:local="using:PoemGenerator.Pages"
 ```
 
-1. Replace it with:
+52. Replace it with:
 
 ```xml
 xmlns:model="using:PoemGenerator.Models"
@@ -410,14 +410,14 @@ xmlns:model="using:PoemGenerator.Models"
 
 By replacing the `local` namespace variable and adding model, Visual Studio should be able to locate the `PhotoItem` class.
 
-1. Locate:
+53. Locate:
 
 ```xml
 <!--Images-->
 <Image></Image>
 ```
 
-1. Replace it with:
+54. Replace it with:
 
 ```xml
 <ItemsView
@@ -438,15 +438,15 @@ In the `ItemsView` component, it is referencing the `PhotoTemplate` defined in t
 
 The `ItemsView` component will be `PhotosLoaded` to manage it's Visibility. It should default to `false` and become `true` when the images are loaded.
 
-1. Open `MainViewModel.cs`
-1. Add the `PhotosLoaded` property:
+55. Open `MainViewModel.cs`
+56. Add the `PhotosLoaded` property:
 
 ```c#
 [ObservableProperty]
 public partial bool PhotosLoaded { get; set; } = false;
 ```
 
-1. Locate the end of `LoadImages` funtion and after the for loop add:
+57. Locate the end of `LoadImages` funtion and after the for loop add:
 
 ```c#
 PhotosLoaded = true;
@@ -525,10 +525,10 @@ namespace PoemGenerator
 
 Now try it out:
 
-1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
-1. Click on `Upload Images`
-1. Select multiple images
-1. Close App
+58. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
+59. Click on `Upload Images`
+60. Select multiple images
+61. Close App
 
 ## Generating Poem Setup
 
@@ -545,9 +545,9 @@ You will add observable properties in the ViewModel that manage:
 - If there are currently photos loaded in the photo viewer, and
 - The text that should be displayed in the poem viewer.
 
-1. Open `MainViewModel.cs`
-1. Change `PhotosLoaded` from `true` to `false`
-1. Add the following ObservableProperties:
+62. Open `MainViewModel.cs`
+63. Change `PhotosLoaded` from `true` to `false`
+64. Add the following ObservableProperties:
 
 ```c#
 [ObservableProperty]
@@ -559,24 +559,24 @@ public partial string GeneratedPoem { get; set; } = "Select up to 5 images to ge
 public string SelectedPoemType = "Haiku";
 ```
 
-1. Open `MainPage.xaml`
-1. Locate the `Grid` that contains the `DropDownButton` (around line 85)
-1. Replace the `Grid` opening element with:
+65. Open `MainPage.xaml`
+66. Locate the `Grid` that contains the `DropDownButton` (around line 85)
+67. Replace the `Grid` opening element with:
 
 ```xml
 <Grid Visibility="{x:Bind ViewModel.PhotosLoaded, Mode=OneWay}">
 ```
 
-1. Locate the `ProgressRing` element
-1. Replace the `IsActive` and `Visibility` with:
+68. Locate the `ProgressRing` element
+69. Replace the `IsActive` and `Visibility` with:
 
 ```xml
 IsActive="{x:Bind ViewModel.IsGeneratingPoem, Mode=OneWay}"
 Visibility="{x:Bind ViewModel.IsGeneratingPoem, Mode=OneWay}" />
 ```
 
-1. Locate `<Run Text="Your poem will generate here"/>`
-1. Replace it with:
+70. Locate `<Run Text="Your poem will generate here"/>`
+71. Replace it with:
 
 ```xml
 <Run Text="{x:Bind ViewModel.GeneratedPoem, Mode=OneWay}"/>
@@ -584,8 +584,8 @@ Visibility="{x:Bind ViewModel.IsGeneratingPoem, Mode=OneWay}" />
 
 A `Run` element in XAML represents a section of formatted or unformatted text within a text container, such as a TextBlock or RichTextBlock. You use the `Run` element to define a specific portion of text that can have its own formatting, separate from other text in the same container. This allows you to apply different styles to different parts of the text, such as changing the color or font of a word or phrase within a single TextBlock
 
-1. Locate the `Button` that has the property `AutomationProperties.Name="Generate poem from selected images"`
-1. Add a `command` to it:
+72. Locate the `Button` that has the property `AutomationProperties.Name="Generate poem from selected images"`
+73. Add a `command` to it:
 
 ```xml
 Command="{x:Bind ViewModel.GeneratePoemCommand}"
@@ -610,8 +610,8 @@ Command="{x:Bind ViewModel.GeneratePoemCommand}"
 
 Now to add the GeneratePoemCommand to the ViewModel:
 
-1. Open `MainViewModel.cs`
-1. Add `GeneratePoem`:
+74. Open `MainViewModel.cs`
+75. Add `GeneratePoem`:
 
 ```c#
 [RelayCommand]
@@ -619,18 +619,18 @@ public async Task GeneratePoem()
 {
     IsGeneratingPoem = true;
     GeneratedPoem = "Generating poem…";
-    // Processing image via Foundry APIs here
+    // Processing image via Windows AI Foundry​ APIs here
 
 }
 ```
 
 Now try it out:
 
-1. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
-1. Click on `Upload Images`
-1. Select multiple images
-1. Click Generate
-1. Close App
+76. On the title bar, Click on **Debug** > **Start Debugging** OR on your keyboard press **F5** key
+77. Click on `Upload Images`
+78. Select multiple images
+79. Click Generate
+80. Close App
 
 There are two items to take care of:
 
@@ -639,8 +639,8 @@ There are two items to take care of:
 
 To ensure that the list of photos is cleared prior to making a new selection of photos
 
-1. Open `MainViewModel`
-1. In beginning of the `LoadImages` function, add:
+81. Open `MainViewModel`
+82. In beginning of the `LoadImages` function, add:
 
 ```c#
 Photos.Clear();
@@ -648,8 +648,8 @@ Photos.Clear();
 
 Using code-behind, update the `PoemTypeDropdownText` & `SelectedPoemType`
 
-1. Open `MainPage.xaml.cs`
-1. Update the `MenuFlyoutItem_Click` function with:
+83. Open `MainPage.xaml.cs`
+84. Update the `MenuFlyoutItem_Click` function with:
 
 ```c#
 private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
@@ -907,7 +907,7 @@ public partial class MainViewModel() : ObservableObject
     {
         IsGeneratingPoem = true;
         GeneratedPoem = "Generating poem…";
-        // Processing image via Foundry APIs here
+        // Processing image via Windows AI Foundry​ APIs here
 
     }
 ```

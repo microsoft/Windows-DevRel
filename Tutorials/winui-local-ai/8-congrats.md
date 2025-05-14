@@ -1,6 +1,6 @@
 # Congratulations!
 
-In this lab, you learned how to build a WinUI app that leverages Windows Copilot Runtime APIs and the Windows Community Toolkit. You explored the integration of AI-powered features, such as image description and poem generation, while ensuring data privacy by keeping all processing on the device.
+In this lab, you learned how to build a WinUI app that leverages Windows AI Foundry​ APIs and the Windows Community Toolkit. You explored the integration of AI-powered features, such as image description and poem generation, while ensuring data privacy by keeping all processing on the device.
 
 Please provide your input on the lab experience through [survey](https://aka.ms/build25-win-lab).
 
@@ -8,7 +8,7 @@ Please provide your input on the lab experience through [survey](https://aka.ms/
 
 - **WinUI Framework**: You used WinUI to create a modern, intuitive user interface.
 - **Windows App SDK**: You integrated Windows App SDK to access Windows platform functionality.
-- **Windows Copilot Runtime APIs**: You utilized AI models for text generation and image description.
+- **Windows AI Foundry​ APIs**: You utilized AI models for text generation and image description.
 - **Windows Community Toolkit**: You leveraged helper functions and custom controls to enhance productivity.
 
 ## Completed Tasks
