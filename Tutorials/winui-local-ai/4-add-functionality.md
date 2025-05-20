@@ -11,6 +11,9 @@ Go to the computers Start bar and open `WinUI 3 Gallery` and `AI Dev Gallery` ap
 For this project you'll use portions from a provided sample:
 
 1. In the **AI Dev Gallery**, go to **Samples** > **Image** > **Describe Image**
+1. In the **Select a model to use for this sample** window, on the left, select the **Windows AI APIs** tab
+1. Select **Image Description**
+1. On  the bottom right, **Click** on **Run Sample**
 1. On the top right corner, **Click** on **`</> Code`**
 1. Click on the **Sample.xaml.cs** tab.
 
