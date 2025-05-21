@@ -62,6 +62,6 @@ The **ViewModel** component performs the databinding between View and Model comp
 
 Now that you have an overview of Windows development tools and our project goals for this course, let's dive in and start building this Windows app!
 
-The final version of this app is available at [here](../PoemGenerator/README.md)
+The final version of this app is available at [here](PoemGenerator/README.md)
 
 Next [Developer Setup](./2-dev-setup.md)
