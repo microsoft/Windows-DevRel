@@ -77,7 +77,7 @@ To update the Windows App SDK NuGet package for your project to get access to Wi
 6. Select the **Checkbox** to Include prelease
 7. On the right panel:
     1. select the **checkbox** of the **Project**
-    1. Select from the dropdown  **winappsdk1.8-experimental1** 
+    1. Select from the dropdown  **winappsdk1.8-experimental1**
     1. Click **install**
         1. On the Preview Changes Popup, **Click Apply**.
         1. On the License Acceptance Popup, **Click I Accept**.
@@ -102,7 +102,7 @@ The Windows AI Foundry​ APIs uses a specifies  version of the .NET runtime and
 
 12. **Right-click** on the project node (**PoemGenerator**) and select **Edit Project File**. This action opens the .csproj file in the editor.
 13. **Locate** the first `PropertyGroup` element in the file
-14. **Add** `<LangVersion>Preview</LangVersion>`
+14. **Add** `<LangVersion>preview</LangVersion>`
 15. **Locate** `<TargetFramework>`
 16. **Replace** it with `<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>`
 17. **Save and Close** the file
