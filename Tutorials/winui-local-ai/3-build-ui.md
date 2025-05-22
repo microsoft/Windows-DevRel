@@ -88,7 +88,7 @@ namespace PoemGenerator
     {
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             MainFrame.Navigate(typeof(MainPage));
 
             this.AppWindow.Resize(new SizeInt32(1280, 800));
