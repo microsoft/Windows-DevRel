@@ -156,7 +156,7 @@ Steps to Create Folders:
 
 ### Why Name It "Pages" Instead of "Views"?
 
-The folder is named Pages instead of Views because it stores different pages of your app. For example, while MainWindow.xaml is part of the View layer, it remains in the root directory because most developers expect to find it there. Moving it into a folder named "Views" would break this convention and could cause confusion. -->
+The folder is named Pages instead of Views because it stores different pages of your app. For example, while MainWindow.xaml is part of the View layer, it remains in the root directory because most developers expect to find it there. Moving it into a folder named "Views" would break this convention and could cause confusion.
 
 In the next section, we’ll explore how MainWindow.xaml and how pages work.
 

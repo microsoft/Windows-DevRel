@@ -4,7 +4,7 @@ Windows AI Foundry​ provides a variety of AI-powered features available via AP
 
 ![Diagram of Native Windows Models ](assets/sillicon.png)
 
-<!-- ## Choose between cloud-based and local AI services
+## Choose between cloud-based and local AI services
 
 You can integrate AI into your Windows application using either a local model or a cloud-based model. Consider the following aspects:
 
@@ -35,7 +35,7 @@ You can integrate AI into your Windows application using either a local model or
 - **AI Imaging**: generate various types of text descriptions for an image (Image Description), for scaling and sharpening images (Image Super Resolution) and identifying objects in images (Image Segmentation).
 - **Windows Studio Effects**: for applying AI effects to the device camera or microphone.
 
-Windows AI Foundry​ provides these AI-powered features through APIs. The models run locally and continuously in the background on Copilot+ PCs. These APIs are included in the Windows App SDK and are currently available in the latest experimental channel release of the Windows App SDK. -->
+Windows AI Foundry​ provides these AI-powered features through APIs. The models run locally and continuously in the background on Copilot+ PCs. These APIs are included in the Windows App SDK and are currently available in the latest experimental channel release of the Windows App SDK.
 
 # Phi Silica
 
@@ -45,14 +45,14 @@ Phi Silica is a Small Language Model (SLM) developed by Microsoft Research for l
 
 ![Diagram of Native Windows Models ](assets/windows-ai-api.png)
 
-<!-- You can integrate this model into Windows apps using the Windows App SDK. It is optimized for efficiency and performance on Windows Copilot+ PCs, offering many features found in large language models (LLMs). This optimization is exclusive to the Windows App SDK version of Phi Silica.
+You can integrate this model into Windows apps using the Windows App SDK. It is optimized for efficiency and performance on Windows Copilot+ PCs, offering many features found in large language models (LLMs). This optimization is exclusive to the Windows App SDK version of Phi Silica.
 
 Phi Silica is based on Phi-3.6-mini, supports a 4k context length, and is designed for Windows 11 devices with NPU hardware.
 
 - Phi-3.6-mini is a state-of-the-art, compact language model that delivers high accuracy across multiple languages and tasks, even when compared to much larger models.
 - By building on Phi-3.6-mini, Phi Silica inherits strong reasoning, multilingual, and summarization capabilities, making it suitable for a wide range of real-world applications
 
-This section guides you through configuring your project for ARM64 processors and implementing AI-powered poem generation. By targeting ARM64, your app gains optimized performance and battery efficiency on modern Windows devices. You'll create a service that uses Windows AI Foundry​ APIs to process image descriptions and generate poems through AI models. The implementation involves initializing AI models, managing asynchronous operations, and connecting these capabilities to your app's user interface. -->
+This section guides you through configuring your project for ARM64 processors and implementing AI-powered poem generation. By targeting ARM64, your app gains optimized performance and battery efficiency on modern Windows devices. You'll create a service that uses Windows AI Foundry​ APIs to process image descriptions and generate poems through AI models. The implementation involves initializing AI models, managing asynchronous operations, and connecting these capabilities to your app's user interface.
 
 Before you start building, you’ll need to configuring your Visual Studio project to build your app so it runs natively on devices with ARM64 processors. When you set your solution platform to ARM64, you instruct the build system to generate binaries specifically for ARM64 hardware. This allows your app to take full advantage of ARM64 device capabilities, such as improved battery life and optimized AI performance, and ensures compatibility with the latest Windows on ARM devices
 
