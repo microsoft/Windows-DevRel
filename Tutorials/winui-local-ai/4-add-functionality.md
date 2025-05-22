@@ -2,29 +2,29 @@
 
 In this section, you will build the app to upload images and display these images in a gallery. You will explore the **WinUI Gallery** and **AI Dev Gallery** to leverage existing code, implementing a file upload button. This project will also guide you through using a ViewModel to manage data and display uploaded images, setting the stage for generating poems based on these images.
 
-## Explore & Use Galleries
+## Install & Explore Galleries
 
-<!-- Add instructions to install `WinUI 3 Gallery` and `AI Dev Gallery` apps for post build -->
-
-Go to the computers Start bar and open `WinUI 3 Gallery` and `AI Dev Gallery` apps. Take a few minutes to explore these.
+1. Install the [WinUI Gallery](https://apps.microsoft.com/detail/9p3jfpwwdzrc)
+1. Install the [AI Dev Gallery](https://apps.microsoft.com/detail/9n9pn1mm3bd5?hl=en-US&gl=US)
+1. Take a few minutes to explore these galleries
 
 For this project you'll use portions from a provided sample:
 
-1. In the **AI Dev Gallery**, go to **Samples** > **Image** > **Describe Image**
-1. In the **Select a model to use for this sample** window, on the left, select the **Windows AI APIs** tab
-1. Select **Image Description**
-1. On  the bottom right, **Click** on **Run Sample**
-1. On the top right corner, **Click** on **`</> Code`**
-1. Click on the **Sample.xaml.cs** tab.
+4. In the **AI Dev Gallery**, go to **Samples** > **Image** > **Describe Image**
+5. In the **Select a model to use for this sample** window, on the left, select the **Windows AI APIs** tab
+6. Select **Image Description**
+7. On  the bottom right, **Click** on **Run Sample**
+8. On the top right corner, **Click** on **`</> Code`**
+9. Click on the **Sample.xaml.cs** tab.
 
 You can use some of this functionality to implement simple file upload button. This logic lives around line 70 in `LoadImage_Click()`.
 
-4. Copy this entire `LoadImage_Click` function from the gallery into our project in `MainPage.xaml.cs`, replacing the current empty `LoadImage_Click` function
+10. Copy this entire `LoadImage_Click` function from the gallery into our project in `MainPage.xaml.cs`, replacing the current empty `LoadImage_Click` function
 
 Since we haven’t defined the logic for SetImage yet, we can comment out that line.
 
-5. Comment out `SetImage`, by adding ``//``
-6. Add to your imports, in the `MainPage.xaml.cs` :
+11. Comment out `SetImage`, by adding ``//``
+12. Add to your imports, in the `MainPage.xaml.cs` :
 
 ```c#
 using Windows.Storage.Pickers;
@@ -75,8 +75,9 @@ private async void LoadImage_Click(object sender, RoutedEventArgs e)
 ```
 </details>
 
-This projects allows users to multi-select images. 
-<!-- You can use the WinUI Gallery app to reference how to do this:
+This projects allows users to multi-select images.
+
+You can use the WinUI Gallery app to reference how to do this:
 
 1. In the **WinUI Gallery**
 1. On the top Left corner, Search  **FilePicker**
@@ -84,7 +85,7 @@ This projects allows users to multi-select images.
 1. **Click** on the **Source Code**
 1. **Click** on **C#**
 
-Looking at the source code, you'll see that the function call needs to change from `PickSingleFileAsync()` to `PickMultipleFilesAsync()`. As well as it needs to iterate and load each file in a loop. -->
+Looking at the source code, you'll see that the function call needs to change from `PickSingleFileAsync()` to `PickMultipleFilesAsync()`. As well as it needs to iterate and load each file in a loop.
 
 7. In your `MainPage.xaml.cs` in the `LoadImage_Click` function locate:
 
@@ -147,11 +148,11 @@ public partial class MainViewModel() : ObservableObject
 
 The ObservableObject in the Community Toolkit is a base class that makes this ViewModel observable by implementing the `INotifyPropertyChanged` and `INotifyPropertyChanging` interfaces. This class provides automatic notification when property values change, which helps the UI update itself whenever data changes in the view model.
 
-<!-- When this MainViewModel class inherits from ObservableObject, this class gains:
+When this MainViewModel class inherits from ObservableObject, this class gains:
 
 - Support for property change notifications through the PropertyChanged and PropertyChanging events.
 - Access to helper methods like SetProperty, which update property values and raise notifications automatically.
-- The ability to use attributes like `ObservableProperty` to simplify property declarations and generate boilerplate code for observable properties. -->
+- The ability to use attributes like `ObservableProperty` to simplify property declarations and generate boilerplate code for observable properties.
 
 21. Move the `LoadImage_Click` function from the **MainPage.xaml.cs** to **MainViewModel.cs**
 22. Rename it to `LoadImages`, make it a `Task` and remove the parameters
@@ -449,7 +450,7 @@ The `ItemsView` component will be `PhotosLoaded` to manage it's Visibility. It s
 public partial bool PhotosLoaded { get; set; } = false;
 ```
 
-57. Locate the end of `LoadImages` funtion and after the for loop add:
+57. In the `LoadImages` function, add the end of that function, after the for loop, add:
 
 ```c#
 PhotosLoaded = true;
@@ -469,7 +470,7 @@ namespace PoemGenerator
         public ObservableCollection<PhotoItem> Photos { get; set; } = new();
 
         [ObservableProperty]
-        public partial bool PhotosLoaded { get; set; } = true;
+        public partial bool PhotosLoaded { get; set; } = false;
 
         [RelayCommand]
         private async Task LoadImages()

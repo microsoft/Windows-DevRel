@@ -2,7 +2,7 @@
 
 In this lab, you learned how to build a WinUI app that leverages Windows AI Foundry​ APIs and the Windows Community Toolkit. You explored the integration of AI-powered features, such as image description and poem generation, while ensuring data privacy by keeping all processing on the device.
 
-Please provide your input on the lab experience through [survey](https://aka.ms/build25-win-lab).
+1. Please provide your input on the lab experience through [survey](https://aka.ms/build25-win-lab).
 
 ## Recap of Main Concepts
 

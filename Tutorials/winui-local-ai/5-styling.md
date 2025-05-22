@@ -173,5 +173,4 @@ Now try it out:
 - **Keep resource scope in mind**: Page-level resources override app-level ones. Use app-level resources for global styles.
 - **Use clear naming for styles and resources**: This makes your XAML easier to read and maintain.
 
-
 Next [Add AI](./6-phi-silica.md)
