@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<UserControl
+    x:Class="ContosoHome.Controls.HomeHeaderControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:ContosoHome.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid
+        Height="240"
+        Margin="12"
+        Padding="4,0,0,4"
+        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+        BorderThickness="1"
+        ColumnSpacing="24"
+        CornerRadius="{StaticResource OverlayCornerRadius}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="560" />
+        </Grid.ColumnDefinitions>
+        <StackPanel
+            Margin="20,0,0,0"
+            Orientation="Vertical"
+            Spacing="0">
+            <Image Width="164" Source="/Assets/ContosoSmartHub.png" />
+            <TextBlock
+                Margin="0,-4,0,0"
+                HorizontalAlignment="Center"
+                FontSize="18"
+                Style="{StaticResource BodyStrongTextBlockStyle}"
+                Text="Contoso SmartHub"
+                TextAlignment="Center" />
+            <StackPanel
+                Margin="0,8,0,16"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="4">
+                <Ellipse
+                    Width="8"
+                    Height="8"
+                    Fill="{ThemeResource SystemFillColorSuccessBrush}" />
+                <TextBlock
+                    Margin="0,-1,0,0"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Style="{StaticResource CaptionTextBlockStyle}"
+                    Text="Online" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel
+            Grid.Column="1"
+            Margin="24,16,0,16"
+            Spacing="4">
+            <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="Recent activity" />
+            <StackPanel
+                Margin="0,12,0,0"
+                Orientation="Horizontal"
+                Spacing="8">
+                <FontIcon
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Glyph="&#xEA8F;" />
+                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="04:01 PM" />
+                <TextBlock Margin="12,0,0,0" Text="Someone at the door" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <FontIcon
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Glyph="&#xE72E;" />
+                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="03:54 PM" />
+                <TextBlock Margin="12,0,0,0" Text="Alarm charged" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <FontIcon
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Glyph="&#xEC0A;" />
+                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="03:25 PM" />
+                <TextBlock Margin="12,0,0,0" Text="Lawn mower charging" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <FontIcon
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Glyph="&#xE785;" />
+                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="03:15 PM" />
+                <TextBlock Margin="12,0,0,0" Text="Alarm discharged" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <FontIcon
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    Glyph="&#xE945;" />
+                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="03:14 PM" />
+                <TextBlock Margin="12,0,0,0" Text="Movement detected in the living room" />
+            </StackPanel>
+            <HyperlinkButton
+                Margin="0,8,0,0"
+                Padding="0"
+                Content="More events" />
+        </StackPanel>
+
+        <Grid
+            Grid.Column="2"
+            Width="480"
+            Margin="24,16,0,26"
+            RowSpacing="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBlock FontWeight="SemiBold" Text="Rooms" />
+            <Grid
+                Grid.Row="1"
+                ColumnSpacing="8"
+                RowSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <local:RoomTile
+                    Grid.RowSpan="2"
+                    ImageUrl="ms-appx:///Assets/Garden.png"
+                    Label="Garden" />
+                <local:RoomTile
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    ImageUrl="ms-appx:///Assets/Kitchen.png"
+                    Label="Kitchen" />
+                <local:RoomTile
+                    Grid.Row="2"
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    ImageUrl="ms-appx:///Assets/HomeOffice.png"
+                    Label="Office" />
+                <local:RoomTile
+                    Grid.Row="2"
+                    Grid.RowSpan="2"
+                    ImageUrl="ms-appx:///Assets/Hall.png"
+                    Label="Hallway" />
+                <local:RoomTile
+                    Grid.Row="0"
+                    Grid.RowSpan="4"
+                    Grid.Column="2"
+                    ImageUrl="ms-appx:///Assets/LivingRoom.png"
+                    Label="Living Room" />
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

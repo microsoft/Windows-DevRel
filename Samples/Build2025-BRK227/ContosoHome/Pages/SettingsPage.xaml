@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="ContosoHome.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:ContosoHome.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="using:CommunityToolkit.WinUI"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <x:Double x:Key="SettingsCardSpacing">4</x:Double>
+        <Style
+            x:Key="SettingsSectionHeaderTextBlockStyle"
+            BasedOn="{StaticResource BodyStrongTextBlockStyle}"
+            TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Margin" Value="1,30,0,6" />
+            </Style.Setters>
+        </Style>
+    </Page.Resources>
+    <ScrollViewer>
+        <Grid Padding="36" ColumnSpacing="48">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel
+                MaxWidth="1000"
+                HorizontalAlignment="Stretch"
+                Spacing="{StaticResource SettingsCardSpacing}">
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Settings" />
+                <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="General" />
+
+                <controls:SettingsCard
+                    Description="Dark mode is the best mode"
+                    Header="Theme"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE793;}">
+                    <ComboBox SelectedIndex="0">
+                        <ComboBoxItem>System</ComboBoxItem>
+                        <ComboBoxItem>Dark</ComboBoxItem>
+                        <ComboBoxItem>Light</ComboBoxItem>
+                    </ComboBox>
+                </controls:SettingsCard>
+                <controls:SettingsExpander
+                    Description="Configure how the Contoso Home connects to your device"
+                    Header="Device settings"
+                    HeaderIcon="{ui:FontIcon Glyph=&#xE722;}">
+                    <controls:SettingsExpander.Items>
+                        <controls:SettingsCard Header="Find your Hub automatically">
+                            <ToggleSwitch IsOn="True" />
+                        </controls:SettingsCard>
+                        <controls:SettingsCard Header="Use Wifi Direct if available">
+                            <ToggleSwitch IsOn="True" />
+                        </controls:SettingsCard>
+                        <controls:SettingsCard ContentAlignment="Left">
+                            <CheckBox Content="Sync every 10 minutes when connected" />
+                        </controls:SettingsCard>
+                        <controls:SettingsCard
+                            Description="Find detailed setup instructions on the Contoso website"
+                            Header="Setup instructions"
+                            IsClickEnabled="True" />
+                    </controls:SettingsExpander.Items>
+                </controls:SettingsExpander>
+
+                <!--  Example 'About' section  -->
+                <StackPanel Orientation="Vertical" Spacing="{StaticResource SettingsCardSpacing}">
+                    <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />
+
+                    <controls:SettingsCard
+                        Description="© 2025. All rights reserved."
+                        Header="Contoso Home"
+                        HeaderIcon="{ui:BitmapIcon Source=ms-appx:///Assets/icon.ico}">
+                        <TextBlock
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="Version 1.0.0" />
+                    </controls:SettingsCard>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>

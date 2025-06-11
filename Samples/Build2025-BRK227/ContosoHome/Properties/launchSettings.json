@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ContosoHome (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ContosoHome (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
